@@ -8,15 +8,17 @@ class Level:
         
         # groups
         self.all_sprites = pygame.sprite.Group() # Create a of the structure of the map
+        self.collision_sprites = pygame.sprite.Group()
+        
         self.setup(tmx_map)  
 
     def setup(self, tmx_map):
         # 
         for x, y, surf in tmx_map.get_layer_by_name('Terrain').tiles(): # Get the tiles of the layer 'Terrain'
-            Sprite((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites) # Create a new sprite
+            Sprite((x * TILE_SIZE,y * TILE_SIZE), surf, (self.all_sprites, self.collision_sprites)) # Create a new sprite
         for obj in tmx_map.get_layer_by_name('Objects'): # Get the objects of the layer 'Objects'
             if obj.name == 'player': # If the object is the player
-                Player((obj.x, obj.y), self.all_sprites)
+                Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
             
     def run(self, dt):
         self.all_sprites.update(dt)

@@ -23,6 +23,6 @@ class Game:
             pygame.display.update()
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': # If we are in the file main, we execute the game
     game = Game()
     game.run()
