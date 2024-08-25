@@ -8,17 +8,18 @@ class Game:
         pygame.init() # Start the game
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) # Set size of the window
         pygame.display.set_caption("Super Pirate World") # Set name of the game
-        
+        self.clock = pygame.time.Clock() 
         self.tmx_maps = {0: load_pygame(join('data','levels','omni.tmx'))} # 
         self.current_state = Level(self.tmx_maps[0]) # Assign class 'Level'
     
     def run(self):
         while True:
+            dt = self.clock.tick(30) / 1000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-            self.current_state.run() # Execute class 'Level'
+            self.current_state.run(dt) # Execute class 'Level'
             pygame.display.update()
 
 
