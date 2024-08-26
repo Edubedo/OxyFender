@@ -13,11 +13,11 @@ class Timer:
         self.start_time = get_ticks()
 
     def desactivate(self):
-        self.activate = False
+        self.active = False
         self.start_time = 0
         if self.repeat:
             self.activate()
-    
+
     def update(self):
         current_time = get_ticks()
         if current_time - self.start_time >= self.duration:
