@@ -5,20 +5,21 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, collision_sprites):
         super().__init__(groups) # Call the __init__ method of the parent class
         self.image = pygame.Surface((48, 56))
-        self.image.fill('red')
+        self.image.fill('red') # Fill the character
         
         #rects
         self.rect = self.image.get_rect(topleft = pos)
         self.old_rect = self.rect.copy()
+
         # movement of the player
         self.direction = vector() # Create a vector
         self.speed = 200 # Set the speed of the player
-        self.gravity = 1300 # Set the gravity of the player
+        self.gravity = 1000 # Set the gravity of the player
 
         self.jump = False
         self.jump_height = 800
 
-        #collision
+        #collision with the walls
         self.collision_sprites = collision_sprites
         self.on_surface = {'floor': False, 'left': False, 'right': False}
 

@@ -21,7 +21,7 @@ class MovingSprite(Sprite):
         self.direction = vector(1, 0) if move_dir == 'x' else vector(0, 1)
         self.move_dir = move_dir
 
-    def check_border(self): # Function that we use for check if the plataform reach it limit
+    def check_border(self): # Function that we use for check if the plataform reach it
         if self.move_dir == 'x':
             if self.rect.right >= self.end_pos[0] and self.direction.x == 1:
                 self.direction.x = -1
@@ -29,5 +29,5 @@ class MovingSprite(Sprite):
 
     def update(self, dt):
         self.old_rect = self.rect.copy()
-        self.rect.topleft += self.direction + self.speed
+        self.rect.topleft += self.direction * self.speed * dt
         self.check_border()
