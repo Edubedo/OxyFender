@@ -1,5 +1,5 @@
 from setting import *
-from sprites import Sprite
+from sprites import Sprite, MovingSprite
 from player import Player
 
 class Level:
@@ -22,6 +22,7 @@ class Level:
         for obj in tmx_map.get_layer_by_name('Objects'): # Get the objects of the layer 'Objects'
             if obj.name == 'player': # If the object is the player
                 Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+        
         # mov objects
         for obj in tmx_map.get_layer_by_name('Moving Objects'):
             if obj.name == 'helicopter':
@@ -34,8 +35,7 @@ class Level:
                     start_pos = (obj.x + obj.width / 2, obj.y)
                     end_pos = (obj.x + obj.width, obj.y + obj.height / 2)
                 speed = obj.properties['speed']
-                print(speed)
-
+                MovingSprite(self.all_sprites, start_pos, end_pos, move_dir, speed)
     def run(self, dt): # update all sprites
         self.display_surface.fill('black') # Change screen of the window
         self.all_sprites.update(dt)
