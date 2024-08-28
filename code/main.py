@@ -7,9 +7,10 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((640, 480))
     pygame.display.set_caption("OxyFender")
-    
+
+
     clock = pygame.time.Clock()
-    menu = Menu(screen) # Menu with option for the game
+    menu = Menu(screen) 
 
     while True:
         action = menu.show()
@@ -17,7 +18,6 @@ def main():
             game = Game(screen)
             game.run()
         elif action == "credits" or action == "créditos":
-            print('credits')
             show_credits(screen)
         elif action == "quit" or action == "salir":
             break
