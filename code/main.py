@@ -1,7 +1,7 @@
 import pygame
-from menu import Menu
-from game import Game
-from credits import show_credits
+from menu.menu import Menu
+from maps_levels.game import Game
+from general.credits import show_credits
 
 def main():
     pygame.init()

@@ -1,5 +1,5 @@
 import pygame
-from configuration import Configuration
+from configuration.configuration import Configuration
 
 class Menu:
     def __init__(self, screen):
@@ -81,3 +81,24 @@ class Menu:
                     for level, rect in self.option_rects:
                         if rect.collidepoint(event.pos):
                             return difficulty, level
+    def show_configuration(self):
+            self.screen.fill((0, 0, 0))
+            self.option_rects = []  # Reiniciar la lista de rectángulos para el menú de configuración
+            languages = ["English", "Español"]
+            for i, language in enumerate(languages):
+                text = self.font.render(language, True, (255, 255, 255))
+                rect = text.get_rect(center=(self.screen.get_width() // 2, 150 + i * 50))
+                self.screen.blit(text, rect)
+                self.option_rects.append((language.lower(), rect))
+            pygame.display.flip()
+
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        return "quit"
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        for language, rect in self.option_rects:
+                            if rect.collidepoint(event.pos):
+                                self.config.set_language(language)
+                                self.update_options()  # Actualizar opciones en base al nuevo idioma
+                                return
