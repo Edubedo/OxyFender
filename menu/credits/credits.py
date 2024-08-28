@@ -1,9 +1,10 @@
 import pygame
+from general.settings import *
 
 def show_credits(screen):
-    screen.fill((255, 255, 255))
+    screen.fill(BACKGROUND_COLOR)
     font = pygame.font.Font(None, 36)
-    text = font.render("Credits", True, (0, 0, 0))
+    text = font.render("Credits", True, TEXT_COLOR)
     screen.blit(text, (screen.get_width() // 2 - text.get_width() // 2, screen.get_height() // 2))
     pygame.display.flip()
     pygame.time.wait(1000)

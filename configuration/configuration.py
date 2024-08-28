@@ -22,3 +22,4 @@ class Configuration:
     def set_language(self, language):
         self.settings["language"] = language
         self.save_settings()
+
