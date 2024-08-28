@@ -6,26 +6,28 @@ class Menu:
         self.screen = screen
         self.config = Configuration()
         self.font = pygame.font.Font(None, 36)
-        self.options = self.get_options()
+        self.update_options()
 
-    def get_options(self):
+    def update_options(self):
         language = self.config.get_language()
         if language == "english":
-            return ["Play", "Credits", "Configuration", "Quit"]
+            self.options = ["Play", "Credits", "Configuration", "Quit"]
         else:  # Asumimos que es español
-            return ["Jugar", "Créditos", "Configuración", "Salir"]
+            self.options = ["Jugar", "Créditos", "Configuración", "Salir"]
+
+    def draw_options(self):
+        self.screen.fill((0, 0, 0))
+        self.option_rects = []  # Reiniciar la lista de rectángulos en cada loop
+        for i, option in enumerate(self.options):
+            text = self.font.render(option, True, (255, 255, 255))
+            rect = text.get_rect(center=(self.screen.get_width() // 2, 150 + i * 50))
+            self.screen.blit(text, rect)
+            self.option_rects.append((option.lower(), rect))
+        pygame.display.flip()
 
     def show(self):
+        self.draw_options()
         while True:
-            self.screen.fill((0, 0, 0))
-            self.option_rects = []  # Reiniciar la lista de rectángulos en cada loop
-            for i, option in enumerate(self.options):
-                text = self.font.render(option, True, (255, 255, 255))
-                rect = text.get_rect(center=(self.screen.get_width() // 2, 150 + i * 50))
-                self.screen.blit(text, rect)
-                self.option_rects.append((option.lower(), rect))
-            pygame.display.flip()
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return "quit"
@@ -34,7 +36,7 @@ class Menu:
                         if rect.collidepoint(event.pos):
                             if option == "configuration" or option == "configuración":
                                 self.show_configuration()
-                                break  # Salir del loop actual después de mostrar configuración
+                                return  # Salir del loop actual después de mostrar configuración
                             else:
                                 return option
 
@@ -57,5 +59,5 @@ class Menu:
                     for language, rect in self.option_rects:
                         if rect.collidepoint(event.pos):
                             self.config.set_language(language)
-                            self.options = self.get_options()  # Actualizar opciones en base al nuevo idioma
+                            self.update_options()  # Actualizar opciones en base al nuevo idioma
                             return
