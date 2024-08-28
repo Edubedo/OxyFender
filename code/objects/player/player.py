@@ -1,5 +1,5 @@
 import pygame
-from code.general.settings import GRID_SIZE
+from general.settings import GRID_SIZE
 
 class Player:
     def __init__(self, grid_size):

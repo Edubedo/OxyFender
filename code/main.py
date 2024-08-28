@@ -1,7 +1,7 @@
 import pygame
 from menu.menu import Menu
 from game_levels.game import Game
-from general.credits import show_credits
+from menu.credits.credits import show_credits
 
 def main():
     pygame.init()
@@ -9,18 +9,20 @@ def main():
     pygame.display.set_caption("OxyFender")
     
     clock = pygame.time.Clock()
-    menu = Menu(screen)
+    menu = Menu(screen) # Menu with option for the game
+
     while True:
         action = menu.show()
         if action == "play":
             game = Game(screen)
             game.run()
-        elif action == "credits":
+        elif action == "credits" or action == "créditos":
+            print('credits')
             show_credits(screen)
-        elif action == "quit":
+        elif action == "quit" or action == "salir":
             break
 
-        clock.tick(60)  # Limita el juego a 60 FPS
+        clock.tick(60)  
 
     pygame.quit()
 

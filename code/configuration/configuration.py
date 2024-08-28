@@ -1,7 +1,7 @@
 import json
 
 class Configuration:
-    def __init__(self, config_file="words.json"):
+    def __init__(self, config_file="language.json"):
         self.config_file = config_file
         self.settings = self.load_settings()
 
