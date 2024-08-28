@@ -1,0 +1,9 @@
+
+*.pyc
+*.pyc
+*.pyc
+*.pyc
+*.pyc
+__pycache__/JSON.cpython-311.pyc
+.venv
+__pycache__

@@ -1,6 +1,6 @@
 import pygame
 from menu.menu import Menu
-from maps_levels.game import Game
+from game_levels.game import Game
 from general.credits import show_credits
 
 def main():
