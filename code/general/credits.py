@@ -6,4 +6,4 @@ def show_credits(screen):
     text = font.render("Credits", True, (255, 255, 255))
     screen.blit(text, (screen.get_width() // 2 - text.get_width() // 2, screen.get_height() // 2))
     pygame.display.flip()
-    pygame.time.wait(3000)
+    pygame.time.wait(1000)

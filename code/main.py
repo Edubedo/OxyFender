@@ -6,7 +6,7 @@ from general.credits import show_credits
 def main():
     pygame.init()
     screen = pygame.display.set_mode((640, 480))
-    pygame.display.set_caption("Guardianes del Clima")
+    pygame.display.set_caption("OxyFender")
     
     clock = pygame.time.Clock()
     menu = Menu(screen)
