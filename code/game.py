@@ -1,33 +1,37 @@
 import pygame
-from utils import Reactor
+from player import Player
+from settings import GRID_SIZE, BOX_POSITION
 
 class Game:
     def __init__(self, screen):
         self.screen = screen
+        self.player = Player(GRID_SIZE)
+        self.running = True
         self.clock = pygame.time.Clock()
-        self.reactors = [Reactor((100, 100)), Reactor((200, 200)), Reactor((300, 300))]
-        self.character_pos = [50, 50]
 
     def run(self):
-        while True:
-            self.screen.fill((0, 0, 0))
-
-            # Draw reactors
-            for reactor in self.reactors:
-                reactor.draw(self.screen)
-
-            # Draw character
-            pygame.draw.circle(self.screen, (0, 255, 0), self.character_pos, 20)
-
-            pygame.display.flip()
+        while self.running:
+            self.handle_events()
+            self.update()
+            self.draw()
             self.clock.tick(60)
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return 'menu'
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.character_pos = list(event.pos)
-                    for reactor in self.reactors:
-                        if reactor.is_near(self.character_pos):
-                            # Trigger mini-game or task
-                            pass
+    def handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                self.player.move(event.pos)
+
+    def update(self):
+        if self.player.rect.collidepoint(BOX_POSITION):
+            print("Reparar")
+
+    def draw(self):
+        self.screen.fill((0, 0, 0))
+        self.player.draw(self.screen)
+        pygame.draw.rect(self.screen, (0, 255, 0), (*BOX_POSITION, GRID_SIZE, GRID_SIZE))
+        pygame.display.flip()

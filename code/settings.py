@@ -1,14 +1,2 @@
-import pygame
-
-class Settings:
-    def __init__(self, screen):
-        self.screen = screen
-
-    def run(self):
-        while True:
-            self.screen.fill((0, 0, 128))
-            pygame.display.flip()
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return 'menu'
+GRID_SIZE = 40
+BOX_POSITION = (160, 160)  # Posición de la caja donde aparecerá el mensaje "Reparar"

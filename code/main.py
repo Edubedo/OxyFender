@@ -1,45 +1,26 @@
 import pygame
 from menu import Menu
 from game import Game
-from settings import Settings
-from credits import Credits
-
-pygame.init()
-
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("My Pygame Game")
-
-MENU = 'menu'
-GAME = 'game'
-SETTINGS = 'settings'
-CREDITS = 'credits'
-QUIT = 'quit'
+from credits import show_credits
 
 def main():
-    clock = pygame.time.Clock()
-    running = True
-    state = MENU
+    pygame.init()
+    screen = pygame.display.set_mode((640, 480))
+    pygame.display.set_caption("Guardianes del Clima")
     
+    clock = pygame.time.Clock()
     menu = Menu(screen)
-    game = Game(screen)
-    settings = Settings(screen)
-    credits = Credits(screen)
+    while True:
+        action = menu.show()
+        if action == "play":
+            game = Game(screen)
+            game.run()
+        elif action == "credits":
+            show_credits(screen)
+        elif action == "quit":
+            break
 
-    while running:
-        if state == MENU:
-            state = menu.run()
-        elif state == GAME:
-            state = game.run()
-        elif state == SETTINGS:
-            state = settings.run()
-        elif state == CREDITS:
-            state = credits.run()
-        elif state == QUIT:
-            running = False
-        
-        clock.tick(60)
+        clock.tick(60)  # Limita el juego a 60 FPS
 
     pygame.quit()
 
