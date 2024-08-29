@@ -1,7 +1,6 @@
 import pygame
 from general.settings import *
 
-# Import levels
 from game_levels.beginner.level1 import Level1Beginner
 from game_levels.beginner.level2 import Level2Beginner
 from game_levels.beginner.level3 import Level3Beginner
@@ -86,9 +85,8 @@ class MenuGame:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     for level, rect in self.option_rects:
                         if rect.collidepoint(event.pos):
-                           #  return difficulty, level
 
-                           # Levels beginner 
+                           # Levels for the beginner 
                            if level['id'] == "beginner_level_1":
                                 Level1Beginner(level['name'], level['difficulty'], level['id']).run(window)
                            if level['id'] == "beginner_level_2":
@@ -96,7 +94,7 @@ class MenuGame:
                            if level['id'] == "beginner_level_3":
                                 Level3Beginner(level['name'], level['difficulty'], level['id'])
                            
-                           # Levels advanced 
+                           # Levels for the advanced 
                            if level['id'] == "advanced_level_1":
                                 Level1Advanced(level['name'], level['difficulty'], level['id'])
                            if level['id'] == "advanced_level_2":
