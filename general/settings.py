@@ -19,3 +19,6 @@ FONT_NAME = 'Arial'
 
 DEFAULT_FONT_SIZE = 30
 DEFAULT_LANGUAGE = "english"
+
+
+MUSIC='on'
