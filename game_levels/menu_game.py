@@ -90,7 +90,7 @@ class MenuGame:
 
                            # Levels beginner 
                            if level['id'] == "beginner_level_1":
-                                Level1Beginner(level['name'], level['difficulty'], level['id']).run()
+                                Level1Beginner(level['name'], level['difficulty'], level['id']).run(window)
                            if level['id'] == "beginner_level_2":
                                 Level2Beginner(level['name'], level['difficulty'], level['id'])
                            if level['id'] == "beginner_level_3":
