@@ -3,9 +3,6 @@ import pygame
 TITLE_GAME = 'OxyFender'
 ICON_GAME = "assets/icon/icon_oxygen.png"
 
-GRID_SIZE = 40
-BOX_POSITION = (160, 160) 
-
 WIDTH = 1040
 HEIGHT = 620
 
