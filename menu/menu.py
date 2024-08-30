@@ -2,12 +2,13 @@ import pygame
 from configuration.configuration import Configuration
 from general.settings import *
 from game_levels.menu_game import MenuGame
+
 class Menu:
     def __init__(self, screen):
         self.screen = screen
         self.config = Configuration()
-        self.font = pygame.font.Font(None, 36)
-        self.update_options()
+        self.font = pygame.font.Font(None, 36) # Fuente de texto
+        self.update_options() 
 
     def update_options(self):
         language = self.config.get_language()
@@ -26,7 +27,7 @@ class Menu:
             self.option_rects.append((option.lower(), rect))
         pygame.display.flip()
 
-    def show(self):
+    def mostrar_menu_inicial(self):
         self.show_options_menu()
         while True:
             for event in pygame.event.get():
