@@ -8,16 +8,16 @@ class Menu:
         self.screen = screen
         self.config = Configuration()
         self.font = pygame.font.Font(None, 36) # Fuente de texto
-        self.update_options() 
+        self.actualizar_lenguage_textos() 
 
-    def update_options(self):
+    def actualizar_lenguage_textos(self):
         language = self.config.get_language()
         if language == "english":
             self.options = ["Play", "Credits", "Configuration", "Quit"]
         else:  
             self.options = ["Jugar", "Créditos", "Configuración", "Salir"]
 
-    def show_options_menu(self):
+    def mostrarOpcionesMenu(self):
         self.screen.fill(BACKGROUND_COLOR)
         self.option_rects = []  
         for i, option in enumerate(self.options):
@@ -27,8 +27,8 @@ class Menu:
             self.option_rects.append((option.lower(), rect))
         pygame.display.flip()
 
-    def mostrar_menu_inicial(self):
-        self.show_options_menu()
+    def mostrarMenuInicial(self):
+        self.mostrarOpcionesMenu()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -40,30 +40,7 @@ class Menu:
                                 game_menu = MenuGame(self.screen, self.config)
                                 return game_menu.show_difficulty_menu()
                             elif option == "configuration" or option == "configuración":
-                                self.show_configuration()
+                                self.config.show_configuration(self.screen, self.font)
                                 return 
                             else:
                                 return option
-
-    def show_configuration(self):
-        self.screen.fill(BACKGROUND_COLOR)
-        self.option_rects = []  
-        languages = ["English", "Español"]
-        for i, language in enumerate(languages):
-            text = self.font.render(language, True, TEXT_COLOR)
-            rect = text.get_rect(center=(self.screen.get_width() // 2, 150 + i * 50))
-            self.screen.blit(text, rect)
-            self.option_rects.append((language.lower(), rect))
-        pygame.display.flip()
-
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return "quit"
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    for language, rect in self.option_rects:
-                        if rect.collidepoint(event.pos):
-                            self.config.set_language(language)
-                            self.update_options()  
-                            return
-

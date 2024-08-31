@@ -1,4 +1,6 @@
 import json
+import pygame
+from general.settings import *
 
 class Configuration:
     def __init__(self, config_file="language.json"):
@@ -23,5 +25,25 @@ class Configuration:
         self.settings["language"] = language
         self.save_settings()
 
+    def show_configuration(self, screen, font):
+        screen.fill(BACKGROUND_COLOR)
+        option_rects = []  
+        languages = ["English", "Español"]
+        for i, language in enumerate(languages):
+            text = font.render(language, True, TEXT_COLOR)
+            rect = text.get_rect(center=(screen.get_width() // 2, 150 + i * 50))
+            screen.blit(text, rect)
+            option_rects.append((language.lower(), rect))
+        pygame.display.flip()
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return "quit"
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    for language, rect in option_rects:
+                        if rect.collidepoint(event.pos):
+                            self.set_language(language)
+                            return
     
 

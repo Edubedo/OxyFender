@@ -13,7 +13,7 @@ def main(): # Declaramos funcion principal
     clock = pygame.time.Clock()
 
     while True:
-        opcion_abrir_menu = Menu(screen).mostrar_menu_inicial()
+        opcion_abrir_menu = Menu(screen).mostrarMenuInicial()
         
         if opcion_abrir_menu == "quit" or opcion_abrir_menu == "salir": # Si la opcion es salir, salimos del bucle
             break
