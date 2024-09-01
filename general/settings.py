@@ -3,8 +3,8 @@ import pygame
 TITLE_GAME = 'OxyFender'
 ICON_GAME = "assets/icon/icon_oxygen.png"
 
-WIDTH = 1040
-HEIGHT = 620
+WIDTH = 1280
+HEIGHT = 720
 
 FPS = 60 
 
