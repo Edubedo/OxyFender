@@ -1,5 +1,5 @@
 import pygame
-from utils.functions import get_block, load_sprite_sheets
+from game_levels.beginner.level1.functions import get_block, load_sprite_sheets
 
 class Object(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, name=None):
