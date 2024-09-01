@@ -18,8 +18,11 @@ class Menu:
             self.options = ["Jugar", "Créditos", "Configuración", "Salir"]
 
     def mostrarOpcionesMenu(self):
-        self.background = pygame.image.load("assets/Background/menu/BackgroundProvisional.jpeg").convert()
-        self.screen.blit(self.background, [0, 0])
+        self.background = pygame.image.load("assets/Background/menu/BackgroundProvisional.jpeg").convert() # Cargamos la imagen de fondo
+
+        self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
+
+        self.screen.blit(self.background, [0, 0]) # Dibujamos la imagen de fondo en la pantalla
         self.option_rects = []  
         for i, option in enumerate(self.options):
             text = self.font.render(option, True, TEXT_COLOR)

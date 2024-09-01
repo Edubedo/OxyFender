@@ -1,13 +1,13 @@
 import pygame
 from general.settings import *
 
-from game_levels.beginner.level1 import Level1Beginner
-from game_levels.beginner.level2 import Level2Beginner
-from game_levels.beginner.level3 import Level3Beginner
+from game_levels.beginner.level1.level1 import Level1Beginner
+from game_levels.beginner.level2.level2 import Level2Beginner
+from game_levels.beginner.level3.level3 import Level3Beginner
 
-from game_levels.advanced.level1 import Level1Advanced
-from game_levels.advanced.level2 import Level2Advanced
-from game_levels.advanced.level3 import Level3Advanced
+from game_levels.advanced.level1.level1 import Level1Advanced
+from game_levels.advanced.level2.level2 import Level2Advanced
+from game_levels.advanced.level3.level3 import Level3Advanced
 
 class MenuGame:
     def __init__(self, screen, config):

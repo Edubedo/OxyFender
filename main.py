@@ -1,6 +1,5 @@
 import pygame
 from menu.menu import Menu
-from game_levels.game import Game
 from menu.credits.credits import show_credits
 from general.settings import *
 
