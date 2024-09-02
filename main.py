@@ -3,7 +3,7 @@ from menu.menu import Menu
 from general.settings import *
 
 def main(): # Declaramos funcion principal
-    pygame.init() # Iniciamos el bucle
+    pygame.init() # Iniciamos el juego
     screen = pygame.display.set_mode((WIDTH, HEIGHT)) # Establecemos el tamaño de la pantalla
     pygame.display.set_caption(TITLE_GAME) # Establecemos el titulo del juego
     pygame.display.set_icon(pygame.image.load(ICON_GAME)) # Establecemos el icono del juego

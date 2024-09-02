@@ -17,35 +17,49 @@ class Level1Beginner:
 
         white = (255, 255, 255)
         black = (0, 0, 0)
-
+        gravedad = 1
         x, y = 50, 50
-        width, height = 40, 60
+        widthCuadrado, heightCuadrado = 40, 60
 
         run = True
         while run:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-
             # Obtener teclas presionadas
             keys = pygame.key.get_pressed()
 
-            # Actualizar posición del objeto
+            # Actualizar posición del objeto por medio de teclas
             if keys[pygame.K_LEFT]:
-                x -= PLAYER_VEL
+                if x < 0:
+                    x += PLAYER_VEL
+                else:
+                    x -= PLAYER_VEL
+
             if keys[pygame.K_RIGHT]:
-                x += PLAYER_VEL
-            if keys[pygame.K_UP]:
-                y -= PLAYER_VEL
+                if x < (WIDTH - widthCuadrado):
+                    x += PLAYER_VEL
+                else:
+                    x-= PLAYER_VEL
+
             if keys[pygame.K_DOWN]:
-                y += PLAYER_VEL
-
+                if y > (HEIGHT - heightCuadrado):
+                    y -= PLAYER_VEL
+                else:
+                    y += PLAYER_VEL
+            if keys[pygame.K_SPACE]:
+                y -= PLAYER_VEL
+                # Evitar doble salto
             screen.fill(white)
-            rectCuadrado = pygame.draw.rect(screen, black, (x, y, width, height))
+            rectCuadrado = pygame.draw.rect(screen, black, (x, y, widthCuadrado, heightCuadrado))
             
-            print(x, y)
-            print(screen)
+            # Manejar Gravedad
+            vel_grav = y + gravedad
+            y = vel_grav
 
+            if y > (HEIGHT - heightCuadrado):
+                    y = (HEIGHT - heightCuadrado)
+            # Detectar colisión entre el mouse y el cuadrado
             punteroMouse = pygame.mouse.get_pos()
             collide = rectCuadrado.collidepoint(punteroMouse)
             color = RED if collide else BLUE
