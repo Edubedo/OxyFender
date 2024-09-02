@@ -52,7 +52,15 @@ class Level1Beginner:
                 # Evitar doble salto
             screen.fill(white)
             rectCuadrado = pygame.draw.rect(screen, black, (x, y, widthCuadrado, heightCuadrado))
-            
+            # Cargar imagen
+            image = pygame.image.load("assets/img/character/personaje_principal.png").convert_alpha()
+
+            # Restablecer el tamaño de la imagen
+            image = pygame.transform.scale(image, (widthCuadrado, heightCuadrado))
+
+            # Blit the image onto the screen
+            screen.blit(image, (x, y))
+
             # Manejar Gravedad
             vel_grav = y + gravedad
             y = vel_grav
@@ -62,9 +70,7 @@ class Level1Beginner:
             # Detectar colisión entre el mouse y el cuadrado
             punteroMouse = pygame.mouse.get_pos()
             collide = rectCuadrado.collidepoint(punteroMouse)
-            color = RED if collide else BLUE
 
-            pygame.draw.rect(window, color, rectCuadrado)
             pygame.display.update()
 
         pygame.quit()
