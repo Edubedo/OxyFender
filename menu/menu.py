@@ -10,12 +10,13 @@ class Menu:
         # Configuración de la pantalla
         self.screen = screen
         pygame.display.set_caption(f"Menú - {TITLE_GAME}") # Establecemos el titulo del juego
-        self.config = Configuration()
+
+        self.config = Configuration() # Inicializamos la configuración
         self.font = pygame.font.Font(None, 36) # Fuente de texto
         self.actualizarLenguajeTextos() 
 
     def actualizarLenguajeTextos(self):
-        language = self.config.get_language()
+        language = self.config.obtenerLenguajeActual()
         if language == "english":
             self.options = ["Play", "Credits", "Configuration", "Quit"]
         else:  
@@ -51,7 +52,7 @@ class Menu:
                         if rect.collidepoint(event.pos):
                             if option == "play" or option == "jugar":
                                 game_menu = MenuGame(self.screen, self.config)
-                                return game_menu.show_difficulty_menu()
+                                return game_menu.mostrarMenuDificultad()
                             if option == "credits" or option == "créditos":
                                 show_credits(self.screen)
                                 return

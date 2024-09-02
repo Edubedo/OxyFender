@@ -1,7 +1,7 @@
 class Level1Advanced:
-    def __init__(self, name, difficulty, id):
+    def __init__(self, name, dificultadNivel, id):
         self.name = name
-        self.difficulty = difficulty
+        self.dificultadNivel = dificultadNivel
         self.id = id
         self.enemies = []
-        print(self.name, self.difficulty, self.id)
+        print(self.name, self.dificultadNivel, self.id)

@@ -8,10 +8,10 @@ def main(): # Declaramos funcion principal
     pygame.display.set_caption(TITLE_GAME) # Establecemos el titulo del juego
     pygame.display.set_icon(pygame.image.load(ICON_GAME)) # Establecemos el icono del juego
 
-    clock = pygame.time.Clock()
+    clock = pygame.time.Clock() # Creamos un reloj para controlar los FPS del juego
 
     while True:
-        opcion_abrir_menu = Menu(screen).mostrarMenuInicial()
+        opcion_abrir_menu = Menu(screen).mostrarMenuInicial() # Mostramos el menu inicial y guardamos la opcion seleccionada<
         
         if opcion_abrir_menu == "quit" or opcion_abrir_menu == "salir": # Si la opcion es salir, salimos del bucle
             break

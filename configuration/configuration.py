@@ -18,7 +18,7 @@ class Configuration:
         with open(self.config_file, "w") as file:
             json.dump(self.settings, file, indent=4)
 
-    def get_language(self):
+    def obtenerLenguajeActual(self):
         return self.settings.get("language", "english")
 
     def set_language(self, language):
