@@ -1,6 +1,5 @@
 import pygame
 from menu.menu import Menu
-from menu.credits.credits import show_credits
 from general.settings import *
 
 def main(): # Declaramos funcion principal

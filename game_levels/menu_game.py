@@ -44,7 +44,7 @@ class MenuGame:
         self.options_difficult = []  
 
         for i, difficulty in enumerate(difficulty_options):
-            text = self.font.render(difficulty['name'], True, TEXT_COLOR)
+            text = self.font.render(difficulty['name'], True, BLACK)
             rect = text.get_rect(center=(self.screen.get_width() // 2, 150 + i * 50))
             self.screen.blit(text, rect)
             self.options_difficult.append((difficulty, rect))
@@ -72,7 +72,7 @@ class MenuGame:
 
         self.option_rects = []  
         for i, level in enumerate(level_options):
-            text = self.font.render(level['name'], True, TEXT_COLOR)
+            text = self.font.render(level['name'], True, BLACK)
             rect = text.get_rect(center=(self.screen.get_width() // 2, 150 + i * 50))
             self.screen.blit(text, rect)
             self.option_rects.append((level, rect))

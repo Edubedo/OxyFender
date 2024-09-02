@@ -30,7 +30,7 @@ class Configuration:
         option_rects = []  
         languages = ["English", "Español"]
         for i, language in enumerate(languages):
-            text = font.render(language, True, TEXT_COLOR)
+            text = font.render(language, True, BLACK)
             rect = text.get_rect(center=(screen.get_width() // 2, 150 + i * 50))
             screen.blit(text, rect)
             option_rects.append((language.lower(), rect))
