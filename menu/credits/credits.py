@@ -1,5 +1,5 @@
 import pygame
-from general.settings import *
+from utils.settings import *
 
 def show_credits(screen):
     screen.fill(BACKGROUND_COLOR)
@@ -7,4 +7,3 @@ def show_credits(screen):
     text = font.render("Credits to the team", True, WHITE)
     screen.blit(text, (screen.get_width() // 2 - text.get_width() // 2, screen.get_height() // 2))
     pygame.display.flip()
-    pygame.time.wait(1000)

@@ -1,7 +1,7 @@
 import pygame
-from configuration.configuration import Configuration
-from general.settings import *
-from game_levels.menu_game import MenuGame
+from menu.configuration.configuration import Configuration
+from utils.settings import *
+from  menu.play.menu_game import MenuGame
 from menu.credits.credits import show_credits
 
 
@@ -24,7 +24,7 @@ class Menu:
 
     def mostrarOpcionesMenu(self):
         # Cargamos la imagen de fondo del menu
-        self.background = pygame.image.load("assets/Background/menu/BackgroundProvisional.jpeg").convert_alpha() # Cargamos la imagen de fondo
+        self.background = pygame.image.load("assets/img/Background/menu/BackgroundProvisional.jpeg").convert_alpha() # Cargamos la imagen de fondo
         self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
 
         # Dibujamos la imagen de fondo en la pantalla

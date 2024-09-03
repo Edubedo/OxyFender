@@ -1,7 +1,7 @@
 import pygame
 
 TITLE_GAME = 'OxyFender'
-ICON_GAME = "assets/icon/icon_oxygen.png"
+ICON_GAME = "assets/img/icon/icon_oxygen.png"
 
 WIDTH = 1280
 HEIGHT = 720

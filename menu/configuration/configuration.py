@@ -1,6 +1,6 @@
 import json
 import pygame
-from general.settings import *
+from utils.settings import *
 
 class Configuration:
     def __init__(self, config_file="language.json"):
