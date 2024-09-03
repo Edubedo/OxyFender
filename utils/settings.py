@@ -1,7 +1,8 @@
 import pygame
+from os.path import join
 
 TITLE_GAME = 'OxyFender'
-ICON_GAME = "assets/img/icon/icon_oxygen.png"
+ICON_GAME = join("assets", "img", "icon", "icon_oxygen.png")
 
 WIDTH = 1280
 HEIGHT = 720
@@ -11,7 +12,7 @@ FPS = 60
 BACKGROUND_COLOR = (0, 0, 0)  
 PLAYER_VEL = 2
 
-ENEMY_SPEED = 3  
+ENEMY_SPEED = 3
 
 FONT_NAME = 'Arial'  
 

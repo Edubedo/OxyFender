@@ -1,5 +1,6 @@
 import pygame
 from utils.settings import *
+from os.path import join
 
 class Level1Beginner:
     def __init__(self, name, dificultadNivel, id):
@@ -13,12 +14,10 @@ class Level1Beginner:
         screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption(f"{self.name} - {self.dificultadNivel}")
 
-        black = (0, 0, 0)
         gravedad = 0.5
         x, y = 50, 50
         widthCuadrado, heightCuadrado = 40, 60
         is_jumping = False  # Variable para controlar el salto
-        jump_speed = -8  # Velocidad inicial del salto
         y_velocity = 0  # Velocidad vertical del personaje
 
         run = True
@@ -50,13 +49,13 @@ class Level1Beginner:
                 is_jumping = False  # Restablecer el salto cuando toca el suelo
 
             # Limpiar la pantalla
-            self.background = pygame.image.load("assets/maps/beginner/laboratorio.webp").convert_alpha() # Cargamos la imagen de fondo
+            self.background = pygame.image.load(join("assets", "maps", "beginner", "laboratorio.webp")).convert_alpha() # Cargamos la imagen de fondo
             self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
 
             screen.blit(self.background, [0, 0])
 
             # Dibujar el personaje
-            image = pygame.image.load("assets/img/character/personaje_principal.png").convert_alpha()
+            image = pygame.image.load(join("assets","img", "character", "personaje_principal.png")).convert_alpha()
             image = pygame.transform.scale(image, (widthCuadrado, heightCuadrado))
             screen.blit(image, (x, y))
 
