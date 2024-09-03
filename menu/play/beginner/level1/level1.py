@@ -13,68 +13,53 @@ class Level1Beginner:
         screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption(f"{self.name} - {self.dificultadNivel}")
 
-        white = (255, 255, 255)
         black = (0, 0, 0)
-        gravedad = 10
+        gravedad = 0.5
         x, y = 50, 50
         widthCuadrado, heightCuadrado = 40, 60
         is_jumping = False  # Variable para controlar el salto
+        jump_speed = -8  # Velocidad inicial del salto
+        y_velocity = 0  # Velocidad vertical del personaje
 
         run = True
         while run:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+
             # Obtener teclas presionadas
             keys = pygame.key.get_pressed()
 
-            # Actualizar posición del objeto por medio de teclas
+            # Movimiento del personaje
             if keys[pygame.K_LEFT]:
-                if x < 0:
-                    x += PLAYER_VEL
-                else:
-                    x -= PLAYER_VEL
-
+                x -= PLAYER_VEL
             if keys[pygame.K_RIGHT]:
-                if x < (WIDTH - widthCuadrado):
-                    x += PLAYER_VEL
-                else:
-                    x -= PLAYER_VEL
-
+                x += PLAYER_VEL
             if keys[pygame.K_DOWN]:
-                if y > (HEIGHT - heightCuadrado):
-                    y -= PLAYER_VEL
-                else:
-                    y += PLAYER_VEL
-
+                y += PLAYER_VEL
             if keys[pygame.K_SPACE] and not is_jumping:
-                y -= PLAYER_VEL
-                is_jumping = True  # Marcar que el personaje está saltando
+                y_velocity -= 15
+                is_jumping = True
 
-            # Manejar Gravedad
-            vel_grav = y + gravedad
-            y = vel_grav
-
+            # Manejar la gravedad y el salto
+            y_velocity += gravedad
+            y += y_velocity
             if y > (HEIGHT - heightCuadrado):
                 y = (HEIGHT - heightCuadrado)
+                y_velocity = 0
                 is_jumping = False  # Restablecer el salto cuando toca el suelo
 
-            screen.fill(white)
-            rectCuadrado = pygame.draw.rect(screen, black, (x, y, widthCuadrado, heightCuadrado))
-            # Cargar imagen
+            # Limpiar la pantalla
+            self.background = pygame.image.load("assets/maps/beginner/laboratorio.webp").convert_alpha() # Cargamos la imagen de fondo
+            self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
+
+            screen.blit(self.background, [0, 0])
+
+            # Dibujar el personaje
             image = pygame.image.load("assets/img/character/personaje_principal.png").convert_alpha()
-
-            
-            image = pygame.transform.scale(image, (widthCuadrado, heightCuadrado))# Restablecer el tamaño de la imagen
-
-            
-            screen.blit(image, (x, y))# Blit the image onto the screen
-
-            # Detectar colisión entre el mouse y el cuadrado
-            punteroMouse = pygame.mouse.get_pos()
-            collide = rectCuadrado.collidepoint(punteroMouse)
+            image = pygame.transform.scale(image, (widthCuadrado, heightCuadrado))
+            screen.blit(image, (x, y))
 
             pygame.display.update()
 
         pygame.quit()
-        quit()

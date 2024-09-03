@@ -16,7 +16,7 @@ class MenuGame:
         self.font = pygame.font.Font(None, 36)
 
     def mostrarMenuDificultad(self):
-        self.screen.fill(BACKGROUND_COLOR)
+        self.screen.fill(WHITE)
 
         if self.config.obtenerLenguajeActual() == "english":
             opcionesDificultad = [
@@ -45,8 +45,8 @@ class MenuGame:
 
         # Dibujamos las opciones de dificultad
         for i, opcionDificultad in enumerate(opcionesDificultad):
-            textDificulad = self.font.render(opcionDificultad['name'], True, WHITE)
-            rectDificultad = textDificulad.get_rect(center=(self.screen.get_width() // 2, 150 + i * 50))
+            textDificulad = self.font.render(opcionDificultad['name'], True, BLACK)
+            rectDificultad = textDificulad.get_rect(topleft=(0, 150 + i * 50))
             self.screen.blit(textDificulad, rectDificultad)
             self.dictMostrarOpcionesDificultad.append((opcionDificultad, rectDificultad))
         pygame.display.flip()
@@ -62,7 +62,7 @@ class MenuGame:
                             return self.mostrarMenuNiveles(opcionDificultad)
 
     def mostrarMenuNiveles(self, dificultadNivel):
-        self.screen.fill(BACKGROUND_COLOR)
+        self.screen.fill(WHITE)
         opcionNiveles = []
 
         for i in range(1, 4):
@@ -75,8 +75,8 @@ class MenuGame:
         self.option_rects = []  
         # Dibujamos las opciones de niveles
         for i, level in enumerate(opcionNiveles):
-            textNivel = self.font.render(level['name'], True, WHITE)
-            rectNivel = textNivel.get_rect(center=(self.screen.get_width() // 2, 150 + i * 50))
+            textNivel = self.font.render(level['name'], True, BLACK)
+            rectNivel = textNivel.get_rect(topleft=(0, 150 + i * 50))
             self.screen.blit(textNivel, rectNivel)
             self.option_rects.append((level, rectNivel))
         pygame.display.flip()

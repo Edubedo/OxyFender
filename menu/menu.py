@@ -23,7 +23,7 @@ class Menu:
             self.options = ["Jugar", "Créditos", "Configuración", "Salir"]
 
     def mostrarOpcionesMenu(self):
-        # Cargamos la imagen de fondo del menu
+        # Cargamos la imagen de fondo del menu principal
         self.background = pygame.image.load("assets/img/Background/menu/BackgroundProvisional.jpeg").convert_alpha() # Cargamos la imagen de fondo
         self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
 
@@ -36,9 +36,9 @@ class Menu:
             background_rect.fill(BLACK)
             background_rect.blit(textOptionMenu, (2, 10))  
             
-            option_rect = background_rect.get_rect(topleft=(0, 150 + i * 70))
-            self.screen.blit(background_rect, option_rect)
-            self.option_rects.append((option.lower(), option_rect))
+            rectOptionMenu = background_rect.get_rect(topleft=(0, 150 + i * 70))
+            self.screen.blit(background_rect, rectOptionMenu)
+            self.option_rects.append((option.lower(), rectOptionMenu))
         pygame.display.flip()
 
     def mostrarMenuInicial(self):
