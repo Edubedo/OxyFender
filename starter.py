@@ -3,7 +3,6 @@
 import pygame
 from menu.menu import Menu
 from utils.settings import *
-
 class Starter: # Creamos la clase Starter
     def __init__(self): # Creamos el constructor
         pygame.init()  # Initialize all Pygame modules
