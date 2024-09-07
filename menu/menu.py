@@ -6,6 +6,7 @@ from utils.settings import *
 from  menu.play.menu_game import MenuGame
 from menu.credits.credits import show_credits
 from os.path import join
+import sys
 
 
 class Menu:
@@ -82,5 +83,8 @@ class Menu:
                             elif option == "configuration" or option == "configuración":
                                 self.config.show_configuration(self.screen, self.font)
                                 return 
+                            elif option == "quit" or option == "salir":
+                                pygame.quit()
+                                sys.exit()
                             else:
                                 return option

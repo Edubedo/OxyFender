@@ -3,6 +3,8 @@
 import pygame
 from menu.menu import Menu
 from utils.settings import *
+import sys
+
 class Starter: # Creamos la clase Starter
     def __init__(self): # Creamos el constructor
         pygame.init()  # Initialize all Pygame modules
@@ -19,7 +21,8 @@ class Starter: # Creamos la clase Starter
 
             for event in pygame.event.get(): # Recorremos todos los eventos
                 if event.type == pygame.QUIT: # Si el evento es cerrar la ventana, salimos del bucle
-                    return
+                    pygame.quit() # Salimos de pygame
+                    sys.exit()
 
             pygame.display.flip() # Actualizamos la pantalla
 
