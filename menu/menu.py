@@ -3,26 +3,24 @@
 import pygame
 from menu.configuration.configuration import Configuration
 from utils.settings import *
-from  menu.play.menu_game import MenuGame
+from menu.play.menu_game import MenuGame
 from menu.credits.credits import show_credits
 from os.path import join
 import sys
 
-
 class Menu:
     def __init__(self, screen):
-        # Configuración de la pantalla
         self.screen = screen
-        pygame.display.set_caption(f"Menú - {TITLE_GAME}") # Establecemos el titulo del juego
+        pygame.display.set_caption(f"Menú - {TITLE_GAME}")
 
-        self.config = Configuration() # Inicializamos la configuración
-        self.font = pygame.font.Font(join("assets","fonts","PressStart2P-Regular.ttf"), 18) # Fuente de texto
+        self.config = Configuration()
+        self.font = pygame.font.Font(join("assets", "fonts", "PressStart2P-Regular.ttf"), 18)
 
-        pygame.mixer.init() #Inicializamos el productor de musica
-        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargamos la música de fondo
-        pygame.mixer.music.play(-1)  # Ponemos la musica en bucle
+        # pygame.mixer.init()
+        # pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))
+        # pygame.mixer.music.play(-1)
 
-        self.actualizarLenguajeTextos() 
+        self.actualizarLenguajeTextos()
 
     def actualizarLenguajeTextos(self):
         language = self.config.obtenerLenguajeActual()
@@ -32,23 +30,20 @@ class Menu:
             self.options = ["Jugar", "Créditos", "Configuración", "Salir"]
 
     def mostrarOpcionesMenu(self, indice_opcion_curso_encima=None):
-        # Cargamos la imagen de fondo del menu principal
-        self.background = pygame.image.load(join("assets", "img","Background", "menu", "BackgroundProvisional.jpeg")).convert_alpha() # Cargamos la imagen de fondo
+        self.background = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundProvisional.jpeg")).convert_alpha()
         self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
 
-        # Dibujamos la imagen de fondo en la pantalla
-        self.screen.blit(self.background, [0, 0]) # Dibujamos la imagen de fondo en la pantalla
-        self.option_rects = [] # Lista de opciones
+        self.screen.blit(self.background, [0, 0])
+        self.option_rects = []
         for i, option in enumerate(self.options):
             if i == indice_opcion_curso_encima:
                 textOptionMenu = self.font.render(option, True, WHITE)
                 background_rect = pygame.Surface((BUTTON_MENU_WIDTH, BUTTON_MENU_HEIGHT))
-                background_rect.fill(LIGHTBLUE) # Rellenamos el fondo de la opción
+                background_rect.fill(LIGHTBLUE)
             else:
                 textOptionMenu = self.font.render(option, True, WHITE)
                 background_rect = pygame.Surface((BUTTON_MENU_WIDTH, BUTTON_MENU_HEIGHT))
                 background_rect.fill(DARK_BLUE)
-            
             
             text_rect = textOptionMenu.get_rect(topleft=(10, BUTTON_MENU_HEIGHT // 2 - textOptionMenu.get_height() // 2))
             background_rect.blit(textOptionMenu, text_rect.topleft)
@@ -64,9 +59,10 @@ class Menu:
             self.mostrarOpcionesMenu(indice_opcion_curso_encima)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    return "quit"
+                    pygame.quit()
+                    sys.exit()
                 elif event.type == pygame.MOUSEMOTION:
-                    indice_opcion_curso_encima = None  # Restablecer el índice
+                    indice_opcion_curso_encima = None
                     for i, (_, rect) in enumerate(self.option_rects):
                         if rect.collidepoint(event.pos):
                             indice_opcion_curso_encima = i
@@ -81,8 +77,11 @@ class Menu:
                                 show_credits(self.screen)
                                 return
                             elif option == "configuration" or option == "configuración":
-                                self.config.show_configuration(self.screen, self.font)
-                                return 
+                                print("Showing configuration")
+                                result = self.config.show_configuration(self.screen, self.font)
+                                print('result', result)
+                                if result == "menu":
+                                    continue  # Return to the main menu
                             elif option == "quit" or option == "salir":
                                 pygame.quit()
                                 sys.exit()
