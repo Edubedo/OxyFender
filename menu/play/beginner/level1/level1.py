@@ -57,7 +57,7 @@ class Level1Beginner:
             screen.blit(self.background, [0, 0])
 
             # Dibujar el personaje
-            image = pygame.image.load(join("assets","img", "character", "personaje_principal.png")).convert_alpha()
+            image = pygame.image.load(join("assets","img", "character", "personaje_principal_1.jpeg")).convert_alpha()
             image = pygame.transform.scale(image, (widthCuadrado, heightCuadrado))
             screen.blit(image, (x, y))
 
