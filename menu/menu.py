@@ -77,11 +77,8 @@ class Menu:
                                 show_credits(self.screen)
                                 return
                             elif option == "configuration" or option == "configuración":
-                                print("Showing configuration")
-                                result = self.config.show_configuration(self.screen, self.font)
-                                print('result', result)
-                                if result == "menu":
-                                    continue  # Return to the main menu
+                                self.config.show_configuration(self.screen, self.font)
+                                self.actualizarLenguajeTextos()
                             elif option == "quit" or option == "salir":
                                 pygame.quit()
                                 sys.exit()
