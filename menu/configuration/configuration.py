@@ -11,20 +11,20 @@ class Configuration:
 
     def load_settings(self):
         try:
-            with open(self.config_file, "r") as file:
+            with open(self.config_file, "r", encoding="utf-8") as file:
                 return json.load(file)
         except FileNotFoundError:
             return {"language": "english"}
 
     def save_settings(self):
-        with open(self.config_file, "w") as file:
-            json.dump(self.settings, file, indent=4)
+        with open(self.config_file, "w", encoding="utf-8") as file: # Archivo utf-8
+            json.dump(self.settings, file, indent=4, ensure_ascii=False)
 
     def obtenerLenguajeActual(self):
         return self.settings.get("language", "english")
 
     def set_language(self, language):
-        self.settings["language"] = language
+        self.settings["language"] = language.lower()  # Asegúrate de que el idioma se guarde en minúsculas
         self.save_settings()
 
     def show_configuration(self, screen, font):
@@ -35,7 +35,7 @@ class Configuration:
             text = font.render(language, True, WHITE)
             rect = text.get_rect(center=(screen.get_width() // 2, 150 + i * 50))
             screen.blit(text, rect)
-            option_rects.append((language.lower(), rect))
+            option_rects.append((language.lower(), rect))  # Guardar en minúsculas
         pygame.display.flip()
 
         while True:
@@ -45,7 +45,6 @@ class Configuration:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     for language, rect in option_rects:
                         if rect.collidepoint(event.pos):
-                            self.set_language(language)
+                            print(language)
+                            self.set_language(language)  # Pasar el idioma en minúsculas
                             return
-    
-

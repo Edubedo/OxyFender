@@ -6,8 +6,8 @@ from os.path import join
 TITLE_GAME = 'OxyFender'
 ICON_GAME = join("assets", "img", "icon", "icon_oxygen.png")
 
-WIDTH = 1280
-HEIGHT = 720
+WIDTH = 1080
+HEIGHT = 600
 
 FPS = 60 
 
@@ -33,8 +33,9 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+DARK_BLUE = (6, 11, 28)
+LIGHTBLUE = (12, 28, 82)
 YELLOW = (255, 255, 0)
-LIGHTBLUE = (0, 155, 155)
 LIGHTGREEN = (0, 255, 0)
 LIGHTYELLOW = (255, 255, 0)
 LIGHTRED = (255, 0, 0)
@@ -43,5 +44,5 @@ LIGHTPURPLE = (255, 0, 255)
 
 
 # Botones
-BUTTON_MENU_WIDTH = 200
-BUTTON_MENU_HEIGHT = 50
+BUTTON_MENU_WIDTH = 400
+BUTTON_MENU_HEIGHT = 60
