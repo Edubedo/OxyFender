@@ -16,9 +16,9 @@ class Menu:
         self.config = Configuration()
         self.font = pygame.font.Font(join("assets", "fonts", "PressStart2P-Regular.ttf"), 18)
 
-        # pygame.mixer.init()
-        # pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))
-        # pygame.mixer.music.play(-1)
+        pygame.mixer.init()
+        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))
+        pygame.mixer.music.play(-1)
 
         self.actualizarLenguajeTextos()
 
