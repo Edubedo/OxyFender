@@ -4,6 +4,7 @@ import pygame
 from os.path import join
 
 TITLE_GAME = 'OxyFender'
+NAME_ENTERPRISE = 'Zip Studio'
 ICON_GAME = join("assets", "img", "icon", "icon_oxygen.png")
 
 WIDTH = 1080

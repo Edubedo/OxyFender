@@ -14,15 +14,15 @@ class Menu:
         pygame.display.set_caption(f"Menú - {TITLE_GAME}")
 
         self.config = Configuration()
-        self.font = pygame.font.Font(join("assets", "fonts", "PressStart2P-Regular.ttf"), 18)
+        self.font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 18) # Fuente de texto
 
-        pygame.mixer.init()
-        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))
-        pygame.mixer.music.play(-1)
+        pygame.mixer.init() # Inicializar el módulo de sonido
+        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
+        pygame.mixer.music.play(-1) # Reproducir la música en bucle
 
         self.actualizarLenguajeTextos()
 
-    def actualizarLenguajeTextos(self):
+    def actualizarLenguajeTextos(self): # Actualizar el idioma de los textos
         language = self.config.obtenerLenguajeActual()
         if language == "english":
             self.options = ["Play", "Credits", "Configuration", "Quit"]
@@ -35,12 +35,19 @@ class Menu:
 
         self.screen.blit(self.background, [0, 0])
         self.option_rects = []
-        for i, option in enumerate(self.options):
-            if i == indice_opcion_curso_encima:
+
+        # Agregar el título del juego
+        fontTitulo = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 100)
+        titulo = fontTitulo.render(TITLE_GAME, True, BLACK)
+        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 50))
+        self.screen.blit(titulo, titulo_rect)
+
+        for i, option in enumerate(self.options): # Mostrar las opciones del menú
+            if i == indice_opcion_curso_encima: # Si el cursor está encima de la opción
                 textOptionMenu = self.font.render(option, True, WHITE)
                 background_rect = pygame.Surface((BUTTON_MENU_WIDTH, BUTTON_MENU_HEIGHT))
                 background_rect.fill(LIGHTBLUE)
-            else:
+            else: # Si el cursor no está encima de la opción
                 textOptionMenu = self.font.render(option, True, WHITE)
                 background_rect = pygame.Surface((BUTTON_MENU_WIDTH, BUTTON_MENU_HEIGHT))
                 background_rect.fill(DARK_BLUE)
@@ -51,6 +58,13 @@ class Menu:
             rectOptionMenu = background_rect.get_rect(topleft=(0, 150 + i * 70))
             self.screen.blit(background_rect, rectOptionMenu)
             self.option_rects.append((option.lower(), rectOptionMenu))
+        
+        # Agregar texto en la esquina inferior derecha
+        fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24)
+        textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, BLACK)
+        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10))
+        self.screen.blit(textoInferiorDerecha, texto_rect)
+
         pygame.display.flip()
 
     def mostrarMenuInicial(self):
