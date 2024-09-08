@@ -11,20 +11,8 @@ def main():
     pygame.display.set_caption(TITLE_GAME)  # Set the game title
     pygame.display.set_icon(pygame.image.load(ICON_GAME))  # Set the game icon
 
-    clock = pygame.time.Clock()  # Create a clock to control FPS
-
     menu = Menu(screen)
-    menu.mostrarMenuInicial()  # Show the initial menu
-
-    while True:  # Main loop
-        clock.tick(FPS)  # Limit FPS
-
-        for event in pygame.event.get():  # Handle events
-            if event.type == pygame.QUIT:  # Exit the game
-                pygame.quit()
-                sys.exit()
-
-        pygame.display.flip()  # Update the screen
+    menu.mostrarMenuInicial()  # Mostrar el menú inicial
 
 if __name__ == "__main__":
     main()

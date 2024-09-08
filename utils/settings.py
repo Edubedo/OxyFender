@@ -9,6 +9,7 @@ ICON_GAME = join("assets", "img", "icon", "icon_oxygen.png")
 
 WIDTH = 1080
 HEIGHT = 600
+TILE_SIZE = 64
 
 FPS = 60 
 
@@ -47,3 +48,14 @@ LIGHTPURPLE = (255, 0, 255)
 # Botones
 BUTTON_MENU_WIDTH = 400
 BUTTON_MENU_HEIGHT = 60
+
+Z_LAYERS = {
+	'bg': 0,
+	'clouds': 1,
+	'bg tiles': 2,
+	'path': 3,
+	'bg details': 4,
+	'main': 5,
+	'water': 6,
+	'fg': 7
+}

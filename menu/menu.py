@@ -89,7 +89,7 @@ class Menu:
                                 return game_menu.mostrarMenuDificultad()
                             if option == "credits" or option == "créditos":
                                 show_credits(self.screen)
-                                return
+                                continue
                             elif option == "configuration" or option == "configuración":
                                 self.config.show_configuration(self.screen, self.font)
                                 self.actualizarLenguajeTextos()
