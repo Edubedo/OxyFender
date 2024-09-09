@@ -6,6 +6,7 @@ from os.path import join
 from pytmx.util_pygame import load_pygame # Importamos la libreria para cargar el mapa
 import sys
 from menu.play.beginner.level1.sprites import Sprite
+from menu.play.beginner.level1.player import Player
 from random import uniform # Importamos la libreria para generar numeros aleatorios
 
 class Level1Beginner:
@@ -22,10 +23,15 @@ class Level1Beginner:
         self.setup(tmx_map) # Llamamos al metodo setup para cargar los objetos del nivel
        
     def setup(self, tmx_map):
+        # Agregamos el mapa
         for x, y, surf in tmx_map.get_layer_by_name('Terrain').tiles(): # Obtenemos un objeto de tiled llamado terrain
             Sprite((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites) # Creamos un objeto de la clase Sprite con las coordenadas y la imagen del objeto
     
-    
+        # Agregamos el jugador creando el Sprite Player
+        for obj in tmx_map.get_layer_by_name('Objects'): # Obtenemos un objeto de tiled llamado objects
+            if obj.name == 'player': # Buscamos el objeto player en el mapa
+                Player((obj.x, obj.y), self.all_sprites)
+                
     def run(self):
         clock = pygame.time.Clock()
 
