@@ -16,9 +16,9 @@ class Menu:
         self.config = Configuration()
         self.font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 18) # Fuente de texto
 
-        pygame.mixer.init() # Inicializar el módulo de sonido
-        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
-        pygame.mixer.music.play(-1) # Reproducir la música en bucle
+        # pygame.mixer.init() # Inicializar el módulo de sonido
+        # pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
+        # pygame.mixer.music.play(-1) # Reproducir la música en bucle
 
         self.actualizarLenguajeTextos()
 
