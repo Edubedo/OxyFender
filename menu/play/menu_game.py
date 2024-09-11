@@ -20,7 +20,6 @@ class MenuGame:
         self.font = pygame.font.Font(None, 36)
 
         self.tmx_maps = {0: load_pygame(join("assets","media","data","levels","omni.tmx"))}
-        print(self.tmx_maps)
     def mostrarMenuDificultad(self):
         self.screen.fill(WHITE)
 
