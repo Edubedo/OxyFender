@@ -20,13 +20,13 @@ class Level1Beginner:
 
         # Groups
         self.all_sprites = pygame.sprite.Group() # Creamos un grupo para todos los sprites(Objetos)
-        self.setup(tmx_map) # Llamamos al metodo setup para cargar los objetos del nivel
 
         # Layer de abi
         self.tmx_mapAbi = load_pygame(join("assets","maps","beginner","level1","SCIENCE.tmx"))
         print("self.tmx_mapAbi; ",self.tmx_mapAbi)
-        for layer in self.tmx_mapAbi.layers:
-            print(layer)
+
+        self.setup(self.tmx_mapAbi) # Llamamos al metodo setup para cargar los objetos del nivel
+        
             
             # Verificar si la capa es "Cableado" y tiene objetos
             # if layer.name == "Cableado":
@@ -38,13 +38,41 @@ class Level1Beginner:
        
     def setup(self, tmx_map):
         # Agregamos el mapa
-        for x, y, surf in tmx_map.get_layer_by_name('Terrain').tiles(): # Obtenemos un objeto de tiled llamado terrain
-            Sprite((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites) # Creamos un objeto de la clase Sprite con las coordenadas y la imagen del objeto
-    
+        print()
+        # Agregamos el suelo del mapa
+        for x, y, surf in tmx_map.get_layer_by_name('Suelo').tiles(): 
+            Sprite((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites, "RED") 
+            print("y", y)
+            print("surf", surf)
+        # Agregamos las paredes del mapa
+        for x, y, surf in tmx_map.get_layer_by_name('Paredes').tiles(): 
+            Sprite((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites, "GREEN") 
+            print("y", y)
+            print("surf", surf)
+        # Agregamos el techo del mapa
+        for x, y, surf in tmx_map.get_layer_by_name('Techo').tiles(): 
+            Sprite((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites, "ORANGE") 
+            print("y", y)
+            print("surf", surf)
+        # Agregamos la pared del piso 1
+        for x, y, surf in tmx_map.get_layer_by_name('Techo').tiles(): 
+            Sprite((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites, "ORANGE") 
+            print("y", y)
+            print("surf", surf)
+        # Agregamos el fondo del piso 1
+        for x, y, surf in tmx_map.get_layer_by_name('FondoPiso1').tiles(): 
+            Sprite((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites, "WHITE") 
+            print("y", y)
+            print("surf", surf)
+        # Agregamos el fondo del piso 2
+        for x, y, surf in tmx_map.get_layer_by_name('FondoPiso2').tiles(): 
+            Sprite((x * TILE_SIZE,y * TILE_SIZE), surf, self.all_sprites, "WHITE") 
+            print("y", y)
+            print("surf", surf)
         # Agregamos el jugador creando el Sprite Player
-        for obj in tmx_map.get_layer_by_name('Objects'): # Obtenemos un objeto de tiled llamado objects
-            if obj.name == 'player': # Buscamos el objeto player en el mapa
-                Player((obj.x, obj.y), self.all_sprites)
+        # for obj in tmx_map.get_layer_by_name('Objects'): # Obtenemos un objeto de tiled llamado objects
+        #     if obj.name == 'player': # Buscamos el objeto player en el mapa
+        #         Player((obj.x, obj.y), self.all_sprites)
                 
     def run(self):
         clock = pygame.time.Clock()

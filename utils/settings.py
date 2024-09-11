@@ -11,7 +11,7 @@ ICON_GAME = join("assets", "img", "icon", "icon_oxygen.png")
 
 WIDTH = 1280
 HEIGHT = 720
-TILE_SIZE = 64 # 64x64
+TILE_SIZE = 32 # 64x64
 
 FPS = 60 
 

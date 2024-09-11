@@ -3,7 +3,6 @@
 import pygame
 from menu.menu import Menu
 from utils.settings import *
-import sys
 
 def main():
     pygame.init()  # Initialize all Pygame modules
