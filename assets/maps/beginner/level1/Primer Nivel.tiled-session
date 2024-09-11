@@ -87,7 +87,7 @@
         "NIVEL 1/topp.tsx": {
             "scaleInDock": 1
         },
-        "SCIENCE LAB 1.tmx": {
+        "SCIENCE.tmx": {
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
@@ -95,7 +95,7 @@
                 "y": 319.33333333333326
             }
         },
-        "SCIENCE LAB 1.tmx#CABLEADO": {
+        "SCIENCE.tmx#CABLEADO": {
             "scaleInDock": 0.06
         },
         "SCIENCE LAB.tmx": {
@@ -166,7 +166,7 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 60,
     "openFiles": [
-        "SCIENCE LAB 1.tmx",
+        "SCIENCE.tmx",
         "CABLEADO.tsx",
         "boecta.tsx",
         "oiso 1.tsx",
@@ -175,7 +175,7 @@
     "project": "Primer Nivel.tiled-project",
     "recentFiles": [
         "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/QW92M1LR/SCIENCE_LAB_1[1].tmx",
-        "SCIENCE LAB 1.tmx",
+        "SCIENCE.tmx",
         "CABLEADO.tsx",
         "boecta.tsx",
         "oiso 1.tsx",

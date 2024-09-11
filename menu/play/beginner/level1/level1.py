@@ -23,14 +23,15 @@ class Level1Beginner:
         self.setup(tmx_map) # Llamamos al metodo setup para cargar los objetos del nivel
 
         # Layer de abi
-        self.tmx_mapAbi = load_pygame(join("assets","maps","beginner","level1","science_lab.tmx"))
-        for layer in self.tmx_mapAbi.layers:
-            print(layer.name)
+        self.tmx_mapAbi = load_pygame(join("assets","maps","beginner","level1","SCIENCE.tmx"))
+        print("self.tmx_mapAbi; ",self.tmx_mapAbi)
+        # for layer in self.tmx_mapAbi.layers:
+        #     print(layer.name)
             
             # Verificar si la capa es "Cableado" y tiene objetos
-            if layer.name == "Cableado":
-                for obj in layer.objects:
-                    print(f"Object: {obj.name}, Type: {obj.type}, X: {obj.x}, Y: {obj.y}, Width: {obj.width}, Height: {obj.height}")
+            # if layer.name == "Cableado":
+            #     for obj in layer.objects:
+            #         print(f"Object: {obj.name}, Type: {obj.type}, X: {obj.x}, Y: {obj.y}, Width: {obj.width}, Height: {obj.height}")
 
             # for obj in layer.objects:
             #     print(obj)
