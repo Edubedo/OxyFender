@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="60" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="18" nextobjectid="10">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="60" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="20" nextobjectid="10">
  <tileset firstgid="1" name="CABLEADO" tilewidth="32" tileheight="32" tilecount="81" columns="9">
   <image source="lab_tileset_LITE.png" width="288" height="288"/>
  </tileset>
  <tileset firstgid="82" source="CABLEADO.tsx"/>
  <tileset firstgid="163" source="boecta.tsx"/>
  <tileset firstgid="443" source="oiso 1.tsx"/>
- <tileset firstgid="703" source="CABLEADO.tsx"/>
  <layer id="9" name="Suelo" width="60" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -127,9 +126,6 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="6" name="Estructuras"/>
- <objectgroup id="7" name="Objetos"/>
- <objectgroup id="8" name="ObjetosMovibles"/>
  <layer id="17" name="Ascensor" width="60" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -154,4 +150,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="6" name="Estructuras"/>
+ <objectgroup id="7" name="Objetos"/>
+ <objectgroup id="8" name="ObjetosMovibles"/>
 </map>

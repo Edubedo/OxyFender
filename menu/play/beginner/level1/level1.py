@@ -25,8 +25,8 @@ class Level1Beginner:
         # Layer de abi
         self.tmx_mapAbi = load_pygame(join("assets","maps","beginner","level1","SCIENCE.tmx"))
         print("self.tmx_mapAbi; ",self.tmx_mapAbi)
-        # for layer in self.tmx_mapAbi.layers:
-        #     print(layer.name)
+        for layer in self.tmx_mapAbi.layers:
+            print(layer)
             
             # Verificar si la capa es "Cableado" y tiene objetos
             # if layer.name == "Cableado":
