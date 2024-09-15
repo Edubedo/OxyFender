@@ -49,9 +49,9 @@ class Level1Beginner:  # Creamos el nivel 1
 
     def run(self):
         clock = pygame.time.Clock()
-        gravity = 0.35
-        jump_strength = -8
-        max_fall_speed = 10
+        gravity = 0.30
+        jump_strength = -10  # Ajustar la fuerza del salto
+        max_fall_speed = 4
         player_velocity_y = 0
         on_ground = False
 
@@ -72,6 +72,7 @@ class Level1Beginner:  # Creamos el nivel 1
                 moving = True
             if keys[pygame.K_SPACE] and on_ground:
                 player_velocity_y = jump_strength
+                on_ground = False  # El jugador ya no está en el suelo después de saltar
 
             # Aplicar gravedad solo si no está en el suelo
             if not on_ground:
