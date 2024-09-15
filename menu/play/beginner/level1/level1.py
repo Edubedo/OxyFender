@@ -37,7 +37,7 @@ class Level1Beginner:  # Creamos el nivel 1
         self.posicion_x_personaje = 0  # Agregamos esta variable para la posicion del personaje
 
         # Agregamos las colisiones de las capas del mapa
-        for layer_name in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'Ascensor']:
+        for layer_name in [ 'prtatras', 'Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'Ascensor']:
             for x, y, surf in tmx_mapa_1.get_layer_by_name(layer_name).tiles():
 
                 # Estructuras
