@@ -13,6 +13,9 @@ class Level1Beginner:  # Creamos el nivel 1
         self.dificultadNivel = dificultadNivel
         self.id = id
 
+        pygame.display.set_caption(f"{TITLE_GAME} - {name}")  # Set the game title
+
+    
         self.mostrar_superficie = pygame.display.get_surface()
 
         self.todos_los_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para todos los sprites
@@ -57,11 +60,10 @@ class Level1Beginner:  # Creamos el nivel 1
 
     def run(self):
         clock = pygame.time.Clock()
-        gravity = 0.30
-        jump_strength = -7  # Ajustar la fuerza del salto
-        max_fall_speed = 4
-        player_velocity_y = 0
-        on_ground = False
+        gravedad = PLAYER_GRAVEDAD  # Ajustar la gravedad
+        maxima_velocidad_caida = 4
+        jugador_velocidad_y = 0
+        esta_sobre_el_piso = False
 
         while True:
             for event in pygame.event.get():
@@ -78,16 +80,16 @@ class Level1Beginner:  # Creamos el nivel 1
             if keys[pygame.K_RIGHT]:
                 player_movement.x += PLAYER_VEL
                 moving = True
-            if keys[pygame.K_SPACE] and on_ground:
-                player_velocity_y = jump_strength
-                on_ground = False  # El jugador ya no está en el suelo después de saltar
+            if keys[pygame.K_SPACE] and esta_sobre_el_piso:
+                jugador_velocidad_y = PLAYER_FUERZA_SALTO
+                esta_sobre_el_piso = False  # El jugador ya no está en el suelo después de saltar
 
             # Aplicar gravedad solo si no está en el suelo
-            if not on_ground:
-                player_velocity_y += gravity
-                if player_velocity_y > max_fall_speed:
-                    player_velocity_y = max_fall_speed
-            player_movement.y += player_velocity_y
+            if not esta_sobre_el_piso:
+                jugador_velocidad_y += gravedad
+                if jugador_velocidad_y > maxima_velocidad_caida:
+                    jugador_velocidad_y = maxima_velocidad_caida
+            player_movement.y += jugador_velocidad_y
 
             # Mover al jugador y verificar colisiones verticales
             self.player.rect.y += player_movement.y
@@ -95,11 +97,11 @@ class Level1Beginner:  # Creamos el nivel 1
             for sprite in collided_sprites:
                 if player_movement.y > 0:  # Bajando
                     self.player.rect.bottom = sprite.rect.top
-                    on_ground = True
-                    player_velocity_y = 0
+                    esta_sobre_el_piso = True
+                    jugador_velocidad_y = 0
                 elif player_movement.y < 0:  # Subiendo
                     self.player.rect.top = sprite.rect.bottom
-                    player_velocity_y = 0
+                    jugador_velocidad_y = 0
 
             # Mover al jugador y verificar colisiones horizontales
             self.player.rect.x += player_movement.x
