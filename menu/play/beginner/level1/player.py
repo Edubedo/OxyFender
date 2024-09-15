@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
     def load_images(self):
         images = []
         for i in range(1, 6):  # Asumiendo que tienes 5 imágenes para el sprite
-            image = pygame.image.load(join("assets", "maps", "beginner", "level1", "PERS_SPRITE", "derecha",f"SPRITE_PRIN100%{i}.png")).convert_alpha()
+            image = pygame.image.load(join("assets", "maps", "beginner", "level1", "PERS_SPRITE",f"SPRITE_PRIN100%{i}.png")).convert_alpha()
             images.append(image)
         return images
 
