@@ -10,13 +10,13 @@ NAME_ENTERPRISE = 'Zip Studio'
 ICON_GAME = join("assets", "img", "icon", "icon_oxygen.png")
 
 WIDTH = 1280
-HEIGHT = 720
-TILE_SIZE = 32 # 64x64
+HEIGHT = 640
+TILE_SIZE = 32 # 32x32
 
 FPS = 60 
 
 BACKGROUND_COLOR = (0, 0, 0)  
-PLAYER_VEL = 30
+PLAYER_VEL = 10
 
 ENEMY_SPEED = 3
 
