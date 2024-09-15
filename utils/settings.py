@@ -9,14 +9,14 @@ TITLE_GAME = 'OxyFender'
 NAME_ENTERPRISE = 'Zip Studio'
 ICON_GAME = join("assets", "img", "icon", "icon_oxygen.png")
 
-WIDTH = 1280
-HEIGHT = 640
+WIDTH = 800
+HEIGHT = 600
 TILE_SIZE = 32 # 32x32
 
 FPS = 60 
 
 BACKGROUND_COLOR = (0, 0, 0)  
-PLAYER_VEL = 10
+PLAYER_VEL = 4
 
 ENEMY_SPEED = 3
 

@@ -51,14 +51,14 @@ class Level1Beginner:  # Creamos el nivel 1
                     self.elevador_sprites.add(sprite)
 
         # Personaje
-        self.player = Player((420, 420), self.todos_los_sprites)  # ! Establecer posicion del jugador de tiled
+        self.player = Player((100, 420), self.todos_los_sprites)  # ! Establecer posicion del jugador de tiled
 
         self.run()
 
     def run(self):
         clock = pygame.time.Clock()
         gravity = 0.30
-        jump_strength = -10  # Ajustar la fuerza del salto
+        jump_strength = -7  # Ajustar la fuerza del salto
         max_fall_speed = 4
         player_velocity_y = 0
         on_ground = False
