@@ -43,7 +43,7 @@ class Level1Beginner:  # Creamos el nivel 1
                     self.colisiones_sprites.add(sprite)
 
         # Personaje
-        self.player = Player((480, 480), self.todos_los_sprites, 'RED')  # ! Establecer posicion del jugador de tiled
+        self.player = Player((418, 418), self.todos_los_sprites, 'RED')  # ! Establecer posicion del jugador de tiled
 
         self.run()
 
@@ -73,10 +73,11 @@ class Level1Beginner:  # Creamos el nivel 1
             if keys[pygame.K_SPACE] and on_ground:
                 player_velocity_y = jump_strength
 
-            # Aplicar gravedad
-            player_velocity_y += gravity
-            if player_velocity_y > max_fall_speed:
-                player_velocity_y = max_fall_speed
+            # Aplicar gravedad solo si no está en el suelo
+            if not on_ground:
+                player_velocity_y += gravity
+                if player_velocity_y > max_fall_speed:
+                    player_velocity_y = max_fall_speed
             player_movement.y += player_velocity_y
 
             # Mover al jugador y verificar colisiones
