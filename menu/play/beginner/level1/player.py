@@ -2,7 +2,7 @@ import pygame
 from os.path import join
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, col):
+    def __init__(self, pos, groups):
         super().__init__(groups)
         self.images = self.load_images()
         self.image = self.images[0]

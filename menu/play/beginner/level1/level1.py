@@ -17,12 +17,17 @@ class Level1Beginner:  # Creamos el nivel 1
 
         self.todos_los_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para todos los sprites
         self.colisiones_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para las colisiones
+        self.elevador_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores
 
         self.tmx_mapa_1 = load_pygame(join("assets", "maps", "beginner", "level1", "SCIENCE.tmx"))  # Cargamos el mapa del nivel 1
 
         self.camera_offset = pygame.Vector2(0, 0)  # Agregamos esta variable para que la camara siga al jugador
 
         self.player = None  # Agregamos esta variable para asignar el jugador jugador
+
+        self.last_elevator = None  # Último elevador al que fue teletransportado
+        self.teleport_cooldown = 1000  # Tiempo de espera en milisegundos
+        self.last_teleport_time = 0  # Última vez que se teletransportó
 
         self.setup(self.tmx_mapa_1)
 
@@ -41,9 +46,12 @@ class Level1Beginner:  # Creamos el nivel 1
                 # Colisiones
                 if layer_name in ['Paredes', 'Suelo', 'Techo']:
                     self.colisiones_sprites.add(sprite)
+                # Elevadores
+                if layer_name == 'Ascensor':
+                    self.elevador_sprites.add(sprite)
 
         # Personaje
-        self.player = Player((420, 420), self.todos_los_sprites, 'RED')  # ! Establecer posicion del jugador de tiled
+        self.player = Player((420, 420), self.todos_los_sprites)  # ! Establecer posicion del jugador de tiled
 
         self.run()
 
@@ -101,6 +109,18 @@ class Level1Beginner:  # Creamos el nivel 1
                     self.player.rect.right = sprite.rect.left
                 elif player_movement.x < 0:  # Moviéndose a la izquierda
                     self.player.rect.left = sprite.rect.right
+
+            # Verificar colisiones con elevadores
+            current_time = pygame.time.get_ticks()
+            collided_elevators = pygame.sprite.spritecollide(self.player, self.elevador_sprites, False)
+            if collided_elevators and current_time - self.last_teleport_time > self.teleport_cooldown:
+                # Teletransportar al jugador al otro elevador
+                for elevator in self.elevador_sprites:
+                    if elevator not in collided_elevators and elevator != self.last_elevator:
+                        self.player.rect.topleft = elevator.rect.topleft
+                        self.last_elevator = elevator
+                        self.last_teleport_time = current_time
+                        break
 
             self.camera_offset.x = self.player.rect.centerx - self.mostrar_superficie.get_width() // 2
             self.camera_offset.y = self.player.rect.centery - self.mostrar_superficie.get_height() // 2
