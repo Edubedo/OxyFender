@@ -10,7 +10,9 @@ from menu.play.beginner.level3.level3 import Level3Beginner
 from menu.play.advanced.level1.level1 import Level1Advanced
 from menu.play.advanced.level2.level2 import Level2Advanced
 from menu.play.advanced.level3.level3 import Level3Advanced
-
+from pygame.math import Vector2 as vector
+from pytmx.util_pygame import load_pygame
+from os.path import join
 class MenuGame:
     def __init__(self, screen, config):
         self.screen = screen
@@ -94,7 +96,7 @@ class MenuGame:
 
                            # Nivekes para principiantes 
                            if level['id'] == "beginner_level_1":
-                                Level1Beginner(level['name'], level['dificultadNivel'], level['id']).run()
+                                self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id']).run()
                            if level['id'] == "beginner_level_2":
                                 Level2Beginner(level['name'], level['dificultadNivel'], level['id'])
                            if level['id'] == "beginner_level_3":

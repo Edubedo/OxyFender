@@ -30,7 +30,7 @@ class Menu:
             self.options = ["Jugar", "Créditos", "Configuración", "Salir"]
 
     def mostrarOpcionesMenu(self, indice_opcion_curso_encima=None):
-        self.background = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundProvisional.jpeg")).convert_alpha()
+        self.background = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundProvisional2.jpg")).convert_alpha()
         self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
 
         self.screen.blit(self.background, [0, 0])
@@ -89,7 +89,7 @@ class Menu:
                                 return game_menu.mostrarMenuDificultad()
                             if option == "credits" or option == "créditos":
                                 show_credits(self.screen)
-                                return
+                                continue
                             elif option == "configuration" or option == "configuración":
                                 self.config.show_configuration(self.screen, self.font)
                                 self.actualizarLenguajeTextos()
