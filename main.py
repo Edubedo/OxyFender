@@ -11,7 +11,7 @@ def main():
     pygame.display.set_icon(pygame.image.load(ICON_GAME))  # Set the game icon
 
     menu = Menu(screen)
-    menu.mostrarMenuInicial()  # Mostrar el menú inicial
+    menu.mostrarMenuInicial()  # Mostrar el menú del juego.
 
 if __name__ == "__main__":
     main()

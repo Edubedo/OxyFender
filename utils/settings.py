@@ -1,5 +1,5 @@
 # Código desarrollado por (E. Escobedo, G. Solorzano, R. Lavariga, N. Laureano, A. Suarez, S. Barroso) 2024
-# Este software no puede ser copiado o redistribuido sin permiso del autor.
+#ste software no puede ser copiado o redistribuido sin permiso del autor.
 import pygame
 from os.path import join
 from os import walk
@@ -16,8 +16,8 @@ TILE_SIZE = 32 # 32x32
 FPS = 60 
 
 BACKGROUND_COLOR = (0, 0, 0)  
-PLAYER_VEL = 3.5
-PLAYER_GRAVEDAD = 0.30
+PLAYER_VEL = 3.6
+PLAYER_GRAVEDAD = 0.32
 PLAYER_FUERZA_SALTO = -6
 PLAYER_VELOCIDAD_MAXIMA_CAIDA = 3
 PLAYER_VELOCIDAD_Y = 0

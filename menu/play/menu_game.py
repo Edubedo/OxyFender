@@ -1,6 +1,8 @@
 import pygame
 from utils.settings import *
 
+
+# Importamos las librerias de los niveles 
 from menu.play.beginner.level1.level1 import Level1Beginner
 from menu.play.beginner.level2.level2 import Level2Beginner
 from menu.play.beginner.level3.level3 import Level3Beginner

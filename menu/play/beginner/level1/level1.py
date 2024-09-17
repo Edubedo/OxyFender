@@ -133,7 +133,8 @@ class Level1Beginner:  # Creamos el nivel 1
                             self.last_elevator = elevator
                             self.last_teleport_time = tiempo_actual
                             break
-
+            
+            # Manejo de la camara del jugador. 
             self.camera_offset.x = self.player.rect.centerx - self.mostrar_superficie.get_width() // 2
             self.camera_offset.y = self.player.rect.centery - self.mostrar_superficie.get_height() // 2
 
