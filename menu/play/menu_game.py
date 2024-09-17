@@ -20,7 +20,7 @@ class MenuGame:
         self.font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 18) # Fuente de texto
 
     def mostrarMenuDificultad(self):
-        self.background = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundProvisional.jpeg")).convert_alpha()
+        self.background = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundProvisional2.jpg")).convert_alpha()
         self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
         
         self.screen.blit(self.background, [0, 0])
@@ -105,7 +105,7 @@ class MenuGame:
             pygame.display.flip()
 
     def mostrarMenuNiveles(self, dificultadNivel):
-        self.background = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundProvisional.jpeg")).convert_alpha()
+        self.background = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundProvisional2.jpg")).convert_alpha()
         self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
         
         self.screen.blit(self.background, [0, 0])

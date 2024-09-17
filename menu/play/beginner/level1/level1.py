@@ -15,7 +15,6 @@ class Level1Beginner:  # Creamos el nivel 1
 
         pygame.display.set_caption(f"{TITLE_GAME} - {name}")  # Set the game title
 
-    
         self.mostrar_superficie = pygame.display.get_surface()
 
         self.todos_los_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para todos los sprites
@@ -40,7 +39,7 @@ class Level1Beginner:  # Creamos el nivel 1
         self.posicion_x_personaje = 0  # Agregamos esta variable para la posicion del personaje
 
         # Agregamos las colisiones de las capas del mapa
-        for layer_name in [ 'prtatras', 'Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'Ascensor']:
+        for layer_name in ['prtatras', 'Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'Ascensor']:
             for x, y, surf in tmx_mapa_1.get_layer_by_name(layer_name).tiles():
 
                 # Estructuras
@@ -74,12 +73,16 @@ class Level1Beginner:  # Creamos el nivel 1
             keys = pygame.key.get_pressed()  # Tenemos que agregar esta funciona para hacer que el jugador se mueva
             player_movement = pygame.Vector2(0, 0)
             moving = False
+            direction = "right"  # Default direction
+
             if keys[pygame.K_LEFT]:
                 player_movement.x -= PLAYER_VEL
                 moving = True
+                direction = "left"
             if keys[pygame.K_RIGHT]:
                 player_movement.x += PLAYER_VEL
                 moving = True
+                direction = "right"
             if keys[pygame.K_SPACE] and esta_sobre_el_piso:
                 jugador_velocidad_y = PLAYER_FUERZA_SALTO
                 esta_sobre_el_piso = False  # El jugador ya no está en el suelo después de saltar
@@ -113,25 +116,36 @@ class Level1Beginner:  # Creamos el nivel 1
                     self.player.rect.left = sprite.rect.right
 
             # Verificar colisiones con elevadores
-            current_time = pygame.time.get_ticks()
-            collided_elevators = pygame.sprite.spritecollide(self.player, self.elevador_sprites, False)
-            if collided_elevators and current_time - self.last_teleport_time > self.teleport_cooldown:
-                # Teletransportar al jugador al otro elevador
-                for elevator in self.elevador_sprites:
-                    if elevator not in collided_elevators and elevator != self.last_elevator:
-                        self.player.rect.topleft = elevator.rect.topleft
-                        self.last_elevator = elevator
-                        self.last_teleport_time = current_time
-                        break
+            tiempo_actual = pygame.time.get_ticks()
+            colisiones_elevadores = pygame.sprite.spritecollide(self.player, self.elevador_sprites, False)
+            if colisiones_elevadores and tiempo_actual - self.last_teleport_time > self.teleport_cooldown:
+                # Mostrar mensaje en pantalla
+                font = pygame.font.Font(None, 36)
+                text = font.render("Click X para viajar en el elevador", True, (255, 255, 255))
+                text_rect = text.get_rect(center=(self.mostrar_superficie.get_width() // 2, self.mostrar_superficie.get_height() // 2))
+
+                # Verificar si se presiona la tecla 'X'
+                if keys[pygame.K_x]:
+                    # Teletransportar al jugador al otro elevador
+                    for elevator in self.elevador_sprites:
+                        if elevator not in colisiones_elevadores and elevator != self.last_elevator:
+                            self.player.rect.topleft = elevator.rect.topleft
+                            self.last_elevator = elevator
+                            self.last_teleport_time = tiempo_actual
+                            break
 
             self.camera_offset.x = self.player.rect.centerx - self.mostrar_superficie.get_width() // 2
             self.camera_offset.y = self.player.rect.centery - self.mostrar_superficie.get_height() // 2
 
-            self.todos_los_sprites.update(moving)
+            self.todos_los_sprites.update(moving, direction)
 
             self.mostrar_superficie.fill(BACKGROUND_COLOR)
             for sprite in self.todos_los_sprites:
                 self.mostrar_superficie.blit(sprite.image, sprite.rect.topleft - self.camera_offset)
+
+            # Mostrar mensaje en pantalla si está cerca del elevador
+            if colisiones_elevadores and tiempo_actual - self.last_teleport_time > self.teleport_cooldown:
+                self.mostrar_superficie.blit(text, text_rect)
 
             pygame.display.flip()
 
