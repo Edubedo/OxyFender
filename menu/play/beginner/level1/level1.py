@@ -124,8 +124,7 @@ class Level1Beginner:  # Creamos el nivel 1
                 text = font.render("Click X para viajar en el elevador", True, (255, 255, 255))
                 text_rect = text.get_rect(center=(self.mostrar_superficie.get_width() // 2, self.mostrar_superficie.get_height() // 2))
 
-                # Verificar si se presiona la tecla 'X'
-                if keys[pygame.K_x]:
+                if keys[pygame.K_x]: # Sí presiona la tecla 'X'
                     # Teletransportar al jugador al otro elevador
                     for elevator in self.elevador_sprites:
                         if elevator not in colisiones_elevadores and elevator != self.last_elevator:
