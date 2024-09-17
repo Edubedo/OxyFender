@@ -156,21 +156,22 @@ class MenuGame:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     for level, rectNivel in self.option_rects:
                         if rectNivel.collidepoint(event.pos):
+                            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Cambiar el cursor al cursor normal
                            # Niveles para principiantes 
-                           if level['id'] == "beginner_level_1":
-                                self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id']).run()
-                           if level['id'] == "beginner_level_2":
-                                Level2Beginner(level['name'], level['dificultadNivel'], level['id'])
-                           if level['id'] == "beginner_level_3":
-                                Level3Beginner(level['name'], level['dificultadNivel'], level['id'])
-                           
-                           # Niveles para avanzados 
-                           if level['id'] == "advanced_level_1":
-                                Level1Advanced(level['name'], level['dificultadNivel'], level['id'])
-                           if level['id'] == "advanced_level_2":
-                                Level2Advanced(level['name'], level['dificultadNivel'], level['id'])
-                           if level['id'] == "advanced_level_3":
-                                Level3Advanced(level['name'], level['dificultadNivel'], level['id'])
+                            if level['id'] == "beginner_level_1":
+                                    self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id']).run()
+                            if level['id'] == "beginner_level_2":
+                                    Level2Beginner(level['name'], level['dificultadNivel'], level['id'])
+                            if level['id'] == "beginner_level_3":
+                                    Level3Beginner(level['name'], level['dificultadNivel'], level['id'])
+                            
+                            # Niveles para avanzados 
+                            if level['id'] == "advanced_level_1":
+                                    Level1Advanced(level['name'], level['dificultadNivel'], level['id'])
+                            if level['id'] == "advanced_level_2":
+                                    Level2Advanced(level['name'], level['dificultadNivel'], level['id'])
+                            if level['id'] == "advanced_level_3":
+                                    Level3Advanced(level['name'], level['dificultadNivel'], level['id'])
             
             self.screen.blit(self.background, [0, 0])
             self.screen.blit(titulo, titulo_rect)
