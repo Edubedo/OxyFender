@@ -9,7 +9,7 @@ TITLE_GAME = 'OxyFender'
 NAME_ENTERPRISE = 'Zip Studio'
 ICON_GAME = join("assets", "img", "icon", "icon_oxygen.png")
 
-WIDTH = 900
+WIDTH = 1040
 HEIGHT = 600
 TILE_SIZE = 32 # 32x32
 
