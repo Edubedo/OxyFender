@@ -1,5 +1,3 @@
-# Código desarrollado por (E. Escobedo, G. Solorzano, R. Lavariga, N. Laureano, A. Suarez, S. Barroso) 2024
-# Este software no puede ser copiado o redistribuido sin permiso del autor.
 import pygame
 from menu.configuration.configuration import Configuration
 from utils.settings import *
@@ -16,9 +14,9 @@ class Menu:
         self.config = Configuration()
         self.font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 18) # Fuente de texto
 
-        pygame.mixer.init() # Inicializar el módulo de sonido
-        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
-        pygame.mixer.music.play(-1) # Reproducir la música en bucle
+        # pygame.mixer.init() # Inicializar el módulo de sonido
+        # pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
+        # pygame.mixer.music.play(-1) # Reproducir la música en bucle
 
         self.actualizarLenguajeTextos()
 
@@ -80,7 +78,10 @@ class Menu:
                     for i, (_, rect) in enumerate(self.option_rects):
                         if rect.collidepoint(event.pos):
                             indice_opcion_curso_encima = i
+                            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
                             break
+                    else:
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     for option, rect in self.option_rects:
                         if rect.collidepoint(event.pos):
