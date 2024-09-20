@@ -7,8 +7,10 @@ Bienvenido al repositorio oficial un juego educativo desarrollado en Python con 
 Para ejecutar este proyecto en tu máquina local, sigue los pasos a continuación:
 
 **1. Clona este repositorio**
-git clone https://github.com/Edubedo/pygame
-cd pygame
+
+- git clone https://github.com/Edubedo/OxyFender
+
+- cd OxyFender
 
 **2. Descargar las siguientes librerias usando pip**
 - pip install pygame
