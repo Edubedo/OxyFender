@@ -30,5 +30,9 @@ class Player(pygame.sprite.Sprite):
             if self.animation_index >= len(self.images):
                 self.animation_index = 0
             self.image = self.images[int(self.animation_index)]
+
+            if self.rect.left < 0:      #Establece el limite de lado izquierdo para no salir del mapa
+                self.rect = 0
+
         # Ajustar la posición del rectángulo de colisión
         self.rect = self.image.get_rect(topleft=self.rect.topleft)
