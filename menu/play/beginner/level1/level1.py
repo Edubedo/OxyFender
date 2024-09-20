@@ -39,18 +39,27 @@ class Level1Beginner:  # Creamos el nivel 1
         self.posicion_x_personaje = 0  # Agregamos esta variable para la posicion del personaje
 
         # Agregamos las colisiones de las capas del mapa
-        for layer_name in ['prtatras', 'Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'Ascensor']:
-            for x, y, surf in tmx_mapa_1.get_layer_by_name(layer_name).tiles():
+        for layer_name in ['prtatras', 'Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'Ascensor', 'filtooo']:
+            
+            # Objeto de filtro que son 4 imagenes, Imagen1, Imagen2, Imagen3 e Imagen4
+            if layer_name == 'filtooo':
+                print('Filtro de imagenes', layer_name)
 
-                # Estructuras
-                sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), surf, self.todos_los_sprites)
+                # Procesar el objeto de filtro
+                
+            # Capas
+            if layer_name != 'filtooo':
+                for x, y, surf in tmx_mapa_1.get_layer_by_name(layer_name).tiles():
+                    
+                    # Estructuras
+                    sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), surf, self.todos_los_sprites)
 
-                # Colisiones
-                if layer_name in ['Paredes', 'Suelo', 'Techo']:
-                    self.colisiones_sprites.add(sprite)
-                # Elevadores
-                if layer_name == 'Ascensor':
-                    self.elevador_sprites.add(sprite)
+                    # Colisiones
+                    if layer_name in ['Paredes', 'Suelo', 'Techo']:
+                        self.colisiones_sprites.add(sprite)
+                    # Elevadores
+                    if layer_name == 'Ascensor':
+                        self.elevador_sprites.add(sprite)
 
         # Personaje
         self.player = Player((100, 420), self.todos_los_sprites)  # ! Establecer posicion del jugador de tiled
