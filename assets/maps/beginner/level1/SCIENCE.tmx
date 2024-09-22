@@ -184,9 +184,9 @@
  <objectgroup id="7" name="Objetos"/>
  <objectgroup id="8" name="ObjetosMovibles"/>
  <objectgroup id="26" name="filtooo">
-  <object id="10" gid="1247" x="928" y="256" width="32" height="32"/>
-  <object id="11" gid="1250" x="928" y="288" width="32" height="32"/>
-  <object id="12" gid="1250" x="736.333" y="512" width="32" height="32"/>
-  <object id="14" gid="1247" x="736.333" y="480.333" width="32" height="32"/>
+  <object id="10" name="ImagenDos_2" gid="1247" x="928" y="256" width="32" height="32"/>
+  <object id="11" name="ImagenDos_1" gid="1250" x="928" y="288" width="32" height="32"/>
+  <object id="12" name="ImagenUno_1" gid="1250" x="736.333" y="512" width="32" height="32"/>
+  <object id="14" name="ImagenUno_2" gid="1247" x="736.333" y="480.333" width="32" height="32"/>
  </objectgroup>
 </map>
