@@ -39,27 +39,31 @@ class Level1Beginner:  # Creamos el nivel 1
         self.posicion_x_personaje = 0  # Agregamos esta variable para la posicion del personaje
 
         # Agregamos las colisiones de las capas del mapa
-        for layer_name in ['prtatras', 'Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'Ascensor', 'filtooo']:
-            
-            # Objeto de filtro que son 4 imagenes, Imagen1, Imagen2, Imagen3 e Imagen4
-            if layer_name == 'filtooo':
-                print('Filtro de imagenes', layer_name)
+        for layer_name in ['prtatras', 'Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'Ascensor']:
+            for x, y, surf in tmx_mapa_1.get_layer_by_name(layer_name).tiles():
 
-                # Procesar el objeto de filtro
-                
-            # Capas
-            if layer_name != 'filtooo':
-                for x, y, surf in tmx_mapa_1.get_layer_by_name(layer_name).tiles():
-                    
-                    # Estructuras
-                    sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), surf, self.todos_los_sprites)
+                # Estructuras
+                sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), surf, self.todos_los_sprites)
 
-                    # Colisiones
-                    if layer_name in ['Paredes', 'Suelo', 'Techo']:
-                        self.colisiones_sprites.add(sprite)
-                    # Elevadores
-                    if layer_name == 'Ascensor':
-                        self.elevador_sprites.add(sprite)
+                # Colisiones
+                if layer_name in ['Paredes', 'Suelo', 'Techo']:
+                    self.colisiones_sprites.add(sprite)
+                # Elevadores
+                if layer_name == 'Ascensor':
+                    self.elevador_sprites.add(sprite)
+
+        # Cargar objetos de la capa 'filtooo'
+        filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
+        print("filtooo_layer", filtooo_layer)
+        for obj in filtooo_layer:
+            print(f"Object: {obj.name}, x: {obj.x}, y: {obj.y}, width: {obj.width}, height: {obj.height}")
+            for key, value in obj.properties.items():
+                print(f"  Property: {key} = {value}")
+            if isinstance(obj.image, pygame.Surface):
+                image = obj.image
+            else:
+                image = pygame.image.load(join("assets", "sprites", obj.image)).convert_alpha()
+            sprite = Sprite((obj.x, obj.y), image, self.todos_los_sprites)
 
         # Personaje
         self.player = Player((100, 420), self.todos_los_sprites)  # ! Establecer posicion del jugador de tiled
@@ -133,7 +137,8 @@ class Level1Beginner:  # Creamos el nivel 1
                 text = font.render("Click X para viajar en el elevador", True, (255, 255, 255))
                 text_rect = text.get_rect(center=(self.mostrar_superficie.get_width() // 2, self.mostrar_superficie.get_height() // 2))
 
-                if keys[pygame.K_x]: # Sí presiona la tecla 'X'
+                # Verificar si se presiona la tecla 'X'
+                if keys[pygame.K_x]:
                     # Teletransportar al jugador al otro elevador
                     for elevator in self.elevador_sprites:
                         if elevator not in colisiones_elevadores and elevator != self.last_elevator:
@@ -141,8 +146,7 @@ class Level1Beginner:  # Creamos el nivel 1
                             self.last_elevator = elevator
                             self.last_teleport_time = tiempo_actual
                             break
-            
-            # Manejo de la camara del jugador. 
+
             self.camera_offset.x = self.player.rect.centerx - self.mostrar_superficie.get_width() // 2
             self.camera_offset.y = self.player.rect.centery - self.mostrar_superficie.get_height() // 2
 
