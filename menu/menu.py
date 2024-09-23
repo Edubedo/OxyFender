@@ -11,6 +11,7 @@ class Menu:
         self.screen = screen 
         pygame.display.set_caption(f"Menú - {TITLE_GAME}") # Establecemos tituloPrincipalJuego del Menú
 
+        self.bucleInicial = True # Bucle para iniciar el menú
         self.config = Configuration() # Establecemos la configuracion del lenguaje 
         self.font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 18) # Establecemos la Fuente de texto
         
@@ -20,8 +21,8 @@ class Menu:
         # pygame.mixer.init() # Inicializar el módulo de sonido
         # pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
         # pygame.mixer.music.play(-1) # Reproducir la música en bucle
+        # pygame.mixer.music.set_volume(0.5)
         # volumen
-        #pygame.mixer.music.set_volume(0.5)
 
     def mostrarOpcionesMenu(self, hoverOpcionSeleccionada=None): # Opciones del menú principal
         self.fondoPrincipalVideojuego = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundProvisional2.jpg")).convert_alpha() # Agregar fondoPrincipalVideojuego al menú
@@ -75,7 +76,7 @@ class Menu:
         hoverOpcionSeleccionada = None # Se usa para manejar el hover 
 
         # Entramos en un bucle infinito para mostrar el menú
-        while True:
+        while self.bucleInicial:
             self.mostrarOpcionesMenu(hoverOpcionSeleccionada)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -98,7 +99,7 @@ class Menu:
                     for option, rect in self.rectOpcionesMenuPrincipal: # Recorremos las opciones del menú principal
                         if rect.collidepoint(event.pos):
                             if option == "play" or option == "jugar":
-                                game_menu = MenuPlay(self.screen, self.config)
+                                game_menu = MenuPlay(self.screen, self.config, self.bucleInicial)
                                 game_menu.mostrarMenuDificultad()
                                 continue
                             

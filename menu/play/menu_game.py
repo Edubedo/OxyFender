@@ -14,7 +14,7 @@ from pygame.math import Vector2 as vector
 from os.path import join
 
 class MenuPlay:
-    def __init__(self, screen, config):
+    def __init__(self, screen, config, bucleInicial):
         pygame.display.set_caption(f"Seleccionar Nivel - {TITLE_GAME}") # Establecer titulo del nivel
 
         # Guardar atributos generales
@@ -192,7 +192,7 @@ class MenuPlay:
                         if rect.collidepoint(event.pos):
                             hoverOpcionSeleccionadaNiveles = i
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-                            break
+                            break  # Cambiado de continue a break
                     else:
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
