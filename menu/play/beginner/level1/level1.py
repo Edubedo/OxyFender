@@ -45,6 +45,8 @@ class Level1Beginner:  # Creamos el nivel 1
 
     
     def setup(self, tmx_mapa_1):
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Establecer cursor del mouse
+        
         self.tmx_tileset = pygame.image.load(join("assets", "maps", "beginner", "level1", "lab_tileset_LITE.png")).convert_alpha()  # Texturas del piso y techo
 
         self.posicion_x_personaje = 0  # Agregamos esta variable para la posicion del personaje
@@ -244,7 +246,7 @@ class Level1Beginner:  # Creamos el nivel 1
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
                     else:
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-
+                
 
                 # Sí le da click a los botones
                 elif event.type == pygame.MOUSEBUTTONDOWN: 
