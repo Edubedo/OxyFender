@@ -100,18 +100,18 @@ class Level1Beginner:  # Creamos el nivel 1
                 continue
 
             keys = pygame.key.get_pressed()  # Tenemos que agregar esta funciona para hacer que el jugador se mueva
-            player_movement = pygame.Vector2(0, 0)
-            moving = False
-            direction = "right"  # Default direction
+            movimientoJugador = pygame.Vector2(0, 0)
+            estaMoviendose = False
+            direccionPersonaje = "right"  
 
             if keys[pygame.K_LEFT]:
-                player_movement.x -= PLAYER_VEL
-                moving = True
-                direction = "left"
+                movimientoJugador.x -= PLAYER_VEL
+                estaMoviendose = True
+                direccionPersonaje = "left"
             if keys[pygame.K_RIGHT]:
-                player_movement.x += PLAYER_VEL
-                moving = True
-                direction = "right"
+                movimientoJugador.x += PLAYER_VEL
+                estaMoviendose = True
+                direccionPersonaje = "right"
             if keys[pygame.K_SPACE] and esta_sobre_el_piso:
                 jugador_velocidad_y = PLAYER_FUERZA_SALTO
                 esta_sobre_el_piso = False  # El jugador ya no está en el suelo después de saltar
@@ -121,27 +121,27 @@ class Level1Beginner:  # Creamos el nivel 1
                 jugador_velocidad_y += gravedad
                 if jugador_velocidad_y > maxima_velocidad_caida:
                     jugador_velocidad_y = maxima_velocidad_caida
-            player_movement.y += jugador_velocidad_y
+            movimientoJugador.y += jugador_velocidad_y
 
             # Mover al jugador y verificar colisiones verticales
-            self.player.rect.y += player_movement.y
-            collided_sprites = pygame.sprite.spritecollide(self.player, self.colisiones_sprites, False)
-            for sprite in collided_sprites:
-                if player_movement.y > 0:  # Bajando
+            self.player.rect.y += movimientoJugador.y
+            colisionesSprite = pygame.sprite.spritecollide(self.player, self.colisiones_sprites, False)
+            for sprite in colisionesSprite:
+                if movimientoJugador.y > 0:  # Bajando
                     self.player.rect.bottom = sprite.rect.top
                     esta_sobre_el_piso = True
                     jugador_velocidad_y = 0
-                elif player_movement.y < 0:  # Subiendo
+                elif movimientoJugador.y < 0:  # Subiendo
                     self.player.rect.top = sprite.rect.bottom
                     jugador_velocidad_y = 0
 
             # Mover al jugador y verificar colisiones horizontales
-            self.player.rect.x += player_movement.x
-            collided_sprites = pygame.sprite.spritecollide(self.player, self.colisiones_sprites, False)
-            for sprite in collided_sprites:
-                if player_movement.x > 0:  # Moviéndose a la derecha
+            self.player.rect.x += movimientoJugador.x
+            colisionesSprite = pygame.sprite.spritecollide(self.player, self.colisiones_sprites, False)
+            for sprite in colisionesSprite:
+                if movimientoJugador.x > 0:  # Moviéndose a la derecha
                     self.player.rect.right = sprite.rect.left
-                elif player_movement.x < 0:  # Moviéndose a la izquierda
+                elif movimientoJugador.x < 0:  # Moviéndose a la izquierda
                     self.player.rect.left = sprite.rect.right
 
             # Verificar colisiones con elevadores
@@ -166,7 +166,7 @@ class Level1Beginner:  # Creamos el nivel 1
             self.camera_offset.x = self.player.rect.centerx - self.mostrar_superficie.get_width() // 2
             self.camera_offset.y = self.player.rect.centery - self.mostrar_superficie.get_height() // 2
 
-            self.todos_los_sprites.update(moving, direction)
+            self.todos_los_sprites.update(estaMoviendose, direccionPersonaje)
 
             self.mostrar_superficie.fill(BACKGROUND_COLOR)
 
@@ -190,8 +190,19 @@ class Level1Beginner:  # Creamos el nivel 1
     def pantallaConfiguracion(self):
         config_screen_width = self.mostrar_superficie.get_width() - 300
         config_screen_height = self.mostrar_superficie.get_height() - 300
+
+        # Creamos una nueva superficie para la pantalla de configuración
         config_screen = pygame.Surface((config_screen_width, config_screen_height))
-        config_screen.fill((50, 50, 50))  # Dark grey background
+        config_screen.fill((50, 50, 50)) 
+
+        # Agregar boton para reiniciar nivel
+        restart_button = pygame.Rect(50, 50, 200, 50)
+        pygame.draw.rect(config_screen, (255, 0, 0), restart_button)
+
+        font = pygame.font.Font(None, 36)
+        text = font.render("Reiniciar Nivel", True, (255, 255, 255))
+        text_rect = text.get_rect(center=restart_button.center)
+        config_screen.blit(text, text_rect)
 
         running = True
         while running:
@@ -202,12 +213,19 @@ class Level1Beginner:  # Creamos el nivel 1
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     self.paused = False
                     running = False
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pos = event.pos
+                    relative_mouse_pos = (mouse_pos[0] - 150, mouse_pos[1] - 150)
+                    if restart_button.collidepoint(relative_mouse_pos):
+                        print("Reiniciar Nivel")
+                        self.setup(self.tmx_mapa_1)
+                        running = False
+                        self.paused = False
 
-            # Blit the captured screen as the background
             if self.screen_capture:
                 self.mostrar_superficie.blit(self.screen_capture, (0, 0))
 
-            # Darken the main screen
+            # Oscurecemos la pantalla cuando le damos a pausa
             dark_overlay = pygame.Surface(self.mostrar_superficie.get_size(), pygame.SRCALPHA)
             dark_overlay.fill((0, 0, 0, 150))  # Semi-transparent black
             self.mostrar_superficie.blit(dark_overlay, (0, 0))
