@@ -11,6 +11,7 @@ class Level1Beginner:  # Creamos el nivel 1
         self.name = name
         self.dificultadNivel = dificultadNivel
         self.id = id
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Set the screen size
 
         pygame.display.set_caption(f"{TITLE_GAME} - {name}")  # Set the game title
 
@@ -34,6 +35,7 @@ class Level1Beginner:  # Creamos el nivel 1
 
         self.juegoPausado = False  # Flag to track if the game is juegoPausado
         self.screen_capture = None  # Variable to store screen capture
+        self.volver_menu = False  # Flag to track if we need to return to the menu
 
         self.setup(self.tmx_mapa_1)
 
@@ -82,6 +84,9 @@ class Level1Beginner:  # Creamos el nivel 1
         esta_sobre_el_piso = False
 
         while True:
+            if self.volver_menu:
+                break
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -198,10 +203,15 @@ class Level1Beginner:  # Creamos el nivel 1
         # Agregar boton para reiniciar nivel
         botonReiniciarNivel = pygame.Rect(50, 50, 200, 50)
         pygame.draw.rect(config_screen, (255, 0, 0), botonReiniciarNivel)
-
-        font = pygame.font.Font(None, 36)
-        text = font.render("Reiniciar Nivel", True, (255, 255, 255))
+        text = self.font.render("Reiniciar Nivel", True, (255, 255, 255))
         text_rect = text.get_rect(center=botonReiniciarNivel.center)
+        config_screen.blit(text, text_rect)
+
+        # Agregar boton para volver al menu
+        botonVolverMenu = pygame.Rect(50, 150, 200, 50)
+        pygame.draw.rect(config_screen, (0, 0, 255), botonVolverMenu)
+        text = self.font.render("Volver al Menu", True, (255, 255, 255))
+        text_rect = text.get_rect(center=botonVolverMenu.center)
         config_screen.blit(text, text_rect)
 
         running = True
@@ -219,7 +229,12 @@ class Level1Beginner:  # Creamos el nivel 1
                     relative_mouse_pos = (mouse_pos[0] - 150, mouse_pos[1] - 150)
                     if botonReiniciarNivel.collidepoint(relative_mouse_pos):
                         print("Reiniciar Nivel")
+                        running = False
+                        self.juegoPausado = False
                         self.setup(self.tmx_mapa_1)
+                    elif botonVolverMenu.collidepoint(relative_mouse_pos):
+                        print("Volver al Menu")
+                        self.volver_menu = True
                         running = False
                         self.juegoPausado = False
 
