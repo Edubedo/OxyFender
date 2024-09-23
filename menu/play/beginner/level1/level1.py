@@ -33,6 +33,7 @@ class Level1Beginner:  # Creamos el nivel 1
         self.font = pygame.font.Font(None, 36)  # Initialize font
 
         self.paused = False  # Flag to track if the game is paused
+        self.screen_capture = None  # Variable to store screen capture
 
         self.setup(self.tmx_mapa_1)
 
@@ -91,6 +92,8 @@ class Level1Beginner:  # Creamos el nivel 1
                         sys.exit()
                     else:
                         self.paused = not self.paused
+                        if self.paused:
+                            self.screen_capture = self.mostrar_superficie.copy()  # Capture the current screen
 
             if self.paused:
                 self.pantallaConfiguracion()
@@ -190,10 +193,6 @@ class Level1Beginner:  # Creamos el nivel 1
         config_screen = pygame.Surface((config_screen_width, config_screen_height))
         config_screen.fill((50, 50, 50))  # Dark grey background
 
-        # Darken the main screen
-        dark_overlay = pygame.Surface(self.mostrar_superficie.get_size(), pygame.SRCALPHA)
-        dark_overlay.fill((0, 0, 0, 150))  # Semi-transparent black
-
         running = True
         while running:
             for event in pygame.event.get():
@@ -204,7 +203,15 @@ class Level1Beginner:  # Creamos el nivel 1
                     self.paused = False
                     running = False
 
+            # Blit the captured screen as the background
+            if self.screen_capture:
+                self.mostrar_superficie.blit(self.screen_capture, (0, 0))
+
+            # Darken the main screen
+            dark_overlay = pygame.Surface(self.mostrar_superficie.get_size(), pygame.SRCALPHA)
+            dark_overlay.fill((0, 0, 0, 150))  # Semi-transparent black
             self.mostrar_superficie.blit(dark_overlay, (0, 0))
+
             self.mostrar_superficie.blit(config_screen, (150, 150))
 
             pygame.display.flip()
