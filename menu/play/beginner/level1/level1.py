@@ -3,9 +3,8 @@ from utils.settings import *
 from os.path import join
 from pytmx.util_pygame import load_pygame
 import sys
-from menu.play.beginner.level1.sprites import Sprite
-from menu.play.beginner.level1.player import Player
-from random import uniform
+from utils.sprites import Sprite
+from utils.player import Player
 
 class Level1Beginner:  # Creamos el nivel 1
     def __init__(self, name, dificultadNivel, id):
@@ -30,6 +29,10 @@ class Level1Beginner:  # Creamos el nivel 1
         self.last_elevator = None  # Último elevador al que fue teletransportado
         self.teleport_cooldown = 1000  # Tiempo de espera en milisegundos
         self.last_teleport_time = 0  # Última vez que se teletransportó
+
+        self.font = pygame.font.Font(None, 36)  # Initialize font
+
+        self.paused = False  # Flag to track if the game is paused
 
         self.setup(self.tmx_mapa_1)
 
@@ -82,6 +85,16 @@ class Level1Beginner:  # Creamos el nivel 1
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    if self.paused:
+                        pygame.quit()
+                        sys.exit()
+                    else:
+                        self.paused = not self.paused
+
+            if self.paused:
+                self.pantallaConfiguracion()
+                continue
 
             keys = pygame.key.get_pressed()  # Tenemos que agregar esta funciona para hacer que el jugador se mueva
             player_movement = pygame.Vector2(0, 0)
@@ -153,6 +166,13 @@ class Level1Beginner:  # Creamos el nivel 1
             self.todos_los_sprites.update(moving, direction)
 
             self.mostrar_superficie.fill(BACKGROUND_COLOR)
+
+            # Dibujar el mapa de Tiled
+            for layer in self.tmx_mapa_1.visible_layers:
+                if hasattr(layer, 'tiles'):
+                    for x, y, image in layer.tiles():
+                        self.mostrar_superficie.blit(image, (x * TILE_SIZE - self.camera_offset.x, y * TILE_SIZE - self.camera_offset.y))
+
             for sprite in self.todos_los_sprites:
                 self.mostrar_superficie.blit(sprite.image, sprite.rect.topleft - self.camera_offset)
 
@@ -163,3 +183,28 @@ class Level1Beginner:  # Creamos el nivel 1
             pygame.display.flip()
 
             clock.tick(FPS)
+
+    def pantallaConfiguracion(self):
+        config_screen_width = self.mostrar_superficie.get_width() - 300
+        config_screen_height = self.mostrar_superficie.get_height() - 300
+        config_screen = pygame.Surface((config_screen_width, config_screen_height))
+        config_screen.fill((50, 50, 50))  # Dark grey background
+
+        # Darken the main screen
+        dark_overlay = pygame.Surface(self.mostrar_superficie.get_size(), pygame.SRCALPHA)
+        dark_overlay.fill((0, 0, 0, 150))  # Semi-transparent black
+
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    self.paused = False
+                    running = False
+
+            self.mostrar_superficie.blit(dark_overlay, (0, 0))
+            self.mostrar_superficie.blit(config_screen, (150, 150))
+
+            pygame.display.flip()
