@@ -1,7 +1,6 @@
 import pygame
 from utils.settings import *
 
-
 # Importamos las librerias de los niveles 
 from menu.play.beginner.level1.level1 import Level1Beginner
 from menu.play.beginner.level2.level2 import Level2Beginner
@@ -56,6 +55,12 @@ class MenuPlay:
             rectDificultad = background_rect.get_rect(topleft=(0, 150 + i * 70))
             self.screen.blit(background_rect, rectDificultad)
             self.dictMostrarOpcionesDificultad.append((opcionDificultad, rectDificultad))
+        
+        # Crear botón de regreso
+        back_button = self.font.render("Back", True, WHITE)
+        back_button_rect = back_button.get_rect(topleft=(10, HEIGHT - 50))
+        self.screen.blit(back_button, back_button_rect)
+        
         pygame.display.flip()
 
         hoverOpcionSeleccionadaDificultad = None
@@ -82,8 +87,12 @@ class MenuPlay:
                     # Recorrer las opciones de dificultad para saber cual fue la seleccionada
                     for opcionDificultad, rectDificultad in self.dictMostrarOpcionesDificultad:
                         if rectDificultad.collidepoint(event.pos):
-                            return self.mostrarMenuNiveles(opcionDificultad)
-            
+                            self.mostrarMenuNiveles(opcionDificultad)
+                            continue
+                    # Si se hace clic en el botón de regreso
+                    if back_button_rect.collidepoint(event.pos):
+                        return
+
             # Pintar las opciones de dificultad en la pantalla
             self.screen.blit(self.fondoMenuDificultad, [0, 0])
             self.screen.blit(titulo, titulo_rect)
@@ -100,6 +109,9 @@ class MenuPlay:
                 text_rect = textoMostrarDificultad.get_rect(topleft=(10, BUTTON_MENU_HEIGHT // 2 - textoMostrarDificultad.get_height() // 2))
                 background_rect.blit(textoMostrarDificultad, text_rect.topleft)
                 self.screen.blit(background_rect, rectDificultad)
+            
+            # Pintar el botón de regreso
+            self.screen.blit(back_button, back_button_rect)
             pygame.display.flip()
 
     def mostrarMenuNiveles(self, dificultadNivel):
@@ -133,6 +145,12 @@ class MenuPlay:
             rectNivel = background_rect.get_rect(topleft=(0, 150 + i * 70))
             self.screen.blit(background_rect, rectNivel)
             self.option_rects.append((level, rectNivel))
+        
+        # Crear botón de regreso
+        back_button = self.font.render("Back", True, WHITE)
+        back_button_rect = back_button.get_rect(topleft=(10, HEIGHT - 50))
+        self.screen.blit(back_button, back_button_rect)
+        
         pygame.display.flip()
 
         hoverOpcionSeleccionadaNiveles = None
@@ -168,6 +186,9 @@ class MenuPlay:
                                     Level2Advanced(level['name'], level['dificultadNivel'], level['id'])
                             if level['id'] == "advanced_level_3":
                                     Level3Advanced(level['name'], level['dificultadNivel'], level['id'])
+                    # Si se hace clic en el botón de regreso
+                    if back_button_rect.collidepoint(event.pos):
+                        return
             
             self.screen.blit(self.fondoMenuDificultad, [0, 0])
             self.screen.blit(titulo, titulo_rect)
@@ -183,5 +204,7 @@ class MenuPlay:
                 text_rect = textNivel.get_rect(topleft=(10, BUTTON_MENU_HEIGHT // 2 - textNivel.get_height() // 2))
                 background_rect.blit(textNivel, text_rect.topleft)
                 self.screen.blit(background_rect, rectNivel)
+            
+            # Pintar el botón de regreso
+            self.screen.blit(back_button, back_button_rect)
             pygame.display.flip()
-

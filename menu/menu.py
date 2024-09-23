@@ -98,6 +98,7 @@ class Menu:
                             if option == "play" or option == "jugar":
                                 game_menu = MenuPlay(self.screen, self.config)
                                 game_menu.mostrarMenuDificultad()
+                                continue
                             
                             if option == "credits" or option == "créditos":
                                 show_credits(self.screen)
