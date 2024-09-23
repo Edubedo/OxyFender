@@ -74,7 +74,7 @@ class MenuPlay:
 
         while True:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == pygame.MenuPlay:
                     pygame.quit()
                     sys.exit()
                 # Cuando hace hover con el mouse
@@ -89,12 +89,6 @@ class MenuPlay:
                     # Si el mouse no está encima de ninguna opción de dificultad cambiar el cursor a la flecha
                     else:
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                    
-                        # Verificamos si el mouse está encima del botón de regreso para ponerle el curso de mano o de flecha
-                        if back_button_rect.collidepoint(event.pos):
-                            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-                        else:
-                            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
                 # Cuando hace click con el mouse                        
                 elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -183,7 +177,7 @@ class MenuPlay:
         hoverOpcionSeleccionadaNiveles = None
         while True:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == pygame.MenuPlay:
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.MOUSEMOTION:
@@ -195,13 +189,6 @@ class MenuPlay:
                             break
                     else:
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-
-                        # Verificamos si el mouse está encima del botón de regreso para ponerle el curso de mano o de flecha
-                        if back_button_rect.collidepoint(event.pos):
-                            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-                        else:
-                            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     for level, rectNivel in self.option_rects:
                         if rectNivel.collidepoint(event.pos):
