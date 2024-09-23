@@ -32,7 +32,7 @@ class Level1Beginner:  # Creamos el nivel 1
 
         self.font = pygame.font.Font(None, 36)  # Initialize font
 
-        self.paused = False  # Flag to track if the game is paused
+        self.juegoPausado = False  # Flag to track if the game is juegoPausado
         self.screen_capture = None  # Variable to store screen capture
 
         self.setup(self.tmx_mapa_1)
@@ -87,15 +87,15 @@ class Level1Beginner:  # Creamos el nivel 1
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                    if self.paused:
+                    if self.juegoPausado:
                         pygame.quit()
                         sys.exit()
                     else:
-                        self.paused = not self.paused
-                        if self.paused:
+                        self.juegoPausado = not self.juegoPausado
+                        if self.juegoPausado:
                             self.screen_capture = self.mostrar_superficie.copy()  # Capture the current screen
 
-            if self.paused:
+            if self.juegoPausado:
                 self.pantallaConfiguracion()
                 continue
 
@@ -188,20 +188,20 @@ class Level1Beginner:  # Creamos el nivel 1
             clock.tick(FPS)
 
     def pantallaConfiguracion(self):
-        config_screen_width = self.mostrar_superficie.get_width() - 300
-        config_screen_height = self.mostrar_superficie.get_height() - 300
+        configuracionWidthPantalla = self.mostrar_superficie.get_width() - 200
+        configuracionHeightPantalla = self.mostrar_superficie.get_height() - 200
 
         # Creamos una nueva superficie para la pantalla de configuración
-        config_screen = pygame.Surface((config_screen_width, config_screen_height))
+        config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla))
         config_screen.fill((50, 50, 50)) 
 
         # Agregar boton para reiniciar nivel
-        restart_button = pygame.Rect(50, 50, 200, 50)
-        pygame.draw.rect(config_screen, (255, 0, 0), restart_button)
+        botonReiniciarNivel = pygame.Rect(50, 50, 200, 50)
+        pygame.draw.rect(config_screen, (255, 0, 0), botonReiniciarNivel)
 
         font = pygame.font.Font(None, 36)
         text = font.render("Reiniciar Nivel", True, (255, 255, 255))
-        text_rect = text.get_rect(center=restart_button.center)
+        text_rect = text.get_rect(center=botonReiniciarNivel.center)
         config_screen.blit(text, text_rect)
 
         running = True
@@ -211,25 +211,26 @@ class Level1Beginner:  # Creamos el nivel 1
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                    self.paused = False
+                    self.juegoPausado = False
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = event.pos
+                    # Revisamos sí el mouse está encima del botón
                     relative_mouse_pos = (mouse_pos[0] - 150, mouse_pos[1] - 150)
-                    if restart_button.collidepoint(relative_mouse_pos):
+                    if botonReiniciarNivel.collidepoint(relative_mouse_pos):
                         print("Reiniciar Nivel")
                         self.setup(self.tmx_mapa_1)
                         running = False
-                        self.paused = False
+                        self.juegoPausado = False
 
             if self.screen_capture:
                 self.mostrar_superficie.blit(self.screen_capture, (0, 0))
 
             # Oscurecemos la pantalla cuando le damos a pausa
-            dark_overlay = pygame.Surface(self.mostrar_superficie.get_size(), pygame.SRCALPHA)
+            dark_overlay = pygame.Surface(self.mostrar_superficie.get_size(), pygame.SRCALPHA) # Superficie transparente
             dark_overlay.fill((0, 0, 0, 150))  # Semi-transparent black
             self.mostrar_superficie.blit(dark_overlay, (0, 0))
 
             self.mostrar_superficie.blit(config_screen, (150, 150))
 
-            pygame.display.flip()
+            pygame.display.flip() # Actualizamos la pantalla
