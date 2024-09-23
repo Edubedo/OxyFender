@@ -23,6 +23,7 @@ class Level1Beginner:  # Creamos el nivel 1
         self.todos_los_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para todos los sprites
         self.colisiones_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para las colisiones
         self.elevador_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores
+        self.filtro_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores
 
         #  Cargamos el mapa del nivel 1
         self.tmx_mapa_1 = load_pygame(join("assets", "maps", "beginner", "level1", "SCIENCE.tmx"))  # Cargamos el mapa del nivel 1
@@ -70,6 +71,7 @@ class Level1Beginner:  # Creamos el nivel 1
         filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
         for obj in filtooo_layer: # Recorremos los objetos de la capa 'filtooo'
             sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
+            self.filtro_sprites.add(sprite)
 
         # Personaje
         self.jugador = Player((100, 420), self.todos_los_sprites)  # ! Establecer posicion del jugador de tiled
@@ -157,11 +159,12 @@ class Level1Beginner:  # Creamos el nivel 1
             # Verificar colisiones con elevadores
             tiempoActualElevadores = pygame.time.get_ticks()
             colisionesElevadores = pygame.sprite.spritecollide(self.jugador, self.elevador_sprites, False)
+                
             if colisionesElevadores and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
                 # Mostrar mensaje en pantalla
-                font = pygame.font.Font(None, 36)
-                text = font.render("Click X para viajar en el elevador", True, (255, 255, 255))
-                text_rect = text.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() // 2))
+                fuenteColisionElevador = pygame.font.Font(None, 36)
+                textoColisionElevador = fuenteColisionElevador.render("Click X para viajar en el elevador", True, (255, 255, 255))
+                rectTextoColisionElevador = textoColisionElevador.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() // 2))
 
                 # Verificar si se presiona la tecla 'X'
                 if keys[pygame.K_x]:
@@ -173,6 +176,22 @@ class Level1Beginner:  # Creamos el nivel 1
                             self.ultimaVezTeletransportado = tiempoActualElevadores
                             break
 
+            # ------------------- FILTRO ------------------- #
+            colisionesFiltros = pygame.sprite.spritecollide(self.jugador, self.filtro_sprites, False)
+
+            if colisionesFiltros:
+                for filtro in colisionesFiltros:
+                    fuenteArreglarFiltro = pygame.font.Font(None, 36)
+                    textoArreglarFiltro = fuenteArreglarFiltro.render("Click A para arreglar filtro", True, (255, 255, 255))
+                    rectTextoArreglarFiltro = textoArreglarFiltro.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() // 2))
+
+                    if keys[pygame.K_a]:
+                        for filtro in self.filtro_sprites:
+                            if filtro not in colisionesFiltros:
+                                # Mostrar mensaje en pantalla de que presione A
+                                self.mostrarSuperficieNivel.blit(textoArreglarFiltro, rectTextoArreglarFiltro)
+
+            # ------------------- MANEJO DEL VECTOR DE CÁMARA ------------------- #
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
             self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2
 
@@ -189,9 +208,14 @@ class Level1Beginner:  # Creamos el nivel 1
             for sprite in self.todos_los_sprites:
                 self.mostrarSuperficieNivel.blit(sprite.image, sprite.rect.topleft - self.camera_offset)
 
+
             # Mostrar mensaje en pantalla si está cerca del elevador
             if colisionesElevadores and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
-                self.mostrarSuperficieNivel.blit(text, text_rect)
+                self.mostrarSuperficieNivel.blit(textoColisionElevador, rectTextoColisionElevador)
+
+            # Mostrar mensaje en pantalla si está cerca del filtro
+            if colisionesFiltros:
+                self.mostrarSuperficieNivel.blit(textoArreglarFiltro, rectTextoArreglarFiltro)
 
             pygame.display.flip()
 
