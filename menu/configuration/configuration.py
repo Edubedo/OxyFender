@@ -9,6 +9,12 @@ class Configuration:
         self.config_file = config_file
         self.settings = self.load_settings()
 
+    def diseño(screen, self):
+        surface = pygame.display.set_mode((400,300))
+        color = (255,0,0)
+        pygame.draw.rect(surface, color, pygame.Rect(30, 30, 60, 60))
+        pygame.display.flip()
+
     def load_settings(self):
         try:
             with open(self.config_file, "r", encoding="utf-8") as file:
@@ -33,7 +39,7 @@ class Configuration:
         languages = ["English", "Español"]
         for i, language in enumerate(languages):
             text = font.render(language, True, WHITE)
-            rect = text.get_rect(center=(screen.get_width() // 2, 150 + i * 50))
+            rect = text.get_rect(center=(screen.get_width() // 12, 200 + i * 50))
             screen.blit(text, rect)
             option_rects.append((language.lower(), rect))
         pygame.display.flip()
