@@ -1,6 +1,6 @@
 import pygame
 from menu.configuration.configuration import Configuration
-from utils.settings import *
+from utils.configuraciones import *
 from menu.play.menu_game import MenuPlay
 from menu.credits.credits import show_credits
 from os.path import join

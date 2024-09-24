@@ -1,4 +1,4 @@
-from utils.settings import *
+from utils.configuraciones import *
 
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups):

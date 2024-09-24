@@ -2,9 +2,9 @@
 # Este software no puede ser copiado o redistribuido sin permiso del autor.
 import pygame
 from menu.menu import Menu
-from utils.settings import *
+from utils.configuraciones import *
 
-def main():
+def play():
     pygame.init()  # Inicializar pygame
     screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Establecer tamaño de pantalla
     pygame.display.set_caption(TITLE_GAME) # Establecer el titulo del juego
@@ -14,6 +14,5 @@ def main():
     menuInicial.mostrarMenuInicial()  # Mostrar el menú del juego.
 
 if __name__ == "__main__":
-    main()
-
+    play()
 
