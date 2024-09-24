@@ -319,14 +319,14 @@ class Level1Beginner:  # Creamos el nivel 1
         # Agregar boton para reiniciar nivel
         botonReiniciarNivel = pygame.Rect(50, 50, 200, 50) # Establecer tamaño del boton
         pygame.draw.rect(config_screen, LIGHTBLUE, botonReiniciarNivel) # dibujar el boton de color azul
-        text = self.font.render("Reiniciar Nivel Arreglar aire", True, (255, 255, 255)) # Agregar texto al boton
+        text = self.font.render("  Arreglar aire", True, (255, 255, 255)) # Agregar texto al boton
         text_rect = text.get_rect(center=botonReiniciarNivel.center) # Centrar el texto en el boton
         config_screen.blit(text, text_rect) # Mostrar el texto en el boton
 
         # Agregar boton para volver a seleccionar nivel
         botonSeleccionarNivel = pygame.Rect(50, 150, 200, 50) # Establecer tamaño del boton
         pygame.draw.rect(config_screen, LIGHTBLUE, botonSeleccionarNivel) # dibujar el boton de color azul
-        text = self.font.render("Seleccionar nivel Arreglar aire", True, (255, 255, 255)) # Agregar texto al boton
+        text = self.font.render(" Arreglar aire", True, (255, 255, 255)) # Agregar texto al boton
         text_rect = text.get_rect(center=botonSeleccionarNivel.center) # Centrar el texto en el boton
         config_screen.blit(text, text_rect) # Mostrar el texto en el boton
 
