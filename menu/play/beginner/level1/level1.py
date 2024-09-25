@@ -5,6 +5,7 @@ from pytmx.util_pygame import load_pygame
 import sys
 from utils.sprites import Sprite
 from utils.jugador import Player
+from utils.clases.barraOxigeno import BarraOxigeno
 
 class Level1Beginner:  # Creamos el nivel 1
     def __init__(self, name, dificultadNivel, id):
@@ -15,11 +16,9 @@ class Level1Beginner:  # Creamos el nivel 1
 
         pygame.display.set_caption(f"{TITLE_GAME} - {name}")  # Establecer titulo del  juego
 
-        
         self.mostrarSuperficieNivel = pygame.display.get_surface()
 
         # Cargamos los sprites
-        # Un sprite es una imagen que se puede mover en la pantalla y puede interactuar con otros sprites
         self.todos_los_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para todos los sprites
         self.colisiones_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para las colisiones
         self.elevador_piso1_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores del piso 1
@@ -43,9 +42,17 @@ class Level1Beginner:  # Creamos el nivel 1
         self.capturarPantalla = None  # Captura de pantalla
         self.volver_menu = False  # Bandera para manejar sí le dio click al botón de volver al menu
 
+        self.victoy = False  # Bandera para manejar sí el jugador ganó
+        self.game_over = False  # Bandera para manejar sí el jugador perdió
+
+        # ------------------- AGREGAMOS LA BARRA DE OXIGENO ------------------- #
+        self.fuel_bar = BarraOxigeno(10, 100, 40, 300, 200)
+        self.fuel_bar.hp = 200
+
+        self.ultimoTiempoCombustible = pygame.time.get_ticks()  # Tiempo inicial para el combustible
+
         self.setup(self.tmx_mapa_1) # Inicializamos el nivel 1
 
-    
     def setup(self, tmx_mapa_1):
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Establecer cursor del mouse
         
@@ -99,10 +106,23 @@ class Level1Beginner:  # Creamos el nivel 1
             if self.volver_menu:
                 break
 
+            tiempoActualCombustible = pygame.time.get_ticks()
+            if not self.victoy:
+                if tiempoActualCombustible - self.ultimoTiempoCombustible >= 1000:  # Reduce fuel every second
+                    self.fuel_bar.hp -= 10
+                    self.ultimoTiempoCombustible = tiempoActualCombustible
+                    if self.fuel_bar.hp <= 0:
+                        self.game_over = True
+
+            if self.game_over:
+                self.pantallaConfiguracion()
+                continue
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                    
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     if self.juegoPausado:
                         pygame.quit()
@@ -164,7 +184,7 @@ class Level1Beginner:  # Creamos el nivel 1
                 elif movimientoJugador.x < 0:  # Moviéndose a la izquierda
                     self.jugador.rect.left = sprite.rect.right
 
-           # Verificar colisiones con elevadores
+            # Verificar colisiones con elevadores
             tiempoActualElevadores = pygame.time.get_ticks()
             colisionesElevadoresPiso1 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso1_sprites, False)
             colisionesElevadoresPiso2 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso2_sprites, False)
@@ -227,7 +247,6 @@ class Level1Beginner:  # Creamos el nivel 1
             for sprite in self.todos_los_sprites:
                 self.mostrarSuperficieNivel.blit(sprite.image, sprite.rect.topleft - self.camera_offset)
 
-
             # Mostrar mensaje en pantalla si está cerca del elevador
             if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
                 self.mostrarSuperficieNivel.blit(textoColisionElevador, rectTextoColisionElevador)
@@ -236,10 +255,12 @@ class Level1Beginner:  # Creamos el nivel 1
             if colisionesFiltros:
                 self.mostrarSuperficieNivel.blit(textoArreglarFiltro, rectTextoArreglarFiltro)
 
+            # Dibujar la barra de combustible en la pantalla principal del juego
+            self.fuel_bar.draw(self.screen)
+
             pygame.display.flip()
 
             clock.tick(FPS)
-
     def pantallaConfiguracion(self):
         # Posición del menú de configuración dentro del juego
         configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 200
@@ -399,3 +420,5 @@ class Level1Beginner:  # Creamos el nivel 1
             self.mostrarSuperficieNivel.blit(config_screen, (150, 150))  # Mostramos la pantalla de configuración
 
             pygame.display.flip() # Actualizamos la pantalla
+
+
