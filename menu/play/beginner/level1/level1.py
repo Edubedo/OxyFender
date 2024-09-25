@@ -46,6 +46,10 @@ class Level1Beginner:  # Creamos el nivel 1
         self.ganoNivel = False  # Bandera para manejar sí el jugador ganó
         self.perdioJuego = False  # Bandera para manejar sí el jugador perdió
 
+
+        self.setup(self.tmx_mapa_1) # Inicializamos el nivel 1
+
+    def setup(self, tmx_mapa_1):
         # ------------------- AGREGAMOS LA BARRA DE OXIGENO ------------------- #
         self.rectBarraCombustible = BarraOxigeno(10, 100, 40, 300, 200)
         self.rectBarraCombustible.hp = 200
@@ -56,10 +60,6 @@ class Level1Beginner:  # Creamos el nivel 1
 
         self.ultimoTiempoCombustible = pygame.time.get_ticks()  # Tiempo inicial para el combustible
 
-
-        self.setup(self.tmx_mapa_1) # Inicializamos el nivel 1
-
-    def setup(self, tmx_mapa_1):
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Establecer cursor del mouse
         
         self.tmx_tileset = pygame.image.load(join("assets", "maps", "beginner", "level1", "lab_tileset_LITE.png")).convert_alpha()  # Texturas del piso y techo
@@ -67,7 +67,7 @@ class Level1Beginner:  # Creamos el nivel 1
         self.posicion_x_personaje = 0  # Agregamos esta variable para la posicion del personaje
 
         # ------------------- AGREGAMOS LAS CAPAS Y COLISIONES DEL MAPA ------------------- #
-        for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2', 'CapaVerificarGano']:
+        for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2']:
             for x, y, superficie in tmx_mapa_1.get_layer_by_name(nombreCapa).tiles(): # Recorremos las capas del mapa de Tiled Y obtenemos las superficies
 
                 # Estructuras
@@ -121,7 +121,7 @@ class Level1Beginner:  # Creamos el nivel 1
 
             if not self.ganoNivel: # Sí no ha ganado el nivel
                 if tiempoActualCombustible - self.ultimoTiempoCombustible >= 1000:  # Reducir el oxigeno con cada segundo cada pasa de 10 en 10
-                    self.rectBarraCombustible.hp -= 1
+                    self.rectBarraCombustible.hp -= 10
                     self.ultimoTiempoCombustible = tiempoActualCombustible
                     if self.rectBarraCombustible.hp <= 0:
                         self.perdioJuego = True
@@ -225,6 +225,9 @@ class Level1Beginner:  # Creamos el nivel 1
                             self.ultimoElevador = elevator
                             self.ultimaVezTeletransportado = tiempoActualElevadores
                             break
+
+            # ------------------- GANO NIVEL --------------- # 
+            colisionesVerificarGano = pygame.sprite.spritecollide(self.jugador, self.capa_verificar_gano, False)
 
             # ------------------- FILTRO ------------------- #
             colisionesFiltros = pygame.sprite.spritecollide(self.jugador, self.filtro_sprites, False)
