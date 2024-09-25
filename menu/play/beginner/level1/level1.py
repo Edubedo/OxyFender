@@ -42,14 +42,19 @@ class Level1Beginner:  # Creamos el nivel 1
         self.capturarPantalla = None  # Captura de pantalla
         self.volver_menu = False  # Bandera para manejar sí le dio click al botón de volver al menu
 
-        self.victoy = False  # Bandera para manejar sí el jugador ganó
-        self.game_over = False  # Bandera para manejar sí el jugador perdió
+        self.ganoNivel = False  # Bandera para manejar sí el jugador ganó
+        self.perdioJuego = False  # Bandera para manejar sí el jugador perdió
 
         # ------------------- AGREGAMOS LA BARRA DE OXIGENO ------------------- #
-        self.fuel_bar = BarraOxigeno(10, 100, 40, 300, 200)
-        self.fuel_bar.hp = 200
+        self.rectBarraCombustible = BarraOxigeno(10, 100, 40, 300, 200)
+        self.rectBarraCombustible.hp = 200
+
+        #  ------------------- Agregamos el conteo de oxigenos reparados y el objetivo x/y ------------------- #
+        self.contadorOxigenoReparado = 0
+        self.metaOxigenoReparado = 2
 
         self.ultimoTiempoCombustible = pygame.time.get_ticks()  # Tiempo inicial para el combustible
+
 
         self.setup(self.tmx_mapa_1) # Inicializamos el nivel 1
 
@@ -94,6 +99,9 @@ class Level1Beginner:  # Creamos el nivel 1
         self.run() # Una vez cargadas las texturas y colisiones generales inicializamos el juego    
 
     def run(self): 
+        # Pausar la música
+        pygame.mixer.music.pause()
+
         clock = pygame.time.Clock() # Inicializamos el reloj para controlar los FPS
 
         # ------------------- GRAVEDAD ------------------- #
@@ -106,15 +114,16 @@ class Level1Beginner:  # Creamos el nivel 1
             if self.volver_menu:
                 break
 
-            tiempoActualCombustible = pygame.time.get_ticks()
-            if not self.victoy:
-                if tiempoActualCombustible - self.ultimoTiempoCombustible >= 1000:  # Reduce fuel every second
-                    self.fuel_bar.hp -= 10
-                    self.ultimoTiempoCombustible = tiempoActualCombustible
-                    if self.fuel_bar.hp <= 0:
-                        self.game_over = True
+            tiempoActualCombustible = pygame.time.get_ticks() # Tiempo actual del combustible
 
-            if self.game_over:
+            if not self.ganoNivel: # Sí no ha ganado el nivel
+                if tiempoActualCombustible - self.ultimoTiempoCombustible >= 1000:  # Reducir el oxigeno con cada segundo cada pasa de 10 en 10
+                    self.rectBarraCombustible.hp -= 1
+                    self.ultimoTiempoCombustible = tiempoActualCombustible
+                    if self.rectBarraCombustible.hp <= 0:
+                        self.perdioJuego = True
+
+            if self.perdioJuego:
                 self.pantallaConfiguracion()
                 continue
 
@@ -256,7 +265,12 @@ class Level1Beginner:  # Creamos el nivel 1
                 self.mostrarSuperficieNivel.blit(textoArreglarFiltro, rectTextoArreglarFiltro)
 
             # Dibujar la barra de combustible en la pantalla principal del juego
-            self.fuel_bar.draw(self.screen)
+            self.rectBarraCombustible.draw(self.screen)
+
+            # Mostrar en pantalla el conteo de oxigenos reparados
+            textoOxigenosReparados = self.font.render(f"Oxigenos reparados: {self.contadorOxigenoReparado}/{self.metaOxigenoReparado}", True, (255, 255, 255))
+            self.mostrarSuperficieNivel.blit(textoOxigenosReparados, (10, 10))
+            
 
             pygame.display.flip()
 
