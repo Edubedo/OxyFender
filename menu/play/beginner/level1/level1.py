@@ -24,7 +24,8 @@ class Level1Beginner:  # Creamos el nivel 1
         self.elevador_piso1_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores del piso 1
         self.elevador_piso2_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores del piso 2
         self.filtro_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores
-
+        self.capa_verificar_gano = pygame.sprite.Group()  # Creamos un grupo de sprites para verificar si el jugador ganó
+        
         #  Cargamos el mapa del nivel 1
         self.tmx_mapa_1 = load_pygame(join("assets", "maps", "beginner", "level1", "SCIENCE.tmx"))  # Cargamos el mapa del nivel 1
 
@@ -66,7 +67,7 @@ class Level1Beginner:  # Creamos el nivel 1
         self.posicion_x_personaje = 0  # Agregamos esta variable para la posicion del personaje
 
         # ------------------- AGREGAMOS LAS CAPAS Y COLISIONES DEL MAPA ------------------- #
-        for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2']:
+        for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2', 'CapaVerificarGano']:
             for x, y, superficie in tmx_mapa_1.get_layer_by_name(nombreCapa).tiles(): # Recorremos las capas del mapa de Tiled Y obtenemos las superficies
 
                 # Estructuras
@@ -81,6 +82,8 @@ class Level1Beginner:  # Creamos el nivel 1
                     self.elevador_piso1_sprites.add(sprite)
                 elif nombreCapa == 'AscensorPiso2':
                     self.elevador_piso2_sprites.add(sprite)
+                elif nombreCapa == 'CapaVerificarGano':
+                    self.capa_verificar_gano.add(sprite)
 
         # ------------------- AGREGAMOS EL FILTRO ------------------- #
         filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
@@ -124,7 +127,7 @@ class Level1Beginner:  # Creamos el nivel 1
                         self.perdioJuego = True
 
             if self.perdioJuego:
-                self.pantallaConfiguracion()
+                self.pantallaPausar()
                 continue
 
             for event in pygame.event.get():
@@ -142,7 +145,7 @@ class Level1Beginner:  # Creamos el nivel 1
                             self.capturarPantalla = self.mostrarSuperficieNivel.copy()  # Capture the current screen
 
             if self.juegoPausado:
-                self.pantallaConfiguracion()
+                self.pantallaPausar()
                 continue
 
             # ------------------- MOVIMIENTO DEL JUGADOR ------------------- #
@@ -197,6 +200,7 @@ class Level1Beginner:  # Creamos el nivel 1
             tiempoActualElevadores = pygame.time.get_ticks()
             colisionesElevadoresPiso1 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso1_sprites, False)
             colisionesElevadoresPiso2 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso2_sprites, False)
+            capaVerificarGano = pygame.sprite.spritecollide(self.jugador, self.capa_verificar_gano, False)
                 
             if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
                 # Mostrar mensaje en pantalla
@@ -231,13 +235,11 @@ class Level1Beginner:  # Creamos el nivel 1
                     textoArreglarFiltro = fuenteArreglarFiltro.render("Click A para arreglar filtro", True, (255, 255, 255))
                     rectTextoArreglarFiltro = textoArreglarFiltro.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() // 2))
 
-                    if keys[pygame.K_a]:
-                        for filtro in self.filtro_sprites:
-                            if filtro not in colisionesFiltros:
-                                # Mostrar mensaje en pantalla de que presione A
-                                self.mostrarSuperficieNivel.blit(textoArreglarFiltro, rectTextoArreglarFiltro)
-                                self.pantallaArreglarAire()
-                                continue
+                    if keys[pygame.K_a] and not self.juegoPausado:
+                        self.juegoPausado = True
+                        self.capturarPantalla = self.mostrarSuperficieNivel.copy()  # Capture the current screen
+                        self.pantallaArreglarAire()
+                        self.juegoPausado = False
 
             # ------------------- MANEJO DEL VECTOR DE CÁMARA ------------------- #
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
@@ -275,7 +277,8 @@ class Level1Beginner:  # Creamos el nivel 1
             pygame.display.flip()
 
             clock.tick(FPS)
-    def pantallaConfiguracion(self):
+    
+    def pantallaPausar(self):
         # Posición del menú de configuración dentro del juego
         configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 200
         configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height() - 300
@@ -356,7 +359,9 @@ class Level1Beginner:  # Creamos el nivel 1
             pygame.display.flip() # Actualizamos la pantalla
 
     def pantallaArreglarAire(self):
-        # Posición del menú de configuración dentro del juego
+        self.arreglo = False
+       
+       # Posición del menú de configuración dentro del juego
         configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 200
         configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height() - 300
 
@@ -366,19 +371,11 @@ class Level1Beginner:  # Creamos el nivel 1
         config_screen.fill(DARK_BLUE) 
 
         # Agregar boton para reiniciar nivel
-        botonReiniciarNivel = pygame.Rect(50, 50, 200, 50) # Establecer tamaño del boton
-        pygame.draw.rect(config_screen, LIGHTBLUE, botonReiniciarNivel) # dibujar el boton de color azul
-        text = self.font.render("Reiniciar Nivel Arreglar aire", True, (255, 255, 255)) # Agregar texto al boton
-        text_rect = text.get_rect(center=botonReiniciarNivel.center) # Centrar el texto en el boton
+        botonSolucionarNivel = pygame.Rect(50, 50, 200, 50) # Establecer tamaño del boton
+        pygame.draw.rect(config_screen, LIGHTBLUE, botonSolucionarNivel) # dibujar el boton de color azul
+        text = self.font.render("Arreglar Aire", True, (255, 255, 255)) # Agregar texto al boton
+        text_rect = text.get_rect(center=botonSolucionarNivel.center) # Centrar el texto en el boton
         config_screen.blit(text, text_rect) # Mostrar el texto en el boton
-
-        # Agregar boton para volver a seleccionar nivel
-        botonSeleccionarNivel = pygame.Rect(50, 150, 200, 50) # Establecer tamaño del boton
-        pygame.draw.rect(config_screen, LIGHTBLUE, botonSeleccionarNivel) # dibujar el boton de color azul
-        text = self.font.render("Seleccionar nivel Arreglar aire", True, (255, 255, 255)) # Agregar texto al boton
-        text_rect = text.get_rect(center=botonSeleccionarNivel.center) # Centrar el texto en el boton
-        config_screen.blit(text, text_rect) # Mostrar el texto en el boton
-
 
         banderaEjecutandoNivel1 = True
         while banderaEjecutandoNivel1:
@@ -401,38 +398,33 @@ class Level1Beginner:  # Creamos el nivel 1
                     # Revisamos sí el mouse está encima del botón
                     posicionMousePantallaConfiguración = (posicionMouse[0] - 150, posicionMouse[1] - 150) # Posición del mouse en la pantalla de configuración
                     
-                    if botonReiniciarNivel.collidepoint(posicionMousePantallaConfiguración) or botonSeleccionarNivel.collidepoint(posicionMousePantallaConfiguración):
+                    if botonSolucionarNivel.collidepoint(posicionMousePantallaConfiguración):
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
                     else:
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 
 
                 # Sí le da click a los botones
-                elif event.type == pygame.MOUSEBUTTONDOWN: 
+                elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                     posicionMouse = event.pos # Rastreamos la posicion del mouse
                     # Revisamos sí el mouse está encima del botón
                     posicionMousePantallaConfiguración = (posicionMouse[0] - 150, posicionMouse[1] - 150) # Posición del mouse en la pantalla de configuración
                     
-                    if botonReiniciarNivel.collidepoint(posicionMousePantallaConfiguración): # Sí hace click en reiniciar nivel volvemos a cargar el nivel 1
+                    if botonSolucionarNivel.collidepoint(posicionMousePantallaConfiguración): # Sí hace click en reiniciar nivel volvemos a cargar el nivel 1
+                        print("Arreglando aire")
+                        self.arreglo = True
                         banderaEjecutandoNivel1 = False
                         self.juegoPausado = False
-                        self.setup(self.tmx_mapa_1) # Volvemos a cargar el mapa
+                        pygame.event.clear()  # Limpiar la cola de eventos
+                        break
 
-                    elif botonSeleccionarNivel.collidepoint(posicionMousePantallaConfiguración): # Sí hace click en volver al menú, volv
-                        self.volver_menu = True
-                        banderaEjecutandoNivel1 = False
-                        self.juegoPausado = False
+            if banderaEjecutandoNivel1:  # Solo mostrar la pantalla de configuración si el bucle sigue activo
+                self.mostrarSuperficieNivel.blit(config_screen, (150, 150))  # Mostramos la pantalla de configuración
+                pygame.display.flip() # Actualizamos la pantalla
 
-            if self.capturarPantalla:
-                self.mostrarSuperficieNivel.blit(self.capturarPantalla, (0, 0))
-
-            # Oscurecemos la pantalla cuando le damos a pausa
-            fondoOscuro = pygame.Surface(self.mostrarSuperficieNivel.get_size(), pygame.SRCALPHA) # Superficie transparente oscurecida
-            fondoOscuro.fill((0, 0, 0, 150))  # Semi-transparent black
-            self.mostrarSuperficieNivel.blit(fondoOscuro, (0, 0)) # Mostramos la pantalla del nivel oscura
-
-            self.mostrarSuperficieNivel.blit(config_screen, (150, 150))  # Mostramos la pantalla de configuración
-
-            pygame.display.flip() # Actualizamos la pantalla
-
-
+        if self.arreglo:
+            print("Incrementando contador de oxígeno reparado.")
+            self.contadorOxigenoReparado += 1
+            self
+    def pantallaPerdioNivel():
+        pass
