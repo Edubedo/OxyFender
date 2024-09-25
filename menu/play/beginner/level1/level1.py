@@ -22,7 +22,8 @@ class Level1Beginner:  # Creamos el nivel 1
         # Un sprite es una imagen que se puede mover en la pantalla y puede interactuar con otros sprites
         self.todos_los_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para todos los sprites
         self.colisiones_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para las colisiones
-        self.elevador_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores
+        self.elevador_piso1_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores del piso 1
+        self.elevador_piso2_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores del piso 2
         self.filtro_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores
 
         #  Cargamos el mapa del nivel 1
@@ -53,7 +54,7 @@ class Level1Beginner:  # Creamos el nivel 1
         self.posicion_x_personaje = 0  # Agregamos esta variable para la posicion del personaje
 
         # ------------------- AGREGAMOS LAS CAPAS Y COLISIONES DEL MAPA ------------------- #
-        for nombreCapa in ['prtatras', 'Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'Ascensor']:
+        for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2']:
             for x, y, superficie in tmx_mapa_1.get_layer_by_name(nombreCapa).tiles(): # Recorremos las capas del mapa de Tiled Y obtenemos las superficies
 
                 # Estructuras
@@ -64,14 +65,21 @@ class Level1Beginner:  # Creamos el nivel 1
                     self.colisiones_sprites.add(sprite)
 
                 # Elevadores de las capas del mapa para cuando interactue con el jugador
-                if nombreCapa == 'Ascensor':
-                    self.elevador_sprites.add(sprite)
+                if nombreCapa == 'AscensorPiso1':
+                    self.elevador_piso1_sprites.add(sprite)
+                elif nombreCapa == 'AscensorPiso2':
+                    self.elevador_piso2_sprites.add(sprite)
 
         # ------------------- AGREGAMOS EL FILTRO ------------------- #
         filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
         for obj in filtooo_layer: # Recorremos los objetos de la capa 'filtooo'
             sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
             self.filtro_sprites.add(sprite)
+
+        # ------------------- AGREGAMOS MAS OBJETOS DE TIPO IMG ------------------- #
+        for nombreObjeto in ['Objetos']:
+            for obj in tmx_mapa_1.get_layer_by_name(nombreObjeto):
+                print(obj)
 
         # Personaje
         self.jugador = Player((100, 420), self.todos_los_sprites)  # ! Establecer posicion del jugador de tiled
@@ -156,11 +164,12 @@ class Level1Beginner:  # Creamos el nivel 1
                 elif movimientoJugador.x < 0:  # Moviéndose a la izquierda
                     self.jugador.rect.left = sprite.rect.right
 
-            # Verificar colisiones con elevadores
+           # Verificar colisiones con elevadores
             tiempoActualElevadores = pygame.time.get_ticks()
-            colisionesElevadores = pygame.sprite.spritecollide(self.jugador, self.elevador_sprites, False)
+            colisionesElevadoresPiso1 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso1_sprites, False)
+            colisionesElevadoresPiso2 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso2_sprites, False)
                 
-            if colisionesElevadores and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
+            if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
                 # Mostrar mensaje en pantalla
                 fuenteColisionElevador = pygame.font.Font(None, 36)
                 textoColisionElevador = fuenteColisionElevador.render("Click X para viajar en el elevador", True, (255, 255, 255))
@@ -169,9 +178,17 @@ class Level1Beginner:  # Creamos el nivel 1
                 # Verificar si se presiona la tecla 'X'
                 if keys[pygame.K_x]:
                     # Teletransportar al jugador al otro elevador
-                    for elevator in self.elevador_sprites:
-                        if elevator not in colisionesElevadores and elevator != self.ultimoElevador:
+                    if colisionesElevadoresPiso1:
+                        for elevator in self.elevador_piso2_sprites:
                             self.jugador.rect.topleft = elevator.rect.topleft
+                            self.jugador.rect.y += (self.jugador.rect.height / 3)  # Ajustar la posición para que no quede flotando
+                            self.ultimoElevador = elevator
+                            self.ultimaVezTeletransportado = tiempoActualElevadores
+                            break
+                    elif colisionesElevadoresPiso2:
+                        for elevator in self.elevador_piso1_sprites:
+                            self.jugador.rect.topleft = elevator.rect.topleft
+                            self.jugador.rect.y += (self.jugador.rect.height / 3)  # Ajustar la posición para que no quede flotando
                             self.ultimoElevador = elevator
                             self.ultimaVezTeletransportado = tiempoActualElevadores
                             break
@@ -212,7 +229,7 @@ class Level1Beginner:  # Creamos el nivel 1
 
 
             # Mostrar mensaje en pantalla si está cerca del elevador
-            if colisionesElevadores and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
+            if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
                 self.mostrarSuperficieNivel.blit(textoColisionElevador, rectTextoColisionElevador)
 
             # Mostrar mensaje en pantalla si está cerca del filtro
