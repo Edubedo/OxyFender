@@ -79,8 +79,8 @@ class Level1Beginner:  # Creamos el nivel 1
         # ------------------- AGREGAMOS MAS OBJETOS DE TIPO IMG ------------------- #
         for nombreObjeto in ['Objetos']:
             for obj in tmx_mapa_1.get_layer_by_name(nombreObjeto):
-                print(obj)
-
+                sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
+                
         # Personaje
         self.jugador = Player((100, 420), self.todos_los_sprites)  # ! Establecer posicion del jugador de tiled
 
@@ -319,7 +319,6 @@ class Level1Beginner:  # Creamos el nivel 1
             self.mostrarSuperficieNivel.blit(config_screen, (150, 150))  # Mostramos la pantalla de configuración
 
             pygame.display.flip() # Actualizamos la pantalla
-
 
     def pantallaArreglarAire(self):
         # Posición del menú de configuración dentro del juego
