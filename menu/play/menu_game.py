@@ -17,47 +17,51 @@ from os.path import join
 
 class MenuPlay:
     def __init__(self, screen, config, bucleInicial):
-        pygame.display.set_caption(f"Seleccionar Nivel - {TITLE_GAME}") # Establecer titulo del nivel
-
         # Guardar atributos generales
         self.screen = screen 
         self.config = config
         self.font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 18) # Fuente de texto
 
     def mostrarMenuDificultad(self):
-        self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundProvisional2.jpg")).convert_alpha() # Fondo para menu de selección de dificultad
+        pygame.display.set_caption(f"Select Difficulty - {TITLE_GAME}")  # Establecer titulo del nivel
+
+        self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "FONDOS", "secciones_nivel_fondo.png")).convert_alpha()  # Fondo para menu de selección de dificultad
         self.fondoMenuDificultad = pygame.transform.scale(self.fondoMenuDificultad, (WIDTH, HEIGHT))
         
         self.screen.blit(self.fondoMenuDificultad, [0, 0])
 
         # Agregar el título de mostrar dificultad
         fontTitulo = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 100)
-        titulo = fontTitulo.render("Seleccionar Dificultad", True, BLACK)
-        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 50))
+        titulo = fontTitulo.render("Select Difficulty", True, BLACK)
+        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 100))
         self.screen.blit(titulo, titulo_rect)
-        opcionesDificultad = [
-                {
-                "name" : "Beginner",
-                "id": "beginner"
-                },
-                {
-                "name" : "Advanced",
-                "id": "advanced"
-                }
-            ] 
         
-        self.dictMostrarOpcionesDificultad = []  
+        opcionesDificultad = [
+            {
+                "name": "Beginner",
+                "id": "beginner",
+                "image": pygame.image.load(join("assets", "img", "BOTONES", "b_beginner.png")).convert_alpha()
+            },
+            {
+                "name": "Advanced",
+                "id": "advanced",
+                "image": pygame.image.load(join("assets", "img", "BOTONES", "b_advanced.png")).convert_alpha()
+            }
+        ]
+        
+        self.dictMostrarOpcionesDificultad = []
 
         # Dibujamos las opciones de dificultad
+        margin = 20
+        total_width = sum(opcion['image'].get_width() for opcion in opcionesDificultad) + margin * (len(opcionesDificultad) - 1)
+        start_x = (self.screen.get_width() - total_width) // 2
+        start_y = self.screen.get_height() // 2 - 100  # Ajustar este valor para mover los botones más arriba
+
         for i, opcionDificultad in enumerate(opcionesDificultad):
-            textoMostrarDificultad = self.font.render(opcionDificultad['name'], True, WHITE)
-            background_rect = pygame.Surface((BUTTON_MENU_WIDTH, BUTTON_MENU_HEIGHT))
-            background_rect.fill(DARK_BLUE)
-            text_rect = textoMostrarDificultad.get_rect(topleft=(10, BUTTON_MENU_HEIGHT // 2 - textoMostrarDificultad.get_height() // 2))
-            background_rect.blit(textoMostrarDificultad, text_rect.topleft)
-            rectDificultad = background_rect.get_rect(topleft=(0, 150 + i * 70))
-            self.screen.blit(background_rect, rectDificultad)
-            self.dictMostrarOpcionesDificultad.append((opcionDificultad, rectDificultad))
+            image = opcionDificultad['image']
+            image_rect = image.get_rect(topleft=(start_x + i * (image.get_width() + margin), start_y))
+            self.screen.blit(image, image_rect)
+            self.dictMostrarOpcionesDificultad.append((opcionDificultad, image_rect))
         
         # Crear botón de regreso
         back_button = self.font.render("Back", True, WHITE)
@@ -65,10 +69,10 @@ class MenuPlay:
         self.screen.blit(back_button, back_button_rect)
         
         # Agregar nombre de la empresa
-        fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24) # Fuente
-        textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, BLACK) # Texto
-        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10)) # Rectangulo para mostrar el texto en la pantalla
-        self.screen.blit(textoInferiorDerecha, texto_rect) # Mostrar texto en la pantalla
+        fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24)  # Fuente
+        textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, BLACK)  # Texto
+        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10))  # Rectangulo para mostrar el texto en la pantalla
+        self.screen.blit(textoInferiorDerecha, texto_rect)  # Mostrar texto en la pantalla
 
         pygame.display.flip()
 
@@ -81,8 +85,8 @@ class MenuPlay:
                     sys.exit()
                 # Cuando hace hover con el mouse
                 elif event.type == pygame.MOUSEMOTION:
-                    hoverOpcionSeleccionadaDificultad = None # Establecer el hover como vacío
-                    for i, (_, rect) in enumerate(self.dictMostrarOpcionesDificultad): # Recorrer las opciones de dificultad
+                    hoverOpcionSeleccionadaDificultad = None  # Establecer el hover como vacío
+                    for i, (_, rect) in enumerate(self.dictMostrarOpcionesDificultad):  # Recorrer las opciones de dificultad
                         # Si el mouse está encima de alguna de las opciones de dificultad cambiar el hombre a la mano y establecer el hover a 1 para despues pintar a azul
                         if rect.collidepoint(event.pos):
                             hoverOpcionSeleccionadaDificultad = i
@@ -91,7 +95,7 @@ class MenuPlay:
                     # Si el mouse no está encima de ninguna opción de dificultad cambiar el cursor a la flecha
                     else:
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                    
+                        
                         # Verificamos si el mouse está encima del botón de regreso para ponerle el curso de mano o de flecha
                         if back_button_rect.collidepoint(event.pos):
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
@@ -114,17 +118,11 @@ class MenuPlay:
             self.screen.blit(titulo, titulo_rect)
 
             for i, (opcionDificultad, rectDificultad) in enumerate(self.dictMostrarOpcionesDificultad):
+                image = opcionDificultad['image']
                 if i == hoverOpcionSeleccionadaDificultad:
-                    textoMostrarDificultad = self.font.render(opcionDificultad['name'], True, WHITE)
-                    background_rect = pygame.Surface((BUTTON_MENU_WIDTH, BUTTON_MENU_HEIGHT))
-                    background_rect.fill(LIGHTBLUE)
-                else:
-                    textoMostrarDificultad = self.font.render(opcionDificultad['name'], True, WHITE)
-                    background_rect = pygame.Surface((BUTTON_MENU_WIDTH, BUTTON_MENU_HEIGHT))
-                    background_rect.fill(DARK_BLUE)
-                text_rect = textoMostrarDificultad.get_rect(topleft=(10, BUTTON_MENU_HEIGHT // 2 - textoMostrarDificultad.get_height() // 2))
-                background_rect.blit(textoMostrarDificultad, text_rect.topleft)
-                self.screen.blit(background_rect, rectDificultad)
+                    image = pygame.transform.scale(image, (image.get_width() + 10, image.get_height() + 10))
+                image_rect = image.get_rect(topleft=(start_x + i * (image.get_width() + margin), start_y))
+                self.screen.blit(image, image_rect)
             
             # Las ponemos hasta abajo para que esten encima de todos
 
@@ -136,23 +134,25 @@ class MenuPlay:
             pygame.display.flip()
 
     def mostrarMenuNiveles(self, dificultadNivel):
-        self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundProvisional2.jpg")).convert_alpha()
-        self.fondoMenuDificultad = pygame.transform.scale(self.fondoMenuDificultad, (WIDTH, HEIGHT)) # Escalar imagen
+        pygame.display.set_caption(f"Select Level - {TITLE_GAME}")  # Establecer titulo del nivel
+
+        self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "FONDOS", "secciones_nivel_fondo.png")).convert_alpha()
+        self.fondoMenuDificultad = pygame.transform.scale(self.fondoMenuDificultad, (WIDTH, HEIGHT))  # Escalar imagen
         self.option_rects = []
         
         self.screen.blit(self.fondoMenuDificultad, [0, 0])
 
         # Agregar el título de mostrar nivel
         fontTitulo = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 100)
-        titulo = fontTitulo.render("Seleccionar Nivel", True, BLACK)
-        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 50))
+        titulo = fontTitulo.render("Select Level", True, BLACK)
+        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 100))
         self.screen.blit(titulo, titulo_rect)
 
         # Agregar nombre de la empresa
-        fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24) # Fuente
-        textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, BLACK) # Texto
-        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10)) # Rectangulo para mostrar el texto en la pantalla
-        self.screen.blit(textoInferiorDerecha, texto_rect) # Mostrar texto en la pantalla
+        fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24)  # Fuente
+        textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, BLACK)  # Texto
+        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10))  # Rectangulo para mostrar el texto en la pantalla
+        self.screen.blit(textoInferiorDerecha, texto_rect)  # Mostrar texto en la pantalla
 
         opcionNiveles = []
 
@@ -160,25 +160,26 @@ class MenuPlay:
             opcionNiveles.append({
                 "name": f"Level {i}",
                 "dificultadNivel": dificultadNivel['name'],
-                "id": f"{dificultadNivel['id'].lower()}_level_{i}"
+                "id": f"{dificultadNivel['id'].lower()}_level_{i}",
+                "image": pygame.image.load(join("assets", "img", "BOTONES", f"img_level{i}.png")).convert_alpha()
             })
 
         # Dibujamos las opciones de niveles
+        margin = 20
+        total_width = sum(level['image'].get_width() for level in opcionNiveles) + margin * (len(opcionNiveles) - 1)
+        start_x = (self.screen.get_width() - total_width) // 2
+        start_y = self.screen.get_height() // 2 - 100  # Ajustar este valor para mover los botones más arriba
+
         for i, level in enumerate(opcionNiveles):
-            textNivel = self.font.render(level['name'], True, WHITE)
-            background_rect = pygame.Surface((BUTTON_MENU_WIDTH, BUTTON_MENU_HEIGHT))
-            background_rect.fill(DARK_BLUE)
-            text_rect = textNivel.get_rect(topleft=(10, BUTTON_MENU_HEIGHT // 2 - textNivel.get_height() // 2))
-            background_rect.blit(textNivel, text_rect.topleft)
-            rectNivel = background_rect.get_rect(topleft=(0, 150 + i * 70))
-            self.screen.blit(background_rect, rectNivel)
-            self.option_rects.append((level, rectNivel))
+            image = level['image']
+            image_rect = image.get_rect(topleft=(start_x + i * (image.get_width() + margin), start_y))
+            self.screen.blit(image, image_rect)
+            self.option_rects.append((level, image_rect))
         
         # Crear botón de regreso
         back_button = self.font.render("Back", True, WHITE)
         back_button_rect = back_button.get_rect(topleft=(10, HEIGHT - 50))
         self.screen.blit(back_button, back_button_rect)
-        
         
         pygame.display.flip()
 
@@ -194,7 +195,7 @@ class MenuPlay:
                         if rect.collidepoint(event.pos):
                             hoverOpcionSeleccionadaNiveles = i
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-                            break  # Cambiado de continue a break
+                            break
                     else:
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
@@ -208,21 +209,21 @@ class MenuPlay:
                     for level, rectNivel in self.option_rects:
                         if rectNivel.collidepoint(event.pos):
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Cambiar el cursor al cursor normal
-                           # Niveles para principiantes 
+                            # Niveles para principiantes 
                             if level['id'] == "beginner_level_1":
-                                    self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id']).run()
+                                self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id']).run()
                             if level['id'] == "beginner_level_2":
-                                    Level2Beginner(level['name'], level['dificultadNivel'], level['id'])
+                                Level2Beginner(level['name'], level['dificultadNivel'], level['id'])
                             if level['id'] == "beginner_level_3":
-                                    Level3Beginner(level['name'], level['dificultadNivel'], level['id'])
+                                Level3Beginner(level['name'], level['dificultadNivel'], level['id'])
                             
                             # Niveles para avanzados 
                             if level['id'] == "advanced_level_1":
-                                    Level1Advanced(level['name'], level['dificultadNivel'], level['id'])
+                                Level1Advanced(level['name'], level['dificultadNivel'], level['id'])
                             if level['id'] == "advanced_level_2":
-                                    Level2Advanced(level['name'], level['dificultadNivel'], level['id'])
+                                Level2Advanced(level['name'], level['dificultadNivel'], level['id'])
                             if level['id'] == "advanced_level_3":
-                                    Level3Advanced(level['name'], level['dificultadNivel'], level['id'])
+                                Level3Advanced(level['name'], level['dificultadNivel'], level['id'])
                     # Si se hace clic en el botón de regreso
                     if back_button_rect.collidepoint(event.pos):
                         return
@@ -230,17 +231,124 @@ class MenuPlay:
             self.screen.blit(self.fondoMenuDificultad, [0, 0])
             self.screen.blit(titulo, titulo_rect)
             for i, (level, rectNivel) in enumerate(self.option_rects):
+                image = level['image']
                 if i == hoverOpcionSeleccionadaNiveles:
-                    textNivel = self.font.render(level['name'], True, WHITE)
-                    background_rect = pygame.Surface((BUTTON_MENU_WIDTH, BUTTON_MENU_HEIGHT))
-                    background_rect.fill(LIGHTBLUE)
-                else:
-                    textNivel = self.font.render(level['name'], True, WHITE)
-                    background_rect = pygame.Surface((BUTTON_MENU_WIDTH, BUTTON_MENU_HEIGHT))
-                    background_rect.fill(DARK_BLUE)
-                text_rect = textNivel.get_rect(topleft=(10, BUTTON_MENU_HEIGHT // 2 - textNivel.get_height() // 2))
-                background_rect.blit(textNivel, text_rect.topleft)
-                self.screen.blit(background_rect, rectNivel)
+                    image = pygame.transform.scale(image, (image.get_width() + 5, image.get_height() + 5))
+                image_rect = image.get_rect(topleft=(start_x + i * (image.get_width() + margin), start_y))
+                self.screen.blit(image, image_rect)
+            
+            # Las ponemos hasta abajo para que esten encima de todo
+
+            # Pintar el botón de regreso
+            self.screen.blit(back_button, back_button_rect)
+            # Pinta el texto de la empresa
+            self.screen.blit(textoInferiorDerecha, texto_rect)
+
+            pygame.display.flip()
+
+    def mostrarMenuNiveles(self, dificultadNivel):
+        pygame.display.set_caption(f"Select Level - {TITLE_GAME}")  # Establecer titulo del nivel
+
+        self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "FONDOS", "secciones_nivel_fondo.png")).convert_alpha()
+        self.fondoMenuDificultad = pygame.transform.scale(self.fondoMenuDificultad, (WIDTH, HEIGHT))  # Escalar imagen
+        self.option_rects = []
+        
+        self.screen.blit(self.fondoMenuDificultad, [0, 0])
+
+        # Agregar el título de mostrar nivel
+        fontTitulo = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 100)
+        titulo = fontTitulo.render("Select Level", True, BLACK)
+        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 100))
+        self.screen.blit(titulo, titulo_rect)
+
+        # Agregar nombre de la empresa
+        fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24)  # Fuente
+        textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, BLACK)  # Texto
+        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10))  # Rectangulo para mostrar el texto en la pantalla
+        self.screen.blit(textoInferiorDerecha, texto_rect)  # Mostrar texto en la pantalla
+
+        opcionNiveles = []
+
+        for i in range(1, 4):
+            opcionNiveles.append({
+                "name": f"Level {i}",
+                "dificultadNivel": dificultadNivel['name'],
+                "id": f"{dificultadNivel['id'].lower()}_level_{i}",
+                "image": pygame.image.load(join("assets", "img", "BOTONES", f"img_level{i}.png")).convert_alpha()
+            })
+
+        # Dibujamos las opciones de niveles
+        margin = 20
+        total_width = sum(level['image'].get_width() for level in opcionNiveles) + margin * (len(opcionNiveles) - 1)
+        start_x = (self.screen.get_width() - total_width) // 2
+        start_y = self.screen.get_height() // 2 - 100  # Ajustar este valor para mover los botones más arriba
+
+        for i, level in enumerate(opcionNiveles):
+            image = level['image']
+            image_rect = image.get_rect(topleft=(start_x + i * (image.get_width() + margin), start_y))
+            self.screen.blit(image, image_rect)
+            self.option_rects.append((level, image_rect))
+        
+        # Crear botón de regreso
+        back_button = self.font.render("Back", True, WHITE)
+        back_button_rect = back_button.get_rect(topleft=(10, HEIGHT - 50))
+        self.screen.blit(back_button, back_button_rect)
+        
+        pygame.display.flip()
+
+        hoverOpcionSeleccionadaNiveles = None
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.MOUSEMOTION:
+                    hoverOpcionSeleccionadaNiveles = None
+                    for i, (_, rect) in enumerate(self.option_rects):
+                        if rect.collidepoint(event.pos):
+                            hoverOpcionSeleccionadaNiveles = i
+                            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+                            break
+                    else:
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
+                        # Verificamos si el mouse está encima del botón de regreso para ponerle el curso de mano o de flecha
+                        if back_button_rect.collidepoint(event.pos):
+                            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+                        else:
+                            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    for level, rectNivel in self.option_rects:
+                        if rectNivel.collidepoint(event.pos):
+                            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Cambiar el cursor al cursor normal
+                            # Niveles para principiantes 
+                            if level['id'] == "beginner_level_1":
+                                self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id']).run()
+                            if level['id'] == "beginner_level_2":
+                                Level2Beginner(level['name'], level['dificultadNivel'], level['id'])
+                            if level['id'] == "beginner_level_3":
+                                Level3Beginner(level['name'], level['dificultadNivel'], level['id'])
+                            
+                            # Niveles para avanzados 
+                            if level['id'] == "advanced_level_1":
+                                Level1Advanced(level['name'], level['dificultadNivel'], level['id'])
+                            if level['id'] == "advanced_level_2":
+                                Level2Advanced(level['name'], level['dificultadNivel'], level['id'])
+                            if level['id'] == "advanced_level_3":
+                                Level3Advanced(level['name'], level['dificultadNivel'], level['id'])
+                    # Si se hace clic en el botón de regreso
+                    if back_button_rect.collidepoint(event.pos):
+                        return
+            
+            self.screen.blit(self.fondoMenuDificultad, [0, 0])
+            self.screen.blit(titulo, titulo_rect)
+            for i, (level, rectNivel) in enumerate(self.option_rects):
+                image = level['image']
+                if i == hoverOpcionSeleccionadaNiveles:
+                    image = pygame.transform.scale(image, (image.get_width() + 5, image.get_height() + 5))
+                image_rect = image.get_rect(topleft=(start_x + i * (image.get_width() + margin), start_y))
+                self.screen.blit(image, image_rect)
             
             # Las ponemos hasta abajo para que esten encima de todo
 

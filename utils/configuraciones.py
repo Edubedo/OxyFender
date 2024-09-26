@@ -38,6 +38,7 @@ window = pygame.display.set_mode((WIDTH, HEIGHT))
 TEXT_COLOR_OPTION_MENU = (128, 128, 128)  
 BLACK = (0, 0, 0)  
 WHITE = (255, 255, 255)
+GRAY = (128, 128, 128)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
@@ -49,6 +50,9 @@ LIGHTYELLOW = (255, 255, 0)
 LIGHTRED = (255, 0, 0)
 LIGHTORANGE = (255, 165, 0)
 LIGHTPURPLE = (255, 0, 255)
+
+
+CON_OXIGENO = ()
 
 
 # Botones
