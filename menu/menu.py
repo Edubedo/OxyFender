@@ -42,13 +42,15 @@ class Menu:
             # Si el cursor está encima de alguna de las opciones pintar azul claro
             if i == hoverOpcionSeleccionada: 
                 textoOpcionMenuPrincipal = self.font.render(opcionMenuPrincipal, True, WHITE)
-                fondoTextoOpcionMenuPrincipal = pygame.Surface((BUTTON_MENU_WIDTH, BUTTON_MENU_HEIGHT))
-                fondoTextoOpcionMenuPrincipal.fill(LIGHTBLUE)
-           # Si el cursor NO está encima de alguna de las opciones pintar azul oscuro
+                fondoTextoOpcionMenuPrincipal = pygame.Surface((BUTTON_MENU_WIDTH + 10, BUTTON_MENU_HEIGHT))
+                fondoTextoOpcionMenuPrincipal.fill(DARK_BLUE)
+                fondoTextoOpcionMenuPrincipal.set_alpha(255) # Full opacity
+            # Si el cursor NO está encima de alguna de las opciones pintar azul oscuro
             else: # Si el cursor no está encima de la opción
                 textoOpcionMenuPrincipal = self.font.render(opcionMenuPrincipal, True, WHITE)
                 fondoTextoOpcionMenuPrincipal = pygame.Surface((BUTTON_MENU_WIDTH, BUTTON_MENU_HEIGHT))
                 fondoTextoOpcionMenuPrincipal.fill(DARK_BLUE)
+                fondoTextoOpcionMenuPrincipal.set_alpha(204) # 0.8 opacity
             
             # A partir de cada opcion, dibujarle el rectangulo donde estárá centrada
             rectTextoOpcionMenuPrincipal = textoOpcionMenuPrincipal.get_rect(topleft=(10, BUTTON_MENU_HEIGHT // 2 - textoOpcionMenuPrincipal.get_height() // 2))
