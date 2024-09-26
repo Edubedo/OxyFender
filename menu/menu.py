@@ -108,7 +108,11 @@ class Menu:
                                 continue
 
                             elif option == "configuration" or option == "configuración":
+                                # CODIGO DE GUSTAVO
                                 self.config.show_configuration(self.screen, self.font)
+                                self.config.diseño_opciones(self.screen)
+                                self.config.obtenerLenguajeActual(self.screen, self.font)
+                                
 
                             elif option == "quit" or option == "salir":
                                 pygame.quit()

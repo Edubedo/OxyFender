@@ -9,12 +9,6 @@ class Configuration:
         self.config_file = config_file
         self.settings = self.load_settings()
 
-    def diseño(screen, self):
-        surface = pygame.display.set_mode((400,300))
-        color = (255,0,0)
-        pygame.draw.rect(surface, color, pygame.Rect(30, 30, 60, 60))
-        pygame.display.flip()
-
     def load_settings(self):
         try:
             with open(self.config_file, "r", encoding="utf-8") as file:
@@ -32,6 +26,17 @@ class Configuration:
     def set_language(self, language):
         self.settings["language"] = language.lower()
         self.save_settings()
+        
+    def diseño_opciones(self, screen): 
+        screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        color = (255,255,255)
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running == False
+            pygame.draw.rect(screen, color, pygame.Rect(200, 500, 200, 200)) 
+            pygame.display.flip()
 
     def show_configuration(self, screen, font):
         screen.fill(BACKGROUND_COLOR)
