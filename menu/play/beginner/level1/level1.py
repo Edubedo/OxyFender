@@ -297,6 +297,8 @@ class Level1Beginner:  # Creamos el nivel 1
         configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 200
         configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height() - 300
 
+        print("Width", configuracionWidthPantalla)
+        print("Height", configuracionHeightPantalla)
         # Creamos una nueva superficie para la pantalla de configuración
         config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla))
 
