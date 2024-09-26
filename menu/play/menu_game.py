@@ -15,14 +15,14 @@ from os.path import join
 
 class MenuPlay:
     def __init__(self, screen, config, bucleInicial):
-        pygame.display.set_caption(f"Seleccionar Nivel - {TITLE_GAME}") # Establecer titulo del nivel
-
         # Guardar atributos generales
         self.screen = screen 
         self.config = config
         self.font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 18) # Fuente de texto
 
     def mostrarMenuDificultad(self):
+        pygame.display.set_caption(f"Select Difficulty - {TITLE_GAME}") # Establecer titulo del nivel
+
         self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundProvisional2.jpg")).convert_alpha() # Fondo para menu de selección de dificultad
         self.fondoMenuDificultad = pygame.transform.scale(self.fondoMenuDificultad, (WIDTH, HEIGHT))
         
@@ -30,7 +30,7 @@ class MenuPlay:
 
         # Agregar el título de mostrar dificultad
         fontTitulo = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 100)
-        titulo = fontTitulo.render("Seleccionar Dificultad", True, BLACK)
+        titulo = fontTitulo.render("Select Difficulty", True, BLACK)
         titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 50))
         self.screen.blit(titulo, titulo_rect)
         opcionesDificultad = [
@@ -134,6 +134,8 @@ class MenuPlay:
             pygame.display.flip()
 
     def mostrarMenuNiveles(self, dificultadNivel):
+        pygame.display.set_caption(f"Select Level - {TITLE_GAME}") # Establecer titulo del nivel
+
         self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundProvisional2.jpg")).convert_alpha()
         self.fondoMenuDificultad = pygame.transform.scale(self.fondoMenuDificultad, (WIDTH, HEIGHT)) # Escalar imagen
         self.option_rects = []
@@ -142,7 +144,7 @@ class MenuPlay:
 
         # Agregar el título de mostrar nivel
         fontTitulo = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 100)
-        titulo = fontTitulo.render("Seleccionar Nivel", True, BLACK)
+        titulo = fontTitulo.render("Select Level", True, BLACK)
         titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 50))
         self.screen.blit(titulo, titulo_rect)
 
