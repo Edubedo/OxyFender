@@ -1,6 +1,8 @@
+# Código desarrollado por (E. Escobedo, G. Solorzano, R. Lavariga, N. Laureano, A. Suarez, S. Barroso) 2024
+# Este software no puede ser copiado o redistribuido sin permiso del autor.
 import pygame
 from menu.configuration.configuration import Configuration
-from utils.settings import *
+from utils.configuraciones import *
 from menu.play.menu_game import MenuPlay
 from menu.credits.credits import show_credits
 from os.path import join
@@ -18,10 +20,10 @@ class Menu:
         self.opcionesMenuPrincipal = ["Play", "Credits", "Configuration", "Quit"] # Opciones inicales del menu principal
         
         # * Música de fondo 
-        # pygame.mixer.init() # Inicializar el módulo de sonido
-        # pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
-        # pygame.mixer.music.play(-1) # Reproducir la música en bucle
-        # pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.init() # Inicializar el módulo de sonido
+        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
+        pygame.mixer.music.play(-1) # Reproducir la música en bucle
+        pygame.mixer.music.set_volume(0.5)
         # volumen
 
     def mostrarOpcionesMenu(self, hoverOpcionSeleccionada=None): # Opciones del menú principal

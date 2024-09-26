@@ -2,7 +2,7 @@
 # Este software no puede ser copiado o redistribuido sin permiso del autor.
 import json
 import pygame
-from utils.settings import *
+from utils.configuraciones import *
 import sys
 class Configuration:
     def __init__(self, config_file="language.json"):
