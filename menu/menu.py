@@ -23,7 +23,7 @@ class Menu:
         pygame.mixer.init() # Inicializar el módulo de sonido
         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
         pygame.mixer.music.play(-1) # Reproducir la música en bucle
-        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.set_volume(1)
         # volumen
 
     def mostrarOpcionesMenu(self, hoverOpcionSeleccionada=None): # Opciones del menú principal
