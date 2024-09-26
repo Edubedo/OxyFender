@@ -541,7 +541,6 @@ class Level1Beginner:  # Creamos el nivel 1
             self.mostrarSuperficieNivel.blit(config_screen, (150, 150))  # Mostramos la pantalla de configuración
 
             pygame.display.flip() # Actualizamos la pantalla
-<<<<<<< HEAD
 
 
     def pantallaArreglarAire(self):
@@ -623,5 +622,3 @@ class Level1Beginner:  # Creamos el nivel 1
             self.mostrarSuperficieNivel.blit(config_screen, (150, 150))  # Mostramos la pantalla de configuración
 
             pygame.display.flip() # Actualizamos la pantalla
-=======
->>>>>>> 18e5e4dab05c6b33562ca41cf12800990e2994cc
