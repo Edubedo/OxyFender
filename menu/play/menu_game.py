@@ -29,9 +29,9 @@ class MenuPlay:
         self.screen.blit(self.fondoMenuDificultad, [0, 0])
 
         # Agregar el título de mostrar dificultad
-        fontTitulo = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 100)
+        fontTitulo = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 60)
         titulo = fontTitulo.render("Select Difficulty", True, BLACK)
-        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 100))
+        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 150))
         self.screen.blit(titulo, titulo_rect)
         
         opcionesDificultad = [
@@ -51,7 +51,7 @@ class MenuPlay:
 
         # Dibujamos las opciones de dificultad
         margin = 20
-        start_y = 200  # Ajustar este valor para mover los botones más arriba
+        start_y = 300  # Ajustar este valor para mover los botones más arriba
 
         for i, opcionDificultad in enumerate(opcionesDificultad):
             image = opcionDificultad['image']
@@ -66,7 +66,7 @@ class MenuPlay:
         
         # Agregar nombre de la empresa
         fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24)  # Fuente
-        textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, BLACK)  # Texto
+        textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, WHITE)  # Texto
         texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10))  # Rectangulo para mostrar el texto en la pantalla
         self.screen.blit(textoInferiorDerecha, texto_rect)  # Mostrar texto en la pantalla
 
@@ -139,14 +139,14 @@ class MenuPlay:
         self.screen.blit(self.fondoMenuDificultad, [0, 0])
 
         # Agregar el título de mostrar nivel
-        fontTitulo = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 100)
+        fontTitulo = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 60)
         titulo = fontTitulo.render("Select Level", True, BLACK)
         titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 100))
         self.screen.blit(titulo, titulo_rect)
 
         # Agregar nombre de la empresa
         fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24)  # Fuente
-        textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, BLACK)  # Texto
+        textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, WHITE)  # Texto
         texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10))  # Rectangulo para mostrar el texto en la pantalla
         self.screen.blit(textoInferiorDerecha, texto_rect)  # Mostrar texto en la pantalla
 
