@@ -1,5 +1,3 @@
-# Código desarrollado por (E. Escobedo, G. Solorzano, R. Lavariga, N. Laureano, A. Suarez, S. Barroso) 2024
-# Este software no puede ser copiado o redistribuido sin permiso del autor.
 import pygame
 from utils.configuraciones import *
 from os.path import join
@@ -522,87 +520,6 @@ class Level1Beginner:  # Creamos el nivel 1
                     
                     if botonReiniciarNivel.collidepoint(posicionMousePantallaConfiguración): # Sí hace click en reiniciar nivel volvemos a cargar el nivel 1
                         print("Reiniciar: ", self.tmx_mapa_1)
-                        banderaEjecutandoNivel1 = False
-                        self.juegoPausado = False
-                        self.setup(self.tmx_mapa_1) # Volvemos a cargar el mapa
-
-                    elif botonSeleccionarNivel.collidepoint(posicionMousePantallaConfiguración): # Sí hace click en volver al menú, volv
-                        self.volver_menu = True
-                        banderaEjecutandoNivel1 = False
-                        self.juegoPausado = False
-
-            if self.capturarPantalla:
-                self.mostrarSuperficieNivel.blit(self.capturarPantalla, (0, 0))
-
-            # Oscurecemos la pantalla cuando le damos a pausa
-            fondoOscuro = pygame.Surface(self.mostrarSuperficieNivel.get_size(), pygame.SRCALPHA) # Superficie transparente oscurecida
-            fondoOscuro.fill((0, 0, 0, 150))  # Semi-transparent black
-            self.mostrarSuperficieNivel.blit(fondoOscuro, (0, 0)) # Mostramos la pantalla del nivel oscura
-
-            self.mostrarSuperficieNivel.blit(config_screen, (150, 150))  # Mostramos la pantalla de configuración
-
-            pygame.display.flip() # Actualizamos la pantalla
-
-
-    def pantallaArreglarAire(self):
-        # Posición del menú de configuración dentro del juego
-        configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 200
-        configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height() - 300
-
-        # Creamos una nueva superficie para la pantalla de configuración
-        config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla))
-
-        config_screen.fill(DARK_BLUE) 
-
-        # Agregar boton para reiniciar nivel
-        botonReiniciarNivel = pygame.Rect(50, 50, 200, 50) # Establecer tamaño del boton
-        pygame.draw.rect(config_screen, LIGHTBLUE, botonReiniciarNivel) # dibujar el boton de color azul
-        text = self.font.render("  Arreglar aire", True, (255, 255, 255)) # Agregar texto al boton
-        text_rect = text.get_rect(center=botonReiniciarNivel.center) # Centrar el texto en el boton
-        config_screen.blit(text, text_rect) # Mostrar el texto en el boton
-
-        # Agregar boton para volver a seleccionar nivel
-        botonSeleccionarNivel = pygame.Rect(50, 150, 200, 50) # Establecer tamaño del boton
-        pygame.draw.rect(config_screen, LIGHTBLUE, botonSeleccionarNivel) # dibujar el boton de color azul
-        text = self.font.render(" Arreglar aire", True, (255, 255, 255)) # Agregar texto al boton
-        text_rect = text.get_rect(center=botonSeleccionarNivel.center) # Centrar el texto en el boton
-        config_screen.blit(text, text_rect) # Mostrar el texto en el boton
-
-
-        banderaEjecutandoNivel1 = True
-        while banderaEjecutandoNivel1:
-            if self.volver_menu: # Sí le dio click a la bandera de volver al menú, rompemos este ciclo y volvemos al anterior
-                break
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-
-                # Eventos para los botones
-                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE: # Sí le da click a la tecla de escape, se cierra la pantalla de configuración
-                    self.juegoPausado = False
-                    banderaEjecutandoNivel1 = False
-                
-                # Sí pasa el mouse sobre los botones
-                elif event.type == pygame.MOUSEMOTION:
-                    posicionMouse = event.pos # Rastreamos la posicion del mouse
-                    # Revisamos sí el mouse está encima del botón
-                    posicionMousePantallaConfiguración = (posicionMouse[0] - 150, posicionMouse[1] - 150) # Posición del mouse en la pantalla de configuración
-                    
-                    if botonReiniciarNivel.collidepoint(posicionMousePantallaConfiguración) or botonSeleccionarNivel.collidepoint(posicionMousePantallaConfiguración):
-                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-                    else:
-                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                
-
-                # Sí le da click a los botones
-                elif event.type == pygame.MOUSEBUTTONDOWN: 
-                    posicionMouse = event.pos # Rastreamos la posicion del mouse
-                    # Revisamos sí el mouse está encima del botón
-                    posicionMousePantallaConfiguración = (posicionMouse[0] - 150, posicionMouse[1] - 150) # Posición del mouse en la pantalla de configuración
-                    
-                    if botonReiniciarNivel.collidepoint(posicionMousePantallaConfiguración): # Sí hace click en reiniciar nivel volvemos a cargar el nivel 1
                         banderaEjecutandoNivel1 = False
                         self.juegoPausado = False
                         self.setup(self.tmx_mapa_1) # Volvemos a cargar el mapa
