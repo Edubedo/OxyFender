@@ -4,7 +4,7 @@ import pygame
 from menu.configuration.configuration import Configuration
 from utils.configuraciones import *
 from menu.play.menu_game import MenuPlay
-from menu.credits.credits import show_credits
+from menu.credits.credits import Creditos
 from os.path import join
 import sys
 
@@ -27,7 +27,7 @@ class Menu:
         # volumen
 
     def mostrarOpcionesMenu(self, hoverOpcionSeleccionada=None): # Opciones del menú principal
-        self.fondoPrincipalVideojuego = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundProvisional2.jpg")).convert_alpha() # Agregar fondoPrincipalVideojuego al menú
+        self.fondoPrincipalVideojuego = pygame.image.load(join("assets", "img", "Background", "menu", "Background_3.jpeg")).convert_alpha() # Agregar fondoPrincipalVideojuego al menú
         
         self.fondoPrincipalVideojuego = pygame.transform.scale(self.fondoPrincipalVideojuego, (WIDTH, HEIGHT)) # Escalar imagen del fondoPrincipalVideojuego del menú
 
@@ -35,7 +35,7 @@ class Menu:
         self.rectOpcionesMenuPrincipal = []
 
         # Agregar el título del juego
-        fontTitulo = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 100) # Establecemos la fuente del tituloPrincipalJuego
+        fontTitulo = pygame.font.Font(join("assets", "fonts", "ka1.ttf"), 100) # Establecemos la fuente del tituloPrincipalJuego
         tituloPrincipalJuego = fontTitulo.render(TITLE_GAME, True, BLACK) #  Le agregamos color al tituloPrincipalJuego
         recTituloPrincipalJuego = tituloPrincipalJuego.get_rect(center=(self.screen.get_width() // 2, 50)) # Creamos un rectangulo donde vamos a insertar el tituloPrincipalJuego del juego
         self.screen.blit(tituloPrincipalJuego, recTituloPrincipalJuego) # Insertar el tituloPrincipalJuego de nuestro juego como imangen
@@ -70,7 +70,7 @@ class Menu:
         
         # Agregar nombre de la empresa
         fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24) # Fuente
-        textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, BLACK) # Texto
+        textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, WHITE) # Texto
         texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10)) # Rectangulo para mostrar el texto en la pantalla
         self.screen.blit(textoInferiorDerecha, texto_rect) # Mostrar texto en la pantalla
 
@@ -108,8 +108,13 @@ class Menu:
                                 continue
                             
                             if option == "credits" or option == "créditos":
-                                show_credits(self.screen)
-                                continue
+                                credits = Creditos(self.screen)
+                                credits.run()
+                                self.bucleInicial = True  # Reiniciar el bucle del menú después de mostrar los créditos
+                                # Reproducir la música de fondo nuevamente
+                                pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))
+                                pygame.mixer.music.play(-1)
+                                pygame.mixer.music.set_volume(0.2)
 
                             elif option == "configuration" or option == "configuración":
                                 self.config.show_configuration(self.screen, self.font)

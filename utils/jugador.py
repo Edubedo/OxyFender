@@ -40,12 +40,12 @@ class Player(pygame.sprite.Sprite):
             self.image = self.images[int(self.animation_index)]
             
             # Reproducir el sonido de caminar si no está ya reproduciéndose
-           #if not self.sonido_pasos.get_num_channels():
+            #if not self.sonido_pasos.get_num_channels():
                 #self.sonido_pasos.play()
 
             if self.rect.left < 0:  # Establece el limite de lado izquierdo para no salir del mapa
                 self.rect.left = 0  # Correctly set the left attribute instead of the entire rect
-       # else:
+        # else:
             # Detener el sonido de caminar si el personaje deja de moverse o el juego está en pausa
             #self.sonido_pasos.stop()
 

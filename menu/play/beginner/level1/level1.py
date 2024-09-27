@@ -53,14 +53,14 @@ class Level1Beginner:  # Creamos el nivel 1
 
     def setup(self, tmx_mapa_1):
         # ------------------- AGREGAMOS LA BARRA DE OXIGENO ------------------- #
-        self.rectBarraCombustible = BarraOxigeno(10, 100, 40, 300, 200)
-        self.rectBarraCombustible.hp = 200
+        self.rectBarraOxigeno = BarraOxigeno(10, 100, 40, 300, 200)
+        self.rectBarraOxigeno.hp = 200
 
         #  ------------------- Agregamos el conteo de oxigenos reparados y el objetivo x/y ------------------- #
         self.contadorOxigenoReparado = 0
         self.metaOxigenoReparado = 2
 
-        self.ultimoTiempoCombustible = pygame.time.get_ticks()  # Tiempo inicial para el combustible
+        self.ultimoTiempoCombustible = pygame.time.get_ticks()  # Tiempo inicial para el oxigeno
 
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Establecer cursor del mouse
         
@@ -123,13 +123,13 @@ class Level1Beginner:  # Creamos el nivel 1
             if self.volver_menu:
                 break
 
-            tiempoActualCombustible = pygame.time.get_ticks() # Tiempo actual del combustible
+            tiempoActualCombustible = pygame.time.get_ticks() # Tiempo actual del oxigeno
 
             if not self.ganoNivel: # Sí no ha ganado el nivel
                 if tiempoActualCombustible - self.ultimoTiempoCombustible >= 1000:  # Reducir el oxigeno con cada segundo cada pasa de 10 en 10
-                    self.rectBarraCombustible.hp -= 1
+                    self.rectBarraOxigeno.hp -= 1
                     self.ultimoTiempoCombustible = tiempoActualCombustible
-                    if self.rectBarraCombustible.hp <= 0:
+                    if self.rectBarraOxigeno.hp <= 0:
                         self.perdioJuego = True
 
             if self.perdioJuego:
@@ -163,6 +163,7 @@ class Level1Beginner:  # Creamos el nivel 1
                 continue
 
             # ------------------- MOVIMIENTO DEL JUGADOR ------------------- #
+           # Movimiento del jugador
             keys = pygame.key.get_pressed()  # Tenemos que agregar esta funciona para hacer que el jugador se mueva
             movimientoJugador = pygame.Vector2(0, 0)
             estaMoviendose = False
@@ -282,8 +283,8 @@ class Level1Beginner:  # Creamos el nivel 1
             if colisionesFiltros:
                 self.mostrarSuperficieNivel.blit(textoArreglarFiltro, rectTextoArreglarFiltro)
 
-            # Dibujar la barra de combustible en la pantalla principal del juego
-            self.rectBarraCombustible.draw(self.screen)
+            # Dibujar la barra de oxigeno en la pantalla principal del juego
+            self.rectBarraOxigeno.draw(self.screen)
 
             # Mostrar en pantalla el conteo de oxigenos reparados
             textoOxigenosReparados = self.font.render(f"Oxigenos reparados: {self.contadorOxigenoReparado}/{self.metaOxigenoReparado}", True, (255, 255, 255))
