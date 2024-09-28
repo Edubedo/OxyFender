@@ -22,12 +22,12 @@ class Menu:
         # * Música de fondo 
         pygame.mixer.init() # Inicializar el módulo de sonido
         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
-        pygame.mixer.music.play(-1) # Reproducir la música en bucle
+        #pygame.mixer.music.play(-1) # Reproducir la música en bucle
         pygame.mixer.music.set_volume(1)
         # volumen
 
     def mostrarOpcionesMenu(self, hoverOpcionSeleccionada=None): # Opciones del menú principal
-        self.fondoPrincipalVideojuego = pygame.image.load(join("assets", "img", "Background", "menu", "Background_3.jpeg")).convert_alpha() # Agregar fondoPrincipalVideojuego al menú
+        self.fondoPrincipalVideojuego = pygame.image.load(join("assets", "img", "Background", "menu", "Background_5.jpeg")).convert_alpha() # Agregar fondoPrincipalVideojuego al menú
         
         self.fondoPrincipalVideojuego = pygame.transform.scale(self.fondoPrincipalVideojuego, (WIDTH, HEIGHT)) # Escalar imagen del fondoPrincipalVideojuego del menú
 
@@ -36,8 +36,8 @@ class Menu:
 
         # Agregar el título del juego como imagen
         tituloPrincipalJuego = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", "titulo_oxyfender.png")).convert_alpha()
-        tituloPrincipalJuego = pygame.transform.scale(tituloPrincipalJuego, (self.screen.get_width() // 2, 115)) # Escalar la imagen si es necesario
-        recTituloPrincipalJuego = tituloPrincipalJuego.get_rect(topleft=(-65, 5))
+        tituloPrincipalJuego = pygame.transform.scale(tituloPrincipalJuego, (self.screen.get_width(), 115)) # Escalar la imagen si es necesario
+        recTituloPrincipalJuego = tituloPrincipalJuego.get_rect(topleft=(-5, 5))
         self.screen.blit(tituloPrincipalJuego, recTituloPrincipalJuego)
 
         for i, opcionMenuPrincipal in enumerate(self.opcionesMenuPrincipal): # Recorremos todas las opciones del menu principal
@@ -113,7 +113,7 @@ class Menu:
                                 self.bucleInicial = True  # Reiniciar el bucle del menú después de mostrar los créditos
                                 # Reproducir la música de fondo nuevamente
                                 pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))
-                                pygame.mixer.music.play(-1)
+                                #pygame.mixer.music.play(-1)
                                 pygame.mixer.music.set_volume(0.2)
 
                             elif option == "configuration" or option == "configuración":

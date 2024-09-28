@@ -31,8 +31,8 @@ class MenuPlay:
         self.screen.blit(self.fondoMenuDificultad, [0, 0])
 
         # Agregar el título de mostrar dificultad
-        fontTitulo = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 60)
-        titulo = fontTitulo.render("Select Difficulty", True, BLACK)
+        fontTitulo = pygame.font.Font(join("assets", "fonts", "Transformers Movie.ttf"), 100)
+        titulo = fontTitulo.render("Select Difficulty", True, AZUL_TITULO)
         titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 150))
         self.screen.blit(titulo, titulo_rect)
         
@@ -62,8 +62,9 @@ class MenuPlay:
             self.dictMostrarOpcionesDificultad.append((opcionDificultad, image_rect))
         
         # Crear botón de regreso
-        back_button = self.font.render("Back", True, WHITE)
-        back_button_rect = back_button.get_rect(topleft=(10, HEIGHT - 50))
+        back_button = pygame.image.load(join("assets","img","BOTONES","b_regreso.png")).convert_alpha()
+        back_button = pygame.transform.scale(back_button, (back_button.get_width() - 10, back_button.get_height() - 10))
+        back_button_rect = back_button.get_rect(topleft=(40, HEIGHT - 100))
         self.screen.blit(back_button, back_button_rect)
         
         # Agregar nombre de la empresa
@@ -141,9 +142,9 @@ class MenuPlay:
         self.screen.blit(self.fondoMenuDificultad, [0, 0])
 
         # Agregar el título de mostrar nivel
-        fontTitulo = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 60)
-        titulo = fontTitulo.render("Select Level", True, BLACK)
-        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 100))
+        fontTitulo = pygame.font.Font(join("assets", "fonts", "Transformers Movie.ttf"), 100)
+        titulo = fontTitulo.render("Select Level", True, AZUL_TITULO)
+        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 150))
         self.screen.blit(titulo, titulo_rect)
 
         # Agregar nombre de la empresa
@@ -175,8 +176,9 @@ class MenuPlay:
             self.option_rects.append((level, image_rect))
         
         # Crear botón de regreso
-        back_button = self.font.render("Back", True, WHITE)
-        back_button_rect = back_button.get_rect(topleft=(10, HEIGHT - 50))
+        back_button = pygame.image.load(join("assets","img","BOTONES","b_regreso.png")).convert_alpha()
+        back_button = pygame.transform.scale(back_button, (back_button.get_width() - 10, back_button.get_height() - 10))
+        back_button_rect = back_button.get_rect(topleft=(40, HEIGHT - 100))
         self.screen.blit(back_button, back_button_rect)
         
         pygame.display.flip()

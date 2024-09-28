@@ -107,7 +107,7 @@ class Level1Beginner:  # Creamos el nivel 1
 
          # Cargar y reproducir la nueva canción
         pygame.mixer.music.load(join("assets", "audio", "niveles", "musica_nivel_1.mp3"))
-        pygame.mixer.music.play(-1)  # Reproducir en bucle
+        #pygame.mixer.music.play(-1)  # Reproducir en bucle
 
         clock = pygame.time.Clock() # Inicializamos el reloj para controlar los FPS
 
@@ -371,7 +371,7 @@ class Level1Beginner:  # Creamos el nivel 1
                         # * Música de fondo 
                         pygame.mixer.music.pause() # Pausar la música actual
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música del menú
-                        pygame.mixer.music.play(-1) # Reproducir la música en bucle
+                        #pygame.mixer.music.play(-1) # Reproducir la música en bucle
                         pygame.mixer.music.set_volume(0.2)
 
             if self.capturarPantalla:

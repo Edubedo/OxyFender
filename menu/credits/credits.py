@@ -18,7 +18,7 @@ class Creditos:
         cap = cv2.VideoCapture(rutaVideo)
 
         if not cap.isOpened():
-            print("Error: Could not open video.")
+            print("No se pudo abrir el video.")
             return
 
         # Detener la música de fondo
@@ -30,7 +30,7 @@ class Creditos:
         # Reproducir el audio del video
         rutaAudio = join("assets", "audio", "music", "Creditos.mpeg")
         pygame.mixer.music.load(rutaAudio)
-        pygame.mixer.music.play()
+        #pygame.mixer.music.play()
 
         clock = pygame.time.Clock()
         activo = True
