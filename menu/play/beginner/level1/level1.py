@@ -271,9 +271,9 @@ class Level1Beginner:  # Creamos el nivel 1
 
             self.rectBarraOxigeno.draw(self.screen)
 
-            textoOxigenosReparados = self.font.render(f"Oxigenos reparados: {self.contadorOxigenoReparado}/{self.metaOxigenoReparado}", True, (255, 255, 255))
-            self.mostrarSuperficieNivel.blit(textoOxigenosReparados, (10, 10))
-
+            self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 25)
+            self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"Oxigenos reparados: {self.contadorOxigenoReparado}/{self.metaOxigenoReparado}", True, (255, 255, 255))
+            self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 550))
             pygame.display.flip()
 
             clock.tick(FPS)
