@@ -74,7 +74,7 @@ class Level1Beginner:  # Creamos el nivel 1
                 sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), superficie, self.todos_los_sprites) # Creamos un sprite para las estructuras(capa)
 
                 # Colisiones de las capas del mapa para cuando interactue con el jugador
-                if nombreCapa in ['Paredes', 'Suelo', 'Techo']:
+                if nombreCapa in ['Paredes', 'Suelo', 'Techo', 'piso']:
                     self.colisiones_sprites.add(sprite)
 
                 # Elevadores de las capas del mapa para cuando interactue con el jugador
@@ -262,7 +262,7 @@ class Level1Beginner:  # Creamos el nivel 1
 
             self.todos_los_sprites.update(estaMoviendose, direccionPersonaje, self.juegoPausado)
 
-            self.mostrarSuperficieNivel.fill(BACKGROUND_COLOR)
+            self.mostrarSuperficieNivel.fill(FONDO_CAFE) # Cambiar fondo de todo el mapa
 
             # Dibujar el mapa de Tiled
             for capa in self.tmx_mapa_1.visible_layers: # Recorremos las capas visibles del mapa de Tiled
@@ -298,8 +298,6 @@ class Level1Beginner:  # Creamos el nivel 1
         configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 200
         configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height() - 300
 
-        print("Width", configuracionWidthPantalla)
-        print("Height", configuracionHeightPantalla)
         # Creamos una nueva superficie para la pantalla de configuración
         config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla))
 
@@ -438,7 +436,6 @@ class Level1Beginner:  # Creamos el nivel 1
                     posicionMousePantallaConfiguración = (posicionMouse[0] - 150, posicionMouse[1] - 150) # Posición del mouse en la pantalla de configuración
                     
                     if botonSolucionarNivel.collidepoint(posicionMousePantallaConfiguración): # Sí hace click en reiniciar nivel volvemos a cargar el nivel 1
-                        print("Arreglando aire")
                         self.arreglo = True
                         banderaEjecutandoNivel1 = False
                         self.juegoPausado = False
@@ -450,7 +447,6 @@ class Level1Beginner:  # Creamos el nivel 1
                 pygame.display.flip() # Actualizamos la pantalla
 
         if self.arreglo:
-            print("Incrementando contador de oxígeno reparado.")
             self.contadorOxigenoReparado += 1
             self
     
