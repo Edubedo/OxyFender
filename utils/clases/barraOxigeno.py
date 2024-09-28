@@ -10,6 +10,10 @@ class BarraOxigeno():
         self.max_hp = max_hp
         self.tiempo_total = 120  # 2 minutos en segundos
         self.tiempo_restante = self.tiempo_total
+        self.tiempo_pausa = 0  # Nuevo: Variable para manejar el tiempo de pausa
+        self.tiempo_ultimo = pygame.time.get_ticks()  # Tiempo cuando el juego empieza o se reanuda
+
+
 
         # Cargar imágenes de tanques de oxígeno
         self.imagenes_tanque = []
@@ -17,9 +21,16 @@ class BarraOxigeno():
             imagen = pygame.image.load(f"assets/img/BOTONES/OXIGENO/tanque_{i}%.png").convert_alpha()
             self.imagenes_tanque.append(imagen)
 
-    def actualizar_tiempo(self, tiempo_actual):
-        self.tiempo_restante = max(0, self.tiempo_total - (tiempo_actual // 1000))
-        self.hp = (self.tiempo_restante / self.tiempo_total) * self.max_hp
+    def actualizar_tiempo(self, tiempo_actual, juegoPausado):
+        if not juegoPausado:
+            # Calcular el tiempo transcurrido considerando las pausas
+            tiempo_transcurrido = (tiempo_actual - self.tiempo_ultimo) // 1000
+            self.tiempo_restante = max(0, self.tiempo_total - tiempo_transcurrido)
+            self.hp = (self.tiempo_restante / self.tiempo_total) * self.max_hp
+        else:
+            # Actualiza el último tiempo cuando el juego se pausa
+            self.tiempo_ultimo = tiempo_actual
+
 
     def obtener_imagen_tanque(self):
         # Asegurarse de que la imagen no cambie a 0% hasta que el tiempo restante sea 0
