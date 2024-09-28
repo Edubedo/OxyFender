@@ -24,12 +24,12 @@ class Level1Beginner:  # Creamos el nivel 1
 
        
         # Cargamos los sprites
-        self.todos_los_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para todos los sprites
-        self.colisiones_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para las colisiones
-        self.elevador_piso1_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores del piso 1
-        self.elevador_piso2_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores del piso 2
-        self.filtro_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para los elevadores
-        self.capa_verificar_gano = pygame.sprite.Group()  # Creamos un grupo de sprites para verificar si el jugador ganó
+        self.todos_los_sprites = pygame.sprite.Group()  # grupo de sprites para todos los sprites
+        self.colisiones_sprites = pygame.sprite.Group()  # grupo de sprites para las colisiones
+        self.elevador_piso1_sprites = pygame.sprite.Group()  # grupo de sprites para los elevadores del piso 1
+        self.elevador_piso2_sprites = pygame.sprite.Group()  # grupo de sprites para los elevadores del piso 2
+        self.filtro_sprites = pygame.sprite.Group()  # grupo de sprites para los elevadores
+        self.capa_verificar_gano = pygame.sprite.Group()  # grupo de sprites para verificar si el jugador ganó
         
         #  Cargamos el mapa del nivel 1
         self.tmx_mapa_1 = load_pygame(join("assets", "maps", "beginner", "level1", "SCIENCE.tmx"))  # Cargamos el mapa del nivel 1
@@ -101,14 +101,15 @@ class Level1Beginner:  # Creamos el nivel 1
                 sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
                 
         # Personaje
-        self.jugador = Player((100, 420), self.todos_los_sprites)  # Establecemos la pisición del jugador
+        self.jugador = Player((800, 420), self.todos_los_sprites)  # Establecemos la pisición del jugador
 
         self.run() # Una vez cargadas las texturas y colisiones generales inicializamos el juego    
 
     def run(self):
         pygame.mixer.music.pause()
         pygame.mixer.music.load(join("assets", "audio", "niveles", "musica_nivel_1.mp3"))
-        pygame.mixer.music.play(-1)
+        #pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.5)
 
         clock = pygame.time.Clock()
         gravedad = PLAYER_GRAVEDAD
@@ -205,10 +206,10 @@ class Level1Beginner:  # Creamos el nivel 1
             colisionesElevadoresPiso2 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso2_sprites, False)
 
             if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
-                fuenteColisionElevador = pygame.font.Font(None, 36)
-                textoColisionElevador = fuenteColisionElevador.render("Click X para viajar en el elevador", True, (255, 255, 255))
-                rectTextoColisionElevador = textoColisionElevador.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() // 2))
-
+               # imagenes del boton de que pique x
+                rectTextoColisionElevador = pygame.image.load(join("assets","img","BOTONES","img_click_x.png")).convert_alpha()
+                rectTextoColisionElevador = pygame.transform.scale(rectTextoColisionElevador, (rectTextoColisionElevador.get_width() - 70, rectTextoColisionElevador.get_height() - 70))
+                
                 if keys[pygame.K_x]:
                     if colisionesElevadoresPiso1:
                         for elevator in self.elevador_piso2_sprites:
@@ -231,9 +232,13 @@ class Level1Beginner:  # Creamos el nivel 1
 
             if colisionesFiltros:
                 for filtro in colisionesFiltros:
-                    fuenteArreglarFiltro = pygame.font.Font(None, 36)
-                    textoArreglarFiltro = fuenteArreglarFiltro.render("Click A para arreglar filtro", True, (255, 255, 255))
-                    rectTextoArreglarFiltro = textoArreglarFiltro.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() // 2))
+                    # Imagen de Click a
+                    # fuenteArreglarFiltro = pygame.font.Font(None, 36)
+                    # textoArreglarFiltro = fuenteArreglarFiltro.render("Click A para arreglar filtro", True, (255, 255, 255))
+                    # rectTextoArreglarFiltro = textoArreglarFiltro.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() // 2))
+                    
+                    rectTextoArreglarFiltro = pygame.image.load(join("assets","img","BOTONES","img_click_a.png")).convert_alpha()
+                    rectTextoArreglarFiltro = pygame.transform.scale(rectTextoArreglarFiltro, (rectTextoArreglarFiltro.get_width()- 70, rectTextoArreglarFiltro.get_height()- 70))
 
                     if keys[pygame.K_a] and not self.juegoPausado:
                         self.juegoPausado = True
@@ -242,7 +247,7 @@ class Level1Beginner:  # Creamos el nivel 1
                         self.juegoPausado = False
 
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
-            self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 125
+            self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 125 # Hacemos que la cama este con el personaje pero hacemos tantito para arriba
            
             self.todos_los_sprites.update(estaMoviendose, direccionPersonaje, self.juegoPausado)
 
@@ -257,11 +262,12 @@ class Level1Beginner:  # Creamos el nivel 1
             for sprite in self.todos_los_sprites:
                 self.mostrarSuperficieNivel.blit(sprite.image, sprite.rect.topleft - self.camera_offset)
 
+            # Cuando el jugador colisione con uno de los elevadores le mostramos la imagen de que presione x
             if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
-                self.mostrarSuperficieNivel.blit(textoColisionElevador, rectTextoColisionElevador)
+                self.mostrarSuperficieNivel.blit(rectTextoColisionElevador, (self.mostrarSuperficieNivel.get_width() // 2, (self.mostrarSuperficieNivel.get_height() // 2) + 110)) # esta agarrando la posicion del eelevador de abajo asi que lo tenemos que acomodar
 
             if colisionesFiltros:
-                self.mostrarSuperficieNivel.blit(textoArreglarFiltro, rectTextoArreglarFiltro)
+                self.mostrarSuperficieNivel.blit(rectTextoArreglarFiltro, (self.mostrarSuperficieNivel.get_width() // 2, (self.mostrarSuperficieNivel.get_width() // 2) - 100))
 
             self.rectBarraOxigeno.draw(self.screen)
 
@@ -326,7 +332,7 @@ class Level1Beginner:  # Creamos el nivel 1
                         # * Música de fondo 
                         pygame.mixer.music.pause() # Pausar la música actual
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música del menú
-                        pygame.mixer.music.play(-1) # Reproducir la música en bucle
+                        #pygame.mixer.music.play(-1) # Reproducir la música en bucle
                         pygame.mixer.music.set_volume(0.2)
 
     def pantallaPausar(self):
@@ -405,7 +411,7 @@ class Level1Beginner:  # Creamos el nivel 1
                         # * Música de fondo 
                         pygame.mixer.music.pause() # Pausar la música actual
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música del menú
-                        pygame.mixer.music.play(-1) # Reproducir la música en bucle
+                        #pygame.mixer.music.play(-1) # Reproducir la música en bucle
                         pygame.mixer.music.set_volume(0.2)
 
             if self.capturarPantalla:

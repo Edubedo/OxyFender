@@ -18,8 +18,8 @@ class Player(pygame.sprite.Sprite):
         self.direction = "right"  # Default direction
         
         # Cargar el sonido de caminar
-        #self.sonido_pasos = pygame.mixer.Sound(join("assets", "audio", "jugador", "caminar_concreto.mp3"))
-        #self.sonido_pasos.set_volume(0.2)
+        self.sonido_pasos = pygame.mixer.Sound(join("assets", "audio", "jugador", "caminar_concreto.mp3"))
+        self.sonido_pasos.set_volume(0.3)
 
     def cargar_imagenes(self, direction):
         images = []
@@ -40,14 +40,14 @@ class Player(pygame.sprite.Sprite):
             self.image = self.images[int(self.animation_index)]
             
             # Reproducir el sonido de caminar si no está ya reproduciéndose
-            #if not self.sonido_pasos.get_num_channels():
-                #self.sonido_pasos.play()
+            if not self.sonido_pasos.get_num_channels():
+                self.sonido_pasos.play()
 
             if self.rect.left < 0:  # Establece el limite de lado izquierdo para no salir del mapa
                 self.rect.left = 0  # Correctly set the left attribute instead of the entire rect
-        # else:
+        else:
             # Detener el sonido de caminar si el personaje deja de moverse o el juego está en pausa
-            #self.sonido_pasos.stop()
+            self.sonido_pasos.stop()
 
         # Ajustar la posición del rectángulo de colisión
         self.rect = self.image.get_rect(topleft=self.rect.topleft)

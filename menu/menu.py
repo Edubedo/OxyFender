@@ -20,7 +20,7 @@ class Menu:
         # * Música de fondo 
         pygame.mixer.init() # Inicializar el módulo de sonido
         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
-        pygame.mixer.music.play(-1) # Reproducir la música en bucle
+        #pygame.mixer.music.play(-1) # Reproducir la música en bucle
         pygame.mixer.music.set_volume(1)
         # volumen
 
@@ -117,7 +117,7 @@ class Menu:
                                 self.bucleInicial = True  # Reiniciar el bucle del menú después de mostrar los créditos
                                 # Reproducir la música de fondo nuevamente
                                 pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))
-                                pygame.mixer.music.play(-1)
+                                #pygame.mixer.music.play(-1)
                                 pygame.mixer.music.set_volume(0.2)
 
                             elif option == "configuration" or option == "configuración":

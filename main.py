@@ -4,7 +4,7 @@ import pygame
 from menu.menu import Menu
 from utils.configuraciones import *
 
-def play():
+def main():
     pygame.init()  # Inicializar pygame
     screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Establecer tamaño de pantalla
     pygame.display.set_caption(TITLE_GAME) # Establecer el titulo del juego
@@ -14,6 +14,6 @@ def play():
     menuInicial.mostrarMenuInicial()  # Mostrar el menú del juego.
 
 if __name__ == "__main__":
-    play()
+    main()
 
 

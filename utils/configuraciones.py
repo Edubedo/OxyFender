@@ -2,7 +2,6 @@
 #ste software no puede ser copiado o redistribuido sin permiso del autor.
 import pygame
 from os.path import join
-from os import walk
 from pygame.math import Vector2 as vector
 
 TITLE_GAME = 'OxyFender'
@@ -16,10 +15,10 @@ TILE_SIZE = 32 # 32x32
 FPS = 60 
 
 BACKGROUND_COLOR = (0, 0, 0)  
-PLAYER_VEL = 3.6
+PLAYER_VEL = 3.5
 PLAYER_GRAVEDAD = 0.32
-PLAYER_FUERZA_SALTO = -6
-PLAYER_VELOCIDAD_MAXIMA_CAIDA = 3
+PLAYER_FUERZA_SALTO = -4
+PLAYER_VELOCIDAD_MAXIMA_CAIDA = 2.5
 PLAYER_VELOCIDAD_Y = 0
 
 ENEMY_SPEED = 3
