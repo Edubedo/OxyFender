@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="24" height="17" tilewidth="32" tileheight="32" infinite="0" nextlayerid="18" nextobjectid="99">
+ <tileset firstgid="1" name="tub1" tilewidth="32" tileheight="32" tilecount="408" columns="24">
+  <image source="tub1.png" width="768" height="544"/>
+ </tileset>
+ <tileset firstgid="409" name="baseconsola2" tilewidth="32" tileheight="32" tilecount="0" columns="24">
+  <image source="baseconsola2.png" width="768" height="544"/>
+ </tileset>
+ <tileset firstgid="817" name="tub2" tilewidth="32" tileheight="32" tilecount="408" columns="24">
+  <image source="tub2.png" width="768" height="544"/>
+ </tileset>
+ <layer id="1" name="base" width="24" height="17">
+  <data encoding="csv">
+409,410,411,412,413,414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,
+433,434,435,436,437,438,439,440,441,442,443,444,445,446,447,448,449,450,451,452,453,454,455,456,
+457,458,459,460,461,462,463,464,465,466,467,468,469,470,471,472,473,474,475,476,477,478,479,480,
+481,482,483,484,485,486,487,488,489,490,491,492,493,494,495,496,497,498,499,500,501,502,503,504,
+505,506,507,508,509,510,511,512,513,514,515,516,517,518,519,520,521,522,523,524,525,526,527,528,
+529,530,531,532,533,534,535,536,537,538,539,540,541,542,543,544,545,546,547,548,549,550,551,552,
+553,554,555,556,557,558,559,560,561,562,563,564,565,566,567,568,569,570,571,572,573,574,575,576,
+577,578,579,580,581,582,583,584,585,586,587,588,589,590,591,592,593,594,595,596,597,598,599,600,
+601,602,603,604,605,606,607,608,609,610,611,612,613,614,615,616,617,618,619,620,621,622,623,624,
+625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,642,643,644,645,646,647,648,
+649,650,651,652,653,654,655,656,657,658,659,660,661,662,663,664,665,666,667,668,669,670,671,672,
+673,674,675,676,677,678,679,680,681,682,683,684,685,686,687,688,689,690,691,692,693,694,695,696,
+697,698,699,700,701,702,703,704,705,706,707,708,709,710,711,712,713,714,715,716,717,718,719,720,
+721,722,723,724,725,726,727,728,729,730,731,732,733,734,735,736,737,738,739,740,741,742,743,744,
+745,746,747,748,749,750,751,752,753,754,755,756,757,758,759,760,761,762,763,764,765,766,767,768,
+769,770,771,772,773,774,775,776,777,778,779,780,781,782,783,784,785,786,787,788,789,790,791,792,
+793,794,795,796,797,798,799,800,801,802,803,804,805,806,807,808,809,810,811,812,813,814,815,816
+</data>
+ </layer>
+ <objectgroup id="10" name="btn1azul">
+  <object id="17" gid="963" x="64" y="224" width="32" height="32"/>
+  <object id="20" gid="987" x="64" y="256" width="32" height="32"/>
+  <object id="21" gid="988" x="96.5" y="256" width="32" height="32"/>
+  <object id="22" gid="989" x="128" y="256.25" width="32" height="32"/>
+  <object id="23" gid="965" x="128" y="224" width="32" height="32"/>
+  <object id="24" gid="941" x="128" y="191.75" width="32" height="32"/>
+  <object id="25" gid="964" x="96" y="224" width="32" height="32"/>
+  <object id="26" gid="940" x="96.5" y="191.75" width="32" height="32"/>
+  <object id="27" gid="988" x="96.25" y="256.25" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="11" name="btn1rojo">
+  <object id="29" gid="1011" x="64" y="288" width="32" height="32"/>
+  <object id="30" gid="1012" x="96.25" y="288" width="32" height="32"/>
+  <object id="31" gid="1035" x="64" y="320" width="32" height="32"/>
+  <object id="32" gid="1036" x="96" y="320" width="32" height="32"/>
+  <object id="33" gid="1037" x="127.75" y="319.75" width="32" height="32"/>
+  <object id="34" gid="1013" x="127.818" y="288" width="32" height="32"/>
+  <object id="35" gid="1012" x="95.8182" y="287.818" width="32" height="32"/>
+  <object id="37" gid="1036" x="96.1818" y="319.818" width="32" height="32"/>
+  <object id="42" gid="1012" x="96.1818" y="288" width="32" height="32"/>
+  <object id="43" gid="988" x="96.1818" y="256.182" width="32" height="32"/>
+  <object id="44" gid="989" x="127.818" y="256.182" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="12" name="btn1verde">
+  <object id="45" gid="1059" x="64" y="352" width="32" height="32"/>
+  <object id="46" gid="1083" x="64" y="384" width="32" height="32"/>
+  <object id="47" gid="1084" x="96" y="383.75" width="32" height="32"/>
+  <object id="48" gid="1085" x="128" y="383.75" width="32" height="32"/>
+  <object id="49" gid="1084" x="96" y="383.875" width="32" height="32"/>
+  <object id="50" gid="1061" x="128" y="352.125" width="32" height="32"/>
+  <object id="51" gid="1060" x="96" y="352" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="13" name="btn1rosa">
+  <object id="53" gid="1107" x="64" y="416" width="32" height="32"/>
+  <object id="54" gid="1131" x="64" y="447.818" width="32" height="32"/>
+  <object id="55" gid="1108" x="96" y="416" width="32" height="32"/>
+  <object id="56" gid="1132" x="96" y="447.818" width="32" height="32"/>
+  <object id="57" gid="1109" x="128" y="416" width="32" height="32"/>
+  <object id="58" gid="1133" x="127.818" y="447.818" width="32" height="32"/>
+  <object id="60" gid="1133" x="128" y="447.636" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="14" name="btn2rosa">
+  <object id="62" gid="979" x="576" y="224" width="32" height="32"/>
+  <object id="63" gid="1003" x="576" y="256.182" width="32" height="32"/>
+  <object id="64" gid="1004" x="608" y="256" width="32" height="32"/>
+  <object id="65" gid="1005" x="640" y="256" width="32" height="32"/>
+  <object id="66" gid="981" x="640" y="224" width="32" height="32"/>
+  <object id="67" gid="980" x="608" y="224" width="32" height="32"/>
+  <object id="68" gid="1003" x="576" y="256" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="15" name="btn2verde">
+  <object id="70" gid="1027" x="576" y="288.909" width="32" height="32"/>
+  <object id="71" gid="1051" x="576" y="320" width="32" height="32"/>
+  <object id="72" gid="1028" x="608" y="288" width="32" height="32"/>
+  <object id="73" gid="1027" x="576.182" y="288.364" width="32" height="32"/>
+  <object id="74" gid="1029" x="640" y="288" width="32" height="32"/>
+  <object id="75" gid="1053" x="640" y="320" width="32" height="32"/>
+  <object id="76" gid="1052" x="608" y="320" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="16" name="btn2azul">
+  <object id="77" gid="1051" x="576" y="320" width="32" height="32"/>
+  <object id="78" gid="1075" x="576" y="352" width="32" height="32"/>
+  <object id="79" gid="1099" x="576" y="384" width="32" height="32"/>
+  <object id="80" gid="1076" x="607.818" y="352" width="32" height="32"/>
+  <object id="81" gid="1100" x="608" y="384" width="32" height="32"/>
+  <object id="82" gid="1101" x="640" y="384" width="32" height="32"/>
+  <object id="83" gid="1077" x="640" y="352" width="32" height="32"/>
+  <object id="85" gid="1077" x="639.818" y="352" width="32" height="32"/>
+  <object id="86" gid="1101" x="639.818" y="383.818" width="32" height="32"/>
+  <object id="88" gid="1101" x="639.818" y="383.818" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="17" name="btn2rojo">
+  <object id="90" gid="1123" x="576" y="416" width="32" height="32"/>
+  <object id="91" gid="1147" x="576" y="447.818" width="32" height="32"/>
+  <object id="92" gid="1124" x="608.182" y="416" width="32" height="32"/>
+  <object id="93" gid="1148" x="608.182" y="448" width="32" height="32"/>
+  <object id="94" gid="1123" x="576.182" y="416" width="32" height="32"/>
+  <object id="95" gid="1125" x="640" y="416" width="32" height="32"/>
+  <object id="96" gid="1149" x="640" y="447.818" width="32" height="32"/>
+  <object id="97" gid="1147" x="576.182" y="448.364" width="32" height="32"/>
+ </objectgroup>
+</map>

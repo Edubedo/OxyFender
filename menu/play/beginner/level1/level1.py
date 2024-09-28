@@ -1,7 +1,7 @@
 import pygame
 from utils.configuraciones import *
 from os.path import join
-from pytmx.util_pygame import load_pygame
+from pytmx import *
 import sys
 from utils.sprites import Sprite
 from utils.jugador import Player
@@ -139,7 +139,7 @@ class Level1Beginner:  # Creamos el nivel 1
 
             tiempo_actual = pygame.time.get_ticks() - self.tiempo_inicio
 
-            if tiempo_actual >= 120000: # 120000 MILISEGUNDOS ES IGUAL 2 MINUTOS
+            if tiempo_actual >= 120000:  # 120000 MILISEGUNDOS ES IGUAL 2 MINUTOS
                 self.perdioJuego = True
 
             self.rectBarraOxigeno.actualizar_tiempo(tiempo_actual, self.juegoPausado)
@@ -164,14 +164,10 @@ class Level1Beginner:  # Creamos el nivel 1
                         self.juegoPausado = not self.juegoPausado
                         if self.juegoPausado:
                             self.capturarPantalla = self.mostrarSuperficieNivel.copy()
+                            pygame.mixer.music.pause()
+                            self.jugador.sonido_pasos.stop()
                         else:
-                            self.juegoPausado = not self.juegoPausado
-                            if self.juegoPausado:
-                                self.capturarPantalla = self.mostrarSuperficieNivel.copy()
-                                pygame.mixer.music.pause()
-                                self.jugador.sonido_pasos.stop()
-                            else:
-                                pygame.mixer.music.unpause()
+                            pygame.mixer.music.unpause()
 
             if self.juegoPausado:
                 self.pantallaPausar()
@@ -224,10 +220,9 @@ class Level1Beginner:  # Creamos el nivel 1
             colisionesElevadoresPiso2 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso2_sprites, False)
 
             if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
-               # imagenes del boton de que pique x
-                rectTextoColisionElevador = pygame.image.load(join("assets","img","BOTONES","img_click_x.png")).convert_alpha()
+                rectTextoColisionElevador = pygame.image.load(join("assets", "img", "BOTONES", "img_click_x.png")).convert_alpha()
                 rectTextoColisionElevador = pygame.transform.scale(rectTextoColisionElevador, (rectTextoColisionElevador.get_width() - 70, rectTextoColisionElevador.get_height() - 70))
-                
+
                 if keys[pygame.K_x]:
                     if colisionesElevadoresPiso1:
                         for elevator in self.elevador_piso2_sprites:
@@ -248,16 +243,16 @@ class Level1Beginner:  # Creamos el nivel 1
 
             if colisionesVerificarGano:
                 for gano in colisionesVerificarGano:
-                    self.ganoNivel = True
-                    break
+                    if gano and self.contadorOxigenoReparado >= self.metaOxigenoReparado:
+                        self.ganoNivel = True
+                        break
 
             colisionesFiltros = pygame.sprite.spritecollide(self.jugador, self.filtro_sprites, False)
 
             if colisionesFiltros:
                 for filtro in colisionesFiltros:
-                    # Imagen de Click a
-                    rectTextoArreglarFiltro = pygame.image.load(join("assets","img","BOTONES","img_click_a.png")).convert_alpha()
-                    rectTextoArreglarFiltro = pygame.transform.scale(rectTextoArreglarFiltro, (rectTextoArreglarFiltro.get_width()- 70, rectTextoArreglarFiltro.get_height()- 70))
+                    rectTextoArreglarFiltro = pygame.image.load(join("assets", "img", "BOTONES", "img_click_a.png")).convert_alpha()
+                    rectTextoArreglarFiltro = pygame.transform.scale(rectTextoArreglarFiltro, (rectTextoArreglarFiltro.get_width() - 70, rectTextoArreglarFiltro.get_height() - 70))
 
                     if keys[pygame.K_a] and not self.juegoPausado:
                         self.juegoPausado = True
@@ -265,15 +260,12 @@ class Level1Beginner:  # Creamos el nivel 1
                         self.pantallaArreglarAire()
                         self.juegoPausado = False
                         self.contadorOxigenoReparado += 1  # Incrementar el contador de oxígeno reparado
-                        if self.contadorOxigenoReparado >= self.metaOxigenoReparado:
-                            self.ganoNivel = True  # El jugador ha alcanzado la meta
 
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
-            self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 125 # Hacemos que la cama este con el personaje pero hacemos tantito para arriba
-           
+            self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 125
+
             self.todos_los_sprites.update(estaMoviendose, direccionPersonaje, self.juegoPausado)
 
-            # Dibujar la imagen de fondo en la pantalla
             self.screen.blit(self.imagen_fondo_escalada, (0, 0))
 
             for capa in self.tmx_mapa_1.visible_layers:
@@ -284,9 +276,8 @@ class Level1Beginner:  # Creamos el nivel 1
             for sprite in self.todos_los_sprites:
                 self.mostrarSuperficieNivel.blit(sprite.image, sprite.rect.topleft - self.camera_offset)
 
-            # Cuando el jugador colisione con uno de los elevadores le mostramos la imagen de que presione x
             if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
-                self.mostrarSuperficieNivel.blit(rectTextoColisionElevador, (self.mostrarSuperficieNivel.get_width() // 2, (self.mostrarSuperficieNivel.get_height() // 2) + 110)) # esta agarrando la posicion del eelevador de abajo asi que lo tenemos que acomodar
+                self.mostrarSuperficieNivel.blit(rectTextoColisionElevador, (self.mostrarSuperficieNivel.get_width() // 2, (self.mostrarSuperficieNivel.get_height() // 2) + 110))
 
             if colisionesFiltros:
                 self.mostrarSuperficieNivel.blit(rectTextoArreglarFiltro, (self.mostrarSuperficieNivel.get_width() // 2, (self.mostrarSuperficieNivel.get_width() // 2) - 100))
@@ -299,7 +290,42 @@ class Level1Beginner:  # Creamos el nivel 1
             pygame.display.flip()
 
             clock.tick(FPS)
-    
+
+    def pantallaArreglarAire(self):
+        self.tmx_filtroUnoNivel1 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel1", "tuberia1.tmx"))  # Cargamos el mapa del nivel 1
+        print("self.tmx_filtroUnoNivel1: ", self.tmx_filtroUnoNivel1)
+        self.arreglo = False
+
+        # Calcular el desplazamiento para centrar el mapa
+        map_width = self.tmx_filtroUnoNivel1.width * self.tmx_filtroUnoNivel1.tilewidth
+        map_height = self.tmx_filtroUnoNivel1.height * self.tmx_filtroUnoNivel1.tileheight
+        offset_x = (self.mostrarSuperficieNivel.get_width() - map_width) // 2
+        offset_y = (self.mostrarSuperficieNivel.get_height() - map_height) // 2
+
+        banderaEjecutandoNivel1 = True
+        while banderaEjecutandoNivel1:
+            if self.volver_menu:  # Sí le dio click a la bandera de volver al menú, rompemos este ciclo y volvemos al anterior
+                break
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                # Eventos para los botones
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # Sí le da click a la tecla de escape, se cierra la pantalla de configuración
+                    banderaEjecutandoNivel1 = False
+
+            if banderaEjecutandoNivel1:  # Solo mostrar la pantalla de configuración si el bucle sigue activo
+                # Dibujar el mapa en la superficie principal
+                for layer in self.tmx_filtroUnoNivel1.visible_layers:
+                    if isinstance(layer, pytmx.TiledTileLayer):
+                        for x, y, gid in layer:
+                            tile = self.tmx_filtroUnoNivel1.get_tile_image_by_gid(gid)
+                            if tile:
+                                self.mostrarSuperficieNivel.blit(tile, (x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y))
+                pygame.display.flip()  # Actualizamos la pantalla
+                
     def pantallaPausar(self):
         # Posición del menú de configuración dentro del juego
         configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 200
@@ -519,65 +545,4 @@ class Level1Beginner:  # Creamos el nivel 1
                         pygame.mixer.music.play(-1)  # Reproducir la música en bucle
                         pygame.mixer.music.set_volume(0.2)
 
-    def pantallaArreglarAire(self):
-        self.arreglo = False
-
-        # Posición del menú de configuración dentro del juego
-        configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 200
-        configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height() - 300
-
-        # Creamos una nueva superficie para la pantalla de configuración
-        config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla))
-
-        config_screen.fill(DARK_BLUE)
-
-        # Agregar boton para reiniciar nivel
-        botonSolucionarNivel = pygame.Rect(50, 50, 200, 50)  # Establecer tamaño del boton
-        pygame.draw.rect(config_screen, LIGHTBLUE, botonSolucionarNivel)  # dibujar el boton de color azul
-        text = self.font.render("Arreglar Aire", True, (255, 255, 255))  # Agregar texto al boton
-        text_rect = text.get_rect(center=botonSolucionarNivel.center)  # Centrar el texto en el boton
-        config_screen.blit(text, text_rect)  # Mostrar el texto en el boton
-
-        banderaEjecutandoNivel1 = True
-        while banderaEjecutandoNivel1:
-            if self.volver_menu:  # Sí le dio click a la bandera de volver al menú, rompemos este ciclo y volvemos al anterior
-                break
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-
-                # Eventos para los botones
-                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # Sí le da click a la tecla de escape, se cierra la pantalla de configuración
-                    self.juegoPausado = False
-                    banderaEjecutandoNivel1 = False
-
-                # Sí pasa el mouse sobre los botones
-                elif event.type == pygame.MOUSEMOTION:
-                    posicionMouse = event.pos  # Rastreamos la posicion del mouse
-                    # Revisamos sí el mouse está encima del botón
-                    posicionMousePantallaConfiguración = (posicionMouse[0] - 150, posicionMouse[1] - 150)  # Posición del mouse en la pantalla de configuración
-
-                    if botonSolucionarNivel.collidepoint(posicionMousePantallaConfiguración):
-                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-                    else:
-                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-
-                # Sí le da click a los botones
-                elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    posicionMouse = event.pos  # Rastreamos la posicion del mouse
-                    # Revisamos sí el mouse está encima del botón
-                    posicionMousePantallaConfiguración = (posicionMouse[0] - 150, posicionMouse[1] - 150)  # Posición del mouse en la pantalla de configuración
-
-                    if botonSolucionarNivel.collidepoint(posicionMousePantallaConfiguración):  # Sí hace click en reiniciar nivel volvemos a cargar el nivel 1
-                        self.arreglo = True
-                        self.contadorOxigenoReparado += 1  # Incrementar el contador de aire reparado
-                        banderaEjecutandoNivel1 = False
-                        self.juegoPausado = False
-                        pygame.event.clear()  # Limpiar la cola de eventos
-                        break
-
-            if banderaEjecutandoNivel1:  # Solo mostrar la pantalla de configuración si el bucle sigue activo
-                self.mostrarSuperficieNivel.blit(config_screen, (150, 150))  # Mostramos la pantalla de configuración
-                pygame.display.flip()  # Actualizamos la pantalla
+    
