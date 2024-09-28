@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite):
         
         # Cargar el sonido de caminar
         self.sonido_pasos = pygame.mixer.Sound(join("assets", "audio", "jugador", "caminar_concreto.mp3"))
-        self.sonido_pasos.set_volume(0.3)
+        self.sonido_pasos.set_volume(0)
 
     def cargar_imagenes(self, direction):
         images = []

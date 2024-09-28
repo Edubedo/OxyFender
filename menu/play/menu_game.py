@@ -65,7 +65,7 @@ class MenuPlay:
             self.dictMostrarOpcionesDificultad.append((opcionDificultad, image_rect))
         
         # Crear botón de regreso
-        back_button = pygame.image.load(join("assets","img","BOTONES","b_regreso.png")).convert_alpha()
+        back_button = pygame.image.load(join("assets","img","BOTONES","b_regreso2.png")).convert_alpha()
         back_button = pygame.transform.scale(back_button, (back_button.get_width() - 10, back_button.get_height() - 10))
         back_button_rect = back_button.get_rect(topleft=(40, HEIGHT - 100))
         self.screen.blit(back_button, back_button_rect)
@@ -181,7 +181,7 @@ class MenuPlay:
             self.option_rects.append((level, image_rect))
         
         # Crear botón de regreso
-        back_button = pygame.image.load(join("assets","img","BOTONES","b_regreso.png")).convert_alpha()
+        back_button = pygame.image.load(join("assets","img","BOTONES","b_regreso2.png")).convert_alpha()
         back_button = pygame.transform.scale(back_button, (back_button.get_width() - 10, back_button.get_height() - 10))
         back_button_rect = back_button.get_rect(topleft=(40, HEIGHT - 100))
         self.screen.blit(back_button, back_button_rect)

@@ -15,7 +15,28 @@ class Menu:
         self.config = Configuration() # Establecemos la configuracion del lenguaje 
         self.font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 18) # Establecemos la Fuente de texto
         
-        self.opcionesMenuPrincipal = ["Play", "Credits", "Configuration", "Quit"] # Opciones inicales del menu principal
+        # TODO MANEJO CON ESPAÑOL E INGLES
+        self.opcionesMenuPrincipal = [
+        {
+            "name": "Play",
+            "id": "play",
+            "image": pygame.image.load(join("assets", "img", "BOTONES", "b_play.png")).convert_alpha()
+        }, 
+        {
+            "name": "Credits",
+            "id": "credits",
+            "image": pygame.image.load(join("assets", "img", "BOTONES", "b_credits.png")).convert_alpha()
+        }, 
+        {
+            "name": "Configuration",
+            "id": "configuration",
+            "image": pygame.image.load(join("assets", "img", "BOTONES", "b_configuration.png")).convert_alpha()
+        }, 
+        {
+            "name": "Quit",
+            "id": "quit",
+            "image": pygame.image.load(join("assets", "img", "BOTONES", "b_quit.png")).convert_alpha()
+        }] # Opciones inicales del menu principal
         
         # * Música de fondo 
         pygame.mixer.init() # Inicializar el módulo de sonido
@@ -42,32 +63,24 @@ class Menu:
         self.screen.blit(tituloPrincipalJuego, recTituloPrincipalJuego)
 
         for i, opcionMenuPrincipal in enumerate(self.opcionesMenuPrincipal): # Recorremos todas las opciones del menu principal
-            
-            # Si el cursor está encima de alguna de las opciones pintar azul claro y hacer el botón más largo
-            if i == hoverOpcionSeleccionada: 
-                textoOpcionMenuPrincipal = self.font.render(opcionMenuPrincipal, True, WHITE)
-                fondoTextoOpcionMenuPrincipal = pygame.Surface((BUTTON_MENU_WIDTH + 40, BUTTON_MENU_HEIGHT + 10))
-                fondoTextoOpcionMenuPrincipal.fill(DARK_BLUE)
-                fondoTextoOpcionMenuPrincipal.set_alpha(255) # Full opacity
-            # Si el cursor NO está encima de alguna de las opciones pintar azul oscuro
-            else: # Si el cursor no está encima de la opción
-                textoOpcionMenuPrincipal = self.font.render(opcionMenuPrincipal, True, WHITE)
-                fondoTextoOpcionMenuPrincipal = pygame.Surface((BUTTON_MENU_WIDTH + 10, BUTTON_MENU_HEIGHT + 10))
-                fondoTextoOpcionMenuPrincipal.fill(DARK_BLUE)
-                fondoTextoOpcionMenuPrincipal.set_alpha(204) # 0.8 opacity
-            
-            # A partir de cada opcion, dibujarle el rectangulo donde estárá centrada
-            rectTextoOpcionMenuPrincipal = textoOpcionMenuPrincipal.get_rect(topleft=(10, (BUTTON_MENU_HEIGHT + 10) // 2 - textoOpcionMenuPrincipal.get_height() // 2))
-            
-            # Pintar el texto dentro de cada fondo
-            fondoTextoOpcionMenuPrincipal.blit(textoOpcionMenuPrincipal, rectTextoOpcionMenuPrincipal.topleft)
+            if i == hoverOpcionSeleccionada: # * Si el cursor está encima de alguna de las opciones pintar azul claro y hacer el botón más largo
+                image = opcionMenuPrincipal['image']
+                image = pygame.transform.scale(image, (opcionMenuPrincipal['image'].get_width() + 100, opcionMenuPrincipal['image'].get_height() + 20))
+                image.set_alpha(255)  # Set the alpha of the image (opacity level)
+                image_rect = image.get_rect(topleft=(10, 150 + i * (image.get_height() + 10)))
+                fondoTextoOpcionMenuPrincipal = self.screen.blit(image, image_rect)
+
+            else:  # * Si el cursor no está encima de la opción
+                image = opcionMenuPrincipal['image']
+                image = pygame.transform.scale(image, (image.get_width() + 30, image.get_height() + 20))
+                image.set_alpha(150)  # Set the alpha of the image (opacity level)
+                image_rect = image.get_rect(topleft=(10, 150 + i * (image.get_height() + 10)))
+                self.screen.blit(image, image_rect)
+
             
             # Posicionar los fondos 
-            rectOptionMenu = fondoTextoOpcionMenuPrincipal.get_rect(topleft=(0, 150 + i * 80)) # Más margen hacia abajo
-            # Pintar los fondos dentro de la pantalla
-            self.screen.blit(fondoTextoOpcionMenuPrincipal, rectOptionMenu)
             # Agregar las opciones a un arreglo para manejar el hover
-            self.rectOpcionesMenuPrincipal.append((opcionMenuPrincipal.lower(), rectOptionMenu))
+            self.rectOpcionesMenuPrincipal.append((opcionMenuPrincipal, image_rect))
         
         # Agregar nombre de la empresa
         fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24) # Fuente
@@ -106,12 +119,12 @@ class Menu:
                             # Reproducir sonido de clic
                             self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                             
-                            if option == "play" or option == "jugar":
+                            if option['id'] == "play" or option['id'] == "jugar":
                                 game_menu = MenuPlay(self.screen, self.config, self.bucleInicial)
                                 game_menu.mostrarMenuDificultad()
                                 continue
                             
-                            if option == "credits" or option == "créditos":
+                            if option['id'] == "credits" or option['id'] == "créditos":
                                 credits = Creditos(self.screen)
                                 credits.run()
                                 self.bucleInicial = True  # Reiniciar el bucle del menú después de mostrar los créditos
@@ -120,11 +133,11 @@ class Menu:
                                 #pygame.mixer.music.play(-1)
                                 pygame.mixer.music.set_volume(0.2)
 
-                            elif option == "configuration" or option == "configuración":
+                            elif option['id'] == "configuration" or option['id'] == "configuración":
                                 self.config.show_configuration(self.screen, self.font)
 
-                            elif option == "quit" or option == "salir":
+                            elif option['id'] == "quit" or option['id'] == "salir":
                                 pygame.quit()
                                 sys.exit()
                             else:
-                                return option
+                                return option['id']
