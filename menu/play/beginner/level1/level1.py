@@ -125,7 +125,7 @@ class Level1Beginner:  # Creamos el nivel 1
 
             tiempo_actual = pygame.time.get_ticks() - tiempo_inicio
 
-            if tiempo_actual >= 1200: # 120000 MILISEGUNDOS ES IGUAL 2 MINUTOS
+            if tiempo_actual >= 120000: # 120000 MILISEGUNDOS ES IGUAL 2 MINUTOS
                 self.perdioJuego = True
 
             self.rectBarraOxigeno.actualizar_tiempo(tiempo_actual, self.juegoPausado)
