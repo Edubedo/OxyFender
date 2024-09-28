@@ -73,7 +73,7 @@ class MenuPlay:
         # Agregar nombre de la empresa
         fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24)  # Fuente
         textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, WHITE)  # Texto
-        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10))  # Rectangulo para mostrar el texto en la pantalla
+        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 45, self.screen.get_height() - 45))  # Rectangulo para mostrar el texto en la pantalla
         self.screen.blit(textoInferiorDerecha, texto_rect)  # Mostrar texto en la pantalla
 
         pygame.display.flip()
@@ -155,7 +155,7 @@ class MenuPlay:
         # Agregar nombre de la empresa
         fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24)  # Fuente
         textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, WHITE)  # Texto
-        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10))  # Rectangulo para mostrar el texto en la pantalla
+        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 45, self.screen.get_height() - 45))  # Rectangulo para mostrar el texto en la pantalla
         self.screen.blit(textoInferiorDerecha, texto_rect)  # Mostrar texto en la pantalla
 
         opcionNiveles = []

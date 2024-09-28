@@ -61,7 +61,7 @@ class Level1Beginner:  # Creamos el nivel 1
         self.rectBarraOxigeno = BarraOxigeno(10, 100, 40, 300, 200)
         self.rectBarraOxigeno.hp = 200
 
-        #  ------------------- Agregamos el conteo de oxigenos reparados y el objetivo x/y ------------------- #
+        #  ------------------- Agregamos el conteo de Oxygens repaired y el objetivo x/y ------------------- #
         self.contadorOxigenoReparado = 0
         self.metaOxigenoReparado = 2
 
@@ -294,7 +294,7 @@ class Level1Beginner:  # Creamos el nivel 1
             self.rectBarraOxigeno.draw(self.screen)
 
             self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 25)
-            self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"Oxigenos reparados: {self.contadorOxigenoReparado}/{self.metaOxigenoReparado}", True, (255, 255, 255))
+            self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"Oxygens repaired: {self.contadorOxigenoReparado}/{self.metaOxigenoReparado}", True, (255, 255, 255))
             self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 550))
             pygame.display.flip()
 

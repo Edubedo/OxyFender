@@ -134,7 +134,7 @@ class Menu:
                                 pygame.mixer.music.set_volume(0.2)
 
                             elif option['id'] == "configuration" or option['id'] == "configuración":
-                                self.config.show_configuration(self.screen, self.font)
+                                self.config.setup()
 
                             elif option['id'] == "quit" or option['id'] == "salir":
                                 pygame.quit()
