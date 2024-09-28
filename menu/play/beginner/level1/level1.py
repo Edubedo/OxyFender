@@ -46,7 +46,6 @@ class Level1Beginner:  # Creamos el nivel 1
         self.ganoNivel = False  # Bandera para manejar sí el jugador ganó
         self.perdioJuego = False  # Bandera para manejar sí el jugador perdió
 
-
         self.setup(self.tmx_mapa_1) # Inicializamos el nivel 1
 
     def setup(self, tmx_mapa_1):
@@ -117,18 +116,18 @@ class Level1Beginner:  # Creamos el nivel 1
         jugador_velocidad_y = 1 # Ajustar la velocidad del jugador en y
         esta_sobre_el_piso = False
 
+        tiempo_inicio = pygame.time.get_ticks()
+
         while True:
             if self.volver_menu:
                 break
 
-            tiempoActualCombustible = pygame.time.get_ticks() # Tiempo actual del oxigeno
+            tiempo_actual = pygame.time.get_ticks() - tiempo_inicio
 
-            if not self.ganoNivel: # Sí no ha ganado el nivel
-                if tiempoActualCombustible - self.ultimoTiempoCombustible >= 1000:  # Reducir el oxigeno con cada segundo cada pasa de 10 en 10
-                    self.rectBarraOxigeno.hp -= 1
-                    self.ultimoTiempoCombustible = tiempoActualCombustible
-                    if self.rectBarraOxigeno.hp <= 0:
-                        self.perdioJuego = True
+            if tiempo_actual >= 120000:  # 2 minutos en milisegundos
+                self.perdioJuego = True
+
+            self.rectBarraOxigeno.actualizar_tiempo(tiempo_actual)
 
             if self.perdioJuego:
                 self.pantallaPerdioNivel()
@@ -161,7 +160,6 @@ class Level1Beginner:  # Creamos el nivel 1
                 continue
 
             # ------------------- MOVIMIENTO DEL JUGADOR ------------------- #
-           # Movimiento del jugador
             keys = pygame.key.get_pressed()  # Tenemos que agregar esta funciona para hacer que el jugador se mueva
             movimientoJugador = pygame.Vector2(0, 0)
             estaMoviendose = False
@@ -281,18 +279,74 @@ class Level1Beginner:  # Creamos el nivel 1
             if colisionesFiltros:
                 self.mostrarSuperficieNivel.blit(textoArreglarFiltro, rectTextoArreglarFiltro)
 
-            # Dibujar la barra de oxigeno en la pantalla principal del juego
+            # Dibujar la imagen del tanque de oxígeno en la pantalla principal del juego
             self.rectBarraOxigeno.draw(self.screen)
 
             # Mostrar en pantalla el conteo de oxigenos reparados
             textoOxigenosReparados = self.font.render(f"Oxigenos reparados: {self.contadorOxigenoReparado}/{self.metaOxigenoReparado}", True, (255, 255, 255))
             self.mostrarSuperficieNivel.blit(textoOxigenosReparados, (10, 10))
             
-
             pygame.display.flip()
 
             clock.tick(FPS)
-    
+
+    def pantallaPerdioNivel(self):
+        # Mostrar mensaje de que el jugador perdió
+        fuente = pygame.font.Font(None, 74)
+        texto = fuente.render("¡Has perdido!", True, (255, 0, 0))
+        rect_texto = texto.get_rect(center=(self.screen.get_width() // 2, self.screen.get_height() // 2 - 50))
+        self.screen.blit(texto, rect_texto)
+
+        # Agregar boton para reiniciar nivel 
+        botonReiniciarNivel = pygame.Rect(self.screen.get_width() // 2 - 210, self.screen.get_height() // 2 + 50, 200, 50) # Establecer tamaño del boton
+        pygame.draw.rect(self.screen, LIGHTBLUE, botonReiniciarNivel) # dibujar el boton de color azul
+        text = self.font.render("Reiniciar Nivel", True, (255, 255, 255)) # Agregar texto al boton
+        text_rect = text.get_rect(center=botonReiniciarNivel.center) # Centrar el texto en el boton
+        self.screen.blit(text, text_rect) # Mostrar el texto en el boton
+
+        # Agregar boton para volver a seleccionar nivel
+        botonSeleccionarNivel = pygame.Rect(self.screen.get_width() // 2 + 10, self.screen.get_height() // 2 + 50, 200, 50) # Establecer tamaño del boton
+        pygame.draw.rect(self.screen, LIGHTBLUE, botonSeleccionarNivel) # dibujar el boton de color azul
+        text = self.font.render("Seleccionar nivel", True, (255, 255, 255)) # Agregar texto al boton
+        text_rect = text.get_rect(center=botonSeleccionarNivel.center) # Centrar el texto en el boton
+        self.screen.blit(text, text_rect) # Mostrar el texto en el boton
+
+        pygame.display.flip()
+
+        banderaEjecutandoNivel1 = True
+        while banderaEjecutandoNivel1:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                # Sí pasa el mouse sobre los botones
+                elif event.type == pygame.MOUSEMOTION:
+                    posicionMouse = event.pos # Rastreamos la posicion del mouse
+                    if botonReiniciarNivel.collidepoint(posicionMouse) or botonSeleccionarNivel.collidepoint(posicionMouse):
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+                    else:
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
+                # Sí le da click a los botones
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    posicionMouse = event.pos # Rastreamos la posicion del mouse
+                    if botonReiniciarNivel.collidepoint(posicionMouse): # Sí hace click en reiniciar nivel volvemos a cargar el nivel 1
+                        banderaEjecutandoNivel1 = False
+                        self.perdioJuego = False
+                        self.setup(self.tmx_mapa_1) # Volvemos a cargar el mapa
+
+                    elif botonSeleccionarNivel.collidepoint(posicionMouse): # Sí hace click en volver al menú
+                        self.volver_menu = True
+                        banderaEjecutandoNivel1 = False
+                        self.perdioJuego = False
+
+                        # * Música de fondo 
+                        pygame.mixer.music.pause() # Pausar la música actual
+                        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música del menú
+                        #pygame.mixer.music.play(-1) # Reproducir la música en bucle
+                        pygame.mixer.music.set_volume(0.2)
+
     def pantallaPausar(self):
         # Posición del menú de configuración dentro del juego
         configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 200
@@ -383,6 +437,7 @@ class Level1Beginner:  # Creamos el nivel 1
             self.mostrarSuperficieNivel.blit(config_screen, (150, 150))  # Mostramos la pantalla de configuración
 
             pygame.display.flip() # Actualizamos la pantalla     
+    
     def pantallaArreglarAire(self):
         self.arreglo = False
        
