@@ -22,6 +22,9 @@ class MenuPlay:
         self.config = config
         self.font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 18) # Fuente de texto
 
+        # Cargar sonido de clic
+        self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utils", "click_madera.mp3"))
+
     def mostrarMenuDificultad(self):
         pygame.display.set_caption(f"Select Difficulty - {TITLE_GAME}")  # Establecer titulo del nivel
 
@@ -103,6 +106,8 @@ class MenuPlay:
 
                 # Cuando hace click con el mouse                        
                 elif event.type == pygame.MOUSEBUTTONDOWN:
+                    self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
+
                     # Recorrer las opciones de dificultad para saber cual fue la seleccionada
                     for opcionDificultad, rectDificultad in self.dictMostrarOpcionesDificultad:
                         if rectDificultad.collidepoint(event.pos):
@@ -206,6 +211,8 @@ class MenuPlay:
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
+                    self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
+
                     for level, rectNivel in self.option_rects:
                         if rectNivel.collidepoint(event.pos):
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Cambiar el cursor al cursor normal
