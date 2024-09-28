@@ -71,7 +71,7 @@ class Level1Beginner:  # Creamos el nivel 1
         self.posicion_x_personaje = 0  # Agregamos esta variable para la posicion del personaje
 
         # ------------------- AGREGAMOS LAS CAPAS Y COLISIONES DEL MAPA ------------------- #
-        for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2']: # , 'capaVerificarGano'
+        for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2', 'capaVerificarGano']:
             for x, y, superficie in tmx_mapa_1.get_layer_by_name(nombreCapa).tiles(): # Recorremos las capas del mapa de Tiled Y obtenemos las superficies
 
                 # Estructuras
@@ -86,8 +86,8 @@ class Level1Beginner:  # Creamos el nivel 1
                     self.elevador_piso1_sprites.add(sprite)
                 elif nombreCapa == 'AscensorPiso2':
                     self.elevador_piso2_sprites.add(sprite)
-                # elif nombreCapa == 'CapaVerificarGano':
-                #     self.capa_verificar_gano.add(sprite)
+                elif nombreCapa == 'capaVerificarGano':
+                    self.capa_verificar_gano.add(sprite)
 
         # ------------------- AGREGAMOS EL FILTRO ------------------- #
         filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
@@ -132,6 +132,10 @@ class Level1Beginner:  # Creamos el nivel 1
 
             if self.perdioJuego:
                 self.pantallaPerdioNivel()
+                continue
+
+            if self.ganoNivel:
+                self.pantallaGanoNivel()
                 continue
 
             for event in pygame.event.get():
@@ -227,6 +231,11 @@ class Level1Beginner:  # Creamos el nivel 1
                             break
 
             colisionesVerificarGano = pygame.sprite.spritecollide(self.jugador, self.capa_verificar_gano, False)
+
+            if colisionesVerificarGano:
+                for gano in colisionesVerificarGano:
+                    self.ganoNivel = True
+                    break
 
             colisionesFiltros = pygame.sprite.spritecollide(self.jugador, self.filtro_sprites, False)
 
@@ -429,7 +438,67 @@ class Level1Beginner:  # Creamos el nivel 1
                         # pygame.mixer.music.play(-1)  # Reproducir la música en bucle
                         pygame.mixer.music.set_volume(0.2)
 
-    
+
+    def pantallaGanoNivel(self):
+        # Crear una superficie semi-transparente
+        overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA) # ponemo s el fondo oscuro 
+        overlay.fill((0, 0, 0, 128))  # Negro con 50% de opacidad
+        self.screen.blit(overlay, (0, 0))
+
+        # Mostrar mensaje de que el jugador perdió
+        # Agregar texto de que perdió nivel
+        imagePerdio = pygame.image.load(join("assets", "img", "PantallasFinales", "missionCompleted_en.png")).convert_alpha()
+        imagePerdio = pygame.transform.scale(imagePerdio, (imagePerdio.get_width(), imagePerdio.get_height()))
+        self.screen.blit(imagePerdio, (0, self.mostrarSuperficieNivel.get_height() // 2))
+
+        # Agregar boton para reiniciar nivel 
+        botonReiniciarNivel = pygame.image.load(join("assets", "img", "BOTONES", "b_reiniciar.png")).convert_alpha()
+        botonReiniciarNivel = pygame.transform.scale(botonReiniciarNivel, (botonReiniciarNivel.get_width() + 20, botonReiniciarNivel.get_height() + 20))
+        botonReiniciarNivelRect = botonReiniciarNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) - 100, (self.mostrarSuperficieNivel.get_height() // 2) + 150))
+        self.screen.blit(botonReiniciarNivel, botonReiniciarNivelRect.topleft)
+
+        # Agregar boton para volver a seleccionar nivel
+        botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES", "b_seleccionar.png")).convert_alpha()
+        botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
+        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) + 100, (self.mostrarSuperficieNivel.get_height() // 2) + 150))
+        self.screen.blit(botonSeleccionarNivel, botonSeleccionarNivelRect.topleft)
+
+        pygame.display.flip()
+
+        banderaEjecutandoNivel1 = True
+        while banderaEjecutandoNivel1:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                # Sí pasa el mouse sobre los botones
+                elif event.type == pygame.MOUSEMOTION:
+                    posicionMouse = event.pos  # Rastreamos la posicion del mouse
+                    if botonReiniciarNivelRect.collidepoint(posicionMouse) or botonSeleccionarNivelRect.collidepoint(posicionMouse):
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+                    else:
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
+                # Sí le da click a los botones
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    posicionMouse = event.pos  # Rastreamos la posicion del mouse
+                    if botonReiniciarNivelRect.collidepoint(posicionMouse):  # Sí hace click en reiniciar nivel volvemos a cargar el nivel 1
+                        banderaEjecutandoNivel1 = False
+                        self.perdioJuego = False
+                        self.setup(self.tmx_mapa_1)  # Volvemos a cargar el mapa
+
+                    elif botonSeleccionarNivelRect.collidepoint(posicionMouse):  # Sí hace click en volver al menú
+                        self.volver_menu = True
+                        banderaEjecutandoNivel1 = False
+                        self.perdioJuego = False
+
+                        # * Música de fondo 
+                        pygame.mixer.music.pause()  # Pausar la música actual
+                        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))  # Cargar la música del menú
+                        # pygame.mixer.music.play(-1)  # Reproducir la música en bucle
+                        pygame.mixer.music.set_volume(0.2)
+
     def pantallaArreglarAire(self):
         self.arreglo = False
 
