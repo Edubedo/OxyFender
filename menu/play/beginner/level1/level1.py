@@ -18,6 +18,11 @@ class Level1Beginner:  # Creamos el nivel 1
 
         self.mostrarSuperficieNivel = pygame.display.get_surface()
 
+        # Cargar y escalar la imagen de fondo
+        self.imagen_fondo = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundCiudad.png")).convert()
+        self.imagen_fondo_escalada = pygame.transform.scale(self.imagen_fondo, (self.mostrarSuperficieNivel.get_width(), self.mostrarSuperficieNivel.get_height() + 300))
+
+       
         # Cargamos los sprites
         self.todos_los_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para todos los sprites
         self.colisiones_sprites = pygame.sprite.Group()  # Creamos un grupo de sprites para las colisiones
@@ -66,7 +71,7 @@ class Level1Beginner:  # Creamos el nivel 1
         self.posicion_x_personaje = 0  # Agregamos esta variable para la posicion del personaje
 
         # ------------------- AGREGAMOS LAS CAPAS Y COLISIONES DEL MAPA ------------------- #
-        for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2', 'capaVerificarGano']:
+        for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2']: # , 'capaVerificarGano'
             for x, y, superficie in tmx_mapa_1.get_layer_by_name(nombreCapa).tiles(): # Recorremos las capas del mapa de Tiled Y obtenemos las superficies
 
                 # Estructuras
@@ -81,8 +86,8 @@ class Level1Beginner:  # Creamos el nivel 1
                     self.elevador_piso1_sprites.add(sprite)
                 elif nombreCapa == 'AscensorPiso2':
                     self.elevador_piso2_sprites.add(sprite)
-                elif nombreCapa == 'CapaVerificarGano':
-                    self.capa_verificar_gano.add(sprite)
+                # elif nombreCapa == 'CapaVerificarGano':
+                #     self.capa_verificar_gano.add(sprite)
 
         # ------------------- AGREGAMOS EL FILTRO ------------------- #
         filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
@@ -100,20 +105,15 @@ class Level1Beginner:  # Creamos el nivel 1
 
         self.run() # Una vez cargadas las texturas y colisiones generales inicializamos el juego    
 
-    def run(self): 
-        # Pausar la música en cuanto incie el nivel para poder activar otra
+    def run(self):
         pygame.mixer.music.pause()
-
-         # Cargar y reproducir la nueva canción
         pygame.mixer.music.load(join("assets", "audio", "niveles", "musica_nivel_1.mp3"))
-        #pygame.mixer.music.play(-1)  # Reproducir en bucle
+        #pygame.mixer.music.play(-1)
 
-        clock = pygame.time.Clock() # Inicializamos el reloj para controlar los FPS
-
-        # ------------------- GRAVEDAD ------------------- #
-        gravedad = PLAYER_GRAVEDAD  # Ajustar la gravedad
-        maxima_velocidad_caida = 4 # Ajustar la velocidad de caida
-        jugador_velocidad_y = 1 # Ajustar la velocidad del jugador en y
+        clock = pygame.time.Clock()
+        gravedad = PLAYER_GRAVEDAD
+        maxima_velocidad_caida = 4
+        jugador_velocidad_y = 1
         esta_sobre_el_piso = False
 
         tiempo_inicio = pygame.time.get_ticks()
@@ -124,7 +124,7 @@ class Level1Beginner:  # Creamos el nivel 1
 
             tiempo_actual = pygame.time.get_ticks() - tiempo_inicio
 
-            if tiempo_actual >= 120000:  # 2 minutos en milisegundos
+            if tiempo_actual >= 120000:
                 self.perdioJuego = True
 
             self.rectBarraOxigeno.actualizar_tiempo(tiempo_actual)
@@ -137,7 +137,6 @@ class Level1Beginner:  # Creamos el nivel 1
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                    
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     if self.juegoPausado:
                         pygame.quit()
@@ -145,28 +144,27 @@ class Level1Beginner:  # Creamos el nivel 1
                     else:
                         self.juegoPausado = not self.juegoPausado
                         if self.juegoPausado:
-                            self.capturarPantalla = self.mostrarSuperficieNivel.copy()  # Capture the current screen
+                            self.capturarPantalla = self.mostrarSuperficieNivel.copy()
                         else:
                             self.juegoPausado = not self.juegoPausado
                             if self.juegoPausado:
-                                self.capturarPantalla = self.mostrarSuperficieNivel.copy()  # Capture the current screen
-                                pygame.mixer.music.pause()  # Pausar la música
-                                self.jugador.sonido_pasos.stop()  # Detener el sonido de pasos
+                                self.capturarPantalla = self.mostrarSuperficieNivel.copy()
+                                pygame.mixer.music.pause()
+                                self.jugador.sonido_pasos.stop()
                             else:
-                                pygame.mixer.music.unpause()  # Reanudar la música
+                                pygame.mixer.music.unpause()
 
             if self.juegoPausado:
                 self.pantallaPausar()
                 continue
 
-            # ------------------- MOVIMIENTO DEL JUGADOR ------------------- #
-            keys = pygame.key.get_pressed()  # Tenemos que agregar esta funciona para hacer que el jugador se mueva
+            keys = pygame.key.get_pressed()
             movimientoJugador = pygame.Vector2(0, 0)
             estaMoviendose = False
-            direccionPersonaje = "right"  
+            direccionPersonaje = "right"
 
             if keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
-                movimientoJugador.x -= PLAYER_VEL 
+                movimientoJugador.x -= PLAYER_VEL
                 estaMoviendose = True
                 direccionPersonaje = "left"
             elif keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]:
@@ -175,71 +173,60 @@ class Level1Beginner:  # Creamos el nivel 1
                 direccionPersonaje = "right"
             if keys[pygame.K_SPACE] and esta_sobre_el_piso:
                 jugador_velocidad_y = PLAYER_FUERZA_SALTO
-                esta_sobre_el_piso = False  # El jugador ya no está en el suelo después de saltar
-            # Aplicar gravedad solo si no está en el suelo
+                esta_sobre_el_piso = False
             if not esta_sobre_el_piso:
                 jugador_velocidad_y += gravedad
                 if jugador_velocidad_y > maxima_velocidad_caida:
                     jugador_velocidad_y = maxima_velocidad_caida
             movimientoJugador.y += jugador_velocidad_y
 
-            # Mover al jugador y verificar colisiones verticales
             self.jugador.rect.y += movimientoJugador.y
-            spriteColisionesCapas = pygame.sprite.spritecollide(self.jugador, self.colisiones_sprites, False) # Funcion para verificar colisiones con las capas del mapa y el jugador
+            spriteColisionesCapas = pygame.sprite.spritecollide(self.jugador, self.colisiones_sprites, False)
 
             for sprite in spriteColisionesCapas:
-                if movimientoJugador.y > 0:  # Bajando
+                if movimientoJugador.y > 0:
                     self.jugador.rect.bottom = sprite.rect.top
                     esta_sobre_el_piso = True
                     jugador_velocidad_y = 0
-
-                elif movimientoJugador.y < 0:  # Subiendo
+                elif movimientoJugador.y < 0:
                     self.jugador.rect.top = sprite.rect.bottom
                     jugador_velocidad_y = 0
 
-            # Mover al jugador y verificar colisiones horizontales
             self.jugador.rect.x += movimientoJugador.x
             spriteColisionesCapas = pygame.sprite.spritecollide(self.jugador, self.colisiones_sprites, False)
             for sprite in spriteColisionesCapas:
-                if movimientoJugador.x > 0:  # Moviéndose a la derecha
+                if movimientoJugador.x > 0:
                     self.jugador.rect.right = sprite.rect.left
-                elif movimientoJugador.x < 0:  # Moviéndose a la izquierda
+                elif movimientoJugador.x < 0:
                     self.jugador.rect.left = sprite.rect.right
 
-            # Verificar colisiones con elevadores
             tiempoActualElevadores = pygame.time.get_ticks()
             colisionesElevadoresPiso1 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso1_sprites, False)
             colisionesElevadoresPiso2 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso2_sprites, False)
-                
+
             if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
-                # Mostrar mensaje en pantalla
                 fuenteColisionElevador = pygame.font.Font(None, 36)
                 textoColisionElevador = fuenteColisionElevador.render("Click X para viajar en el elevador", True, (255, 255, 255))
                 rectTextoColisionElevador = textoColisionElevador.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() // 2))
 
-                # Verificar si se presiona la tecla 'X'
                 if keys[pygame.K_x]:
-                    # Teletransportar al jugador al otro elevador
                     if colisionesElevadoresPiso1:
                         for elevator in self.elevador_piso2_sprites:
                             self.jugador.rect.topleft = elevator.rect.topleft
-                            self.jugador.rect.y += (self.jugador.rect.height / 3)  # Ajustar la posición para que no quede flotando
+                            self.jugador.rect.y += (self.jugador.rect.height / 3)
                             self.ultimoElevador = elevator
                             self.ultimaVezTeletransportado = tiempoActualElevadores
                             break
                     elif colisionesElevadoresPiso2:
                         for elevator in self.elevador_piso1_sprites:
                             self.jugador.rect.topleft = elevator.rect.topleft
-                            self.jugador.rect.y += (self.jugador.rect.height / 3)  # Ajustar la posición para que no quede flotando
+                            self.jugador.rect.y += (self.jugador.rect.height / 3)
                             self.ultimoElevador = elevator
                             self.ultimaVezTeletransportado = tiempoActualElevadores
                             break
 
-            # ------------------- GANO NIVEL --------------- # 
             colisionesVerificarGano = pygame.sprite.spritecollide(self.jugador, self.capa_verificar_gano, False)
 
-                    
-            # ------------------- FILTRO ------------------- #
             colisionesFiltros = pygame.sprite.spritecollide(self.jugador, self.filtro_sprites, False)
 
             if colisionesFiltros:
@@ -250,20 +237,19 @@ class Level1Beginner:  # Creamos el nivel 1
 
                     if keys[pygame.K_a] and not self.juegoPausado:
                         self.juegoPausado = True
-                        self.capturarPantalla = self.mostrarSuperficieNivel.copy()  # Capture the current screen
+                        self.capturarPantalla = self.mostrarSuperficieNivel.copy()
                         self.pantallaArreglarAire()
                         self.juegoPausado = False
 
-            # ------------------- MANEJO DEL VECTOR DE CÁMARA ------------------- #
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
-            self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2
-
+            self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 125
+           
             self.todos_los_sprites.update(estaMoviendose, direccionPersonaje, self.juegoPausado)
 
-            self.mostrarSuperficieNivel.fill(FONDO_CAFE) # Cambiar fondo de todo el mapa
+            # Dibujar la imagen de fondo en la pantalla
+            self.screen.blit(self.imagen_fondo_escalada, (0, 0))
 
-            # Dibujar el mapa de Tiled
-            for capa in self.tmx_mapa_1.visible_layers: # Recorremos las capas visibles del mapa de Tiled
+            for capa in self.tmx_mapa_1.visible_layers:
                 if hasattr(capa, 'tiles'):
                     for x, y, image in capa.tiles():
                         self.mostrarSuperficieNivel.blit(image, (x * TILE_SIZE - self.camera_offset.x, y * TILE_SIZE - self.camera_offset.y))
@@ -271,25 +257,21 @@ class Level1Beginner:  # Creamos el nivel 1
             for sprite in self.todos_los_sprites:
                 self.mostrarSuperficieNivel.blit(sprite.image, sprite.rect.topleft - self.camera_offset)
 
-            # Mostrar mensaje en pantalla si está cerca del elevador
             if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
                 self.mostrarSuperficieNivel.blit(textoColisionElevador, rectTextoColisionElevador)
 
-            # Mostrar mensaje en pantalla si está cerca del filtro
             if colisionesFiltros:
                 self.mostrarSuperficieNivel.blit(textoArreglarFiltro, rectTextoArreglarFiltro)
 
-            # Dibujar la imagen del tanque de oxígeno en la pantalla principal del juego
             self.rectBarraOxigeno.draw(self.screen)
 
-            # Mostrar en pantalla el conteo de oxigenos reparados
             textoOxigenosReparados = self.font.render(f"Oxigenos reparados: {self.contadorOxigenoReparado}/{self.metaOxigenoReparado}", True, (255, 255, 255))
             self.mostrarSuperficieNivel.blit(textoOxigenosReparados, (10, 10))
-            
+
             pygame.display.flip()
 
             clock.tick(FPS)
-
+    
     def pantallaPerdioNivel(self):
         # Mostrar mensaje de que el jugador perdió
         fuente = pygame.font.Font(None, 74)
