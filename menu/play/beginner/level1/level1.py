@@ -293,7 +293,6 @@ class Level1Beginner:  # Creamos el nivel 1
 
     def pantallaArreglarAire(self):
         self.tmx_filtroUnoNivel1 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel1", "tuberia1.tmx"))  # Cargamos el mapa del nivel 1
-        print("self.tmx_filtroUnoNivel1: ", self.tmx_filtroUnoNivel1)
         self.arreglo = False
 
         # Calcular el desplazamiento para centrar el mapa
@@ -318,12 +317,14 @@ class Level1Beginner:  # Creamos el nivel 1
 
             if banderaEjecutandoNivel1:  # Solo mostrar la pantalla de configuración si el bucle sigue activo
                 # Dibujar el mapa en la superficie principal
+                
                 for layer in self.tmx_filtroUnoNivel1.visible_layers:
-                    if isinstance(layer, pytmx.TiledTileLayer):
+                    if isinstance(layer, pytmx.TiledTileLayer): # Si su instancia es de tipo Tile
                         for x, y, gid in layer:
                             tile = self.tmx_filtroUnoNivel1.get_tile_image_by_gid(gid)
                             if tile:
                                 self.mostrarSuperficieNivel.blit(tile, (x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y))
+
                 pygame.display.flip()  # Actualizamos la pantalla
                 
     def pantallaPausar(self):
