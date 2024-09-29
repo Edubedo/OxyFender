@@ -74,14 +74,14 @@ class Level1Beginner:  # Creamos el nivel 1
         self.posicion_x_personaje = 0  # Agregamos esta variable para la posicion del personaje
 
         # ------------------- AGREGAMOS LAS CAPAS Y COLISIONES DEL MAPA ------------------- #
-        for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2', 'capaVerificarGano']:
+        for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2', 'capaVerificarGano', 'ParedDetener', 'Extra']:
             for x, y, superficie in tmx_mapa_1.get_layer_by_name(nombreCapa).tiles(): # Recorremos las capas del mapa de Tiled Y obtenemos las superficies
 
                 # Estructuras
                 sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), superficie, self.todos_los_sprites) # Creamos un sprite para las estructuras(capa)
 
                 # Colisiones de las capas del mapa para cuando interactue con el jugador
-                if nombreCapa in ['Paredes', 'Suelo', 'Techo', 'piso']:
+                if nombreCapa in ['Paredes', 'Suelo', 'Techo', 'piso','ParedDetener']:
                     self.colisiones_sprites.add(sprite)
 
                 # Elevadores de las capas del mapa para cuando interactue con el jugador
@@ -262,7 +262,7 @@ class Level1Beginner:  # Creamos el nivel 1
                         self.contadorOxigenoReparado += 1  # Incrementar el contador de oxígeno reparado
 
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
-            self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 125
+            self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 40
 
             self.todos_los_sprites.update(estaMoviendose, direccionPersonaje, self.juegoPausado)
 
