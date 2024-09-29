@@ -259,7 +259,6 @@ class Level1Beginner:  # Creamos el nivel 1
                         self.capturarPantalla = self.mostrarSuperficieNivel.copy()
                         self.pantallaArreglarAire()
                         self.juegoPausado = False
-                        self.contadorOxigenoReparado += 1  # Incrementar el contador de oxígeno reparado
 
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
             self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 40
@@ -277,10 +276,10 @@ class Level1Beginner:  # Creamos el nivel 1
                 self.mostrarSuperficieNivel.blit(sprite.image, sprite.rect.topleft - self.camera_offset)
 
             if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
-                self.mostrarSuperficieNivel.blit(rectTextoColisionElevador, (self.mostrarSuperficieNivel.get_width() // 2, (self.mostrarSuperficieNivel.get_height() // 2) + 110))
+                self.mostrarSuperficieNivel.blit(rectTextoColisionElevador, (self.mostrarSuperficieNivel.get_width() // 2, (self.mostrarSuperficieNivel.get_height() // 2) + 80))
 
             if colisionesFiltros:
-                self.mostrarSuperficieNivel.blit(rectTextoArreglarFiltro, (self.mostrarSuperficieNivel.get_width() // 2, (self.mostrarSuperficieNivel.get_width() // 2) - 100))
+                self.mostrarSuperficieNivel.blit(rectTextoArreglarFiltro, (self.mostrarSuperficieNivel.get_width() // 2, (self.mostrarSuperficieNivel.get_width() // 2) - 140))
 
             self.rectBarraOxigeno.draw(self.screen)
 
@@ -301,6 +300,10 @@ class Level1Beginner:  # Creamos el nivel 1
         offset_x = (self.mostrarSuperficieNivel.get_width() - map_width) // 2
         offset_y = (self.mostrarSuperficieNivel.get_height() - map_height) // 2
 
+        # Crear botón "Fix filter"
+        button_font = pygame.font.Font(None, 36)
+        button_text = button_font.render("Fix filter", True, (255, 255, 255))
+        button_rect = button_text.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() - 50))
         banderaEjecutandoNivel1 = True
         while banderaEjecutandoNivel1:
             if self.volver_menu:  # Sí le dio click a la bandera de volver al menú, rompemos este ciclo y volvemos al anterior
@@ -315,18 +318,34 @@ class Level1Beginner:  # Creamos el nivel 1
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # Sí le da click a la tecla de escape, se cierra la pantalla de configuración
                     banderaEjecutandoNivel1 = False
 
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if button_rect.collidepoint(event.pos):
+                        self.arreglo = True
+                        banderaEjecutandoNivel1 = False
+
+            # Cambiar cursor si el mouse está sobre el botón
+            if button_rect.collidepoint(pygame.mouse.get_pos()):
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
             if banderaEjecutandoNivel1:  # Solo mostrar la pantalla de configuración si el bucle sigue activo
                 # Dibujar el mapa en la superficie principal
-                
                 for layer in self.tmx_filtroUnoNivel1.visible_layers:
-                    if isinstance(layer, pytmx.TiledTileLayer): # Si su instancia es de tipo Tile
+                    if isinstance(layer, pytmx.TiledTileLayer):  # Si su instancia es de tipo Tile
                         for x, y, gid in layer:
                             tile = self.tmx_filtroUnoNivel1.get_tile_image_by_gid(gid)
                             if tile:
                                 self.mostrarSuperficieNivel.blit(tile, (x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y))
 
+                # Dibujar el botón
+                self.mostrarSuperficieNivel.blit(button_text, button_rect.topleft)
+
                 pygame.display.flip()  # Actualizamos la pantalla
-                
+
+        if self.arreglo:
+            self.contadorOxigenoReparado += 1  # Incrementar el contador de oxígeno reparado
+             
     def pantallaPausar(self):
         # Posición del menú de configuración dentro del juego
         configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 200

@@ -49,6 +49,8 @@ class Menu:
         self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utils", "click_madera.mp3"))
 
     def mostrarOpcionesMenu(self, hoverOpcionSeleccionada=None): # Opciones del menú principal
+        pygame.display.set_caption(f"Menú - {TITLE_GAME}") # Establecemos tituloPrincipalJuego del Menú
+
         self.fondoPrincipalVideojuego = pygame.image.load(join("assets", "img", "Background", "menu", "Background_5.jpeg")).convert_alpha() # Agregar fondoPrincipalVideojuego al menú
         
         self.fondoPrincipalVideojuego = pygame.transform.scale(self.fondoPrincipalVideojuego, (WIDTH, HEIGHT)) # Escalar imagen del fondoPrincipalVideojuego del menú
