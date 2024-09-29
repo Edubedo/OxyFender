@@ -9,7 +9,7 @@ import sys
 class Menu:
     def __init__(self, screen):
         self.screen = screen 
-        pygame.display.set_caption(f"Menú - {TITLE_GAME}") # Establecemos tituloPrincipalJuego del Menú
+        pygame.display.set_caption(f"Menu - {TITLE_GAME}") # Establecemos tituloPrincipalJuego del Menú
 
         self.bucleInicial = True # Bucle para iniciar el menú
         self.config = Configuration() # Establecemos la configuracion del lenguaje 
@@ -49,7 +49,7 @@ class Menu:
         self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utils", "click_madera.mp3"))
 
     def mostrarOpcionesMenu(self, hoverOpcionSeleccionada=None): # Opciones del menú principal
-        pygame.display.set_caption(f"Menú - {TITLE_GAME}") # Establecemos tituloPrincipalJuego del Menú
+        pygame.display.set_caption(f"Menu - {TITLE_GAME}") # Establecemos tituloPrincipalJuego del Menú
 
         self.fondoPrincipalVideojuego = pygame.image.load(join("assets", "img", "Background", "menu", "Background_5.jpeg")).convert_alpha() # Agregar fondoPrincipalVideojuego al menú
         

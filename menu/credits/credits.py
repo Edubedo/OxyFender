@@ -13,7 +13,7 @@ class Creditos:
         self.empezarVideoCreditos()
 
     def empezarVideoCreditos(self):
-        pygame.display.set_caption("Playing Video")
+        pygame.display.set_caption("Credits - OxyFender")
         rutaVideo = join("assets", "videos", "creditos", "creditsEnglish.mp4")
         cap = cv2.VideoCapture(rutaVideo)
 
