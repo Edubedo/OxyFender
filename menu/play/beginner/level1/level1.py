@@ -64,6 +64,14 @@ class Level1Beginner:  # Creamos el nivel 1
         self.botonPausa = pygame.image.load(join("assets", "img", "BOTONES", "b_tuerca.png")).convert_alpha()
         self.botonPausa = pygame.transform.scale(self.botonPausa, (self.botonPausa.get_width(), self.botonPausa.get_height()))
 
+
+        # Cargar imágenes de filtros de aire
+        self.filtro_bn = pygame.image.load(join("assets", "img", "filtros", "filtro_bn.png")).convert_alpha()
+        self.filtro_color = pygame.image.load(join("assets", "img", "filtros", "filtro_color.png")).convert_alpha()
+       
+        self.filtro_bn = pygame.transform.scale(self.filtro_bn, (self.filtro_bn.get_width() + 40, self.filtro_bn.get_height() + 40))
+        self.filtro_color = pygame.transform.scale(self.filtro_color, (self.filtro_color.get_width() + 40, self.filtro_color.get_height() + 40))
+
         #  ------------------- Agregamos el conteo de Oxygens repaired y el objetivo x/y ------------------- #
         self.contadorOxigenoReparado = 0
         self.metaOxigenoReparado = 2
@@ -296,9 +304,11 @@ class Level1Beginner:  # Creamos el nivel 1
 
             self.rectBarraOxigeno.draw(self.screen)
 
-            self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 25)
-            self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"Oxygens repaired: {self.contadorOxigenoReparado}/{self.metaOxigenoReparado}", True, (255, 255, 255))
-            self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 550))
+            # Dibujar filtros de aire que le faltan
+            self.dibujar_filtros()
+            # self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 25)
+            # self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"Oxygens repaired: {self.contadorOxigenoReparado}/{self.metaOxigenoReparado}", True, (255, 255, 255))
+            # self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 550))
 
 
             self.botonPausaRect = self.botonPausa.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 50))
@@ -307,6 +317,24 @@ class Level1Beginner:  # Creamos el nivel 1
             pygame.display.flip()
 
             clock.tick(FPS)
+
+    def dibujar_filtros(self):
+        # Posiciones para las imágenes de los filtros
+        pos_x = -20
+        pos_y = -60
+
+        # Dependiendo de la cantidad de oxigenos, diibujamos diferentes imagenes, exactmeente las iamgenes de blanco y negro y color
+        if self.contadorOxigenoReparado == 0:
+            self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x, pos_y))
+            self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 60, pos_y))
+
+        elif self.contadorOxigenoReparado == 1:
+            self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
+            self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 60, pos_y))
+
+        elif self.contadorOxigenoReparado >= 2:
+            self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
+            self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 60, pos_y))
 
     def pantallaArreglarAire(self):
         self.tmx_filtroUnoNivel1 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel1", "tuberia1.tmx"))  # Cargamos el mapa del nivel 1
