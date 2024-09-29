@@ -22,7 +22,6 @@ class Level1Beginner:  # Creamos el nivel 1
         self.imagen_fondo = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundCiudad.png")).convert()
         self.imagen_fondo_escalada = pygame.transform.scale(self.imagen_fondo, (self.mostrarSuperficieNivel.get_width(), self.mostrarSuperficieNivel.get_height() + 300))
 
-       
         # Cargamos los sprites
         self.todos_los_sprites = pygame.sprite.Group()  # grupo de sprites para todos los sprites
         self.colisiones_sprites = pygame.sprite.Group()  # grupo de sprites para las colisiones
@@ -60,6 +59,10 @@ class Level1Beginner:  # Creamos el nivel 1
         # ------------------- AGREGAMOS LA BARRA DE OXIGENO ------------------- #
         self.rectBarraOxigeno = BarraOxigeno(10, 100, 40, 300, 200)
         self.rectBarraOxigeno.hp = 200
+
+        # ------------------- BOTON DE PAUSA ------------------- #
+        self.botonPausa = pygame.image.load(join("assets", "img", "BOTONES", "b_tuerca.png")).convert_alpha()
+        self.botonPausa = pygame.transform.scale(self.botonPausa, (self.botonPausa.get_width(), self.botonPausa.get_height()))
 
         #  ------------------- Agregamos el conteo de Oxygens repaired y el objetivo x/y ------------------- #
         self.contadorOxigenoReparado = 0
@@ -161,6 +164,16 @@ class Level1Beginner:  # Creamos el nivel 1
                         pygame.quit()
                         sys.exit()
                     else:
+                        self.juegoPausado = not self.juegoPausado
+                        if self.juegoPausado:
+                            self.capturarPantalla = self.mostrarSuperficieNivel.copy()
+                            pygame.mixer.music.pause()
+                            self.jugador.sonido_pasos.stop()
+                        else:
+                            pygame.mixer.music.unpause()
+                
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.botonPausaRect.collidepoint(event.pos):
                         self.juegoPausado = not self.juegoPausado
                         if self.juegoPausado:
                             self.capturarPantalla = self.mostrarSuperficieNivel.copy()
@@ -286,6 +299,11 @@ class Level1Beginner:  # Creamos el nivel 1
             self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 25)
             self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"Oxygens repaired: {self.contadorOxigenoReparado}/{self.metaOxigenoReparado}", True, (255, 255, 255))
             self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 550))
+
+
+            self.botonPausaRect = self.botonPausa.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 50))
+            self.mostrarSuperficieNivel.blit(self.botonPausa, self.botonPausaRect.topleft)
+
             pygame.display.flip()
 
             clock.tick(FPS)
@@ -348,32 +366,35 @@ class Level1Beginner:  # Creamos el nivel 1
              
     def pantallaPausar(self):
         # Posición del menú de configuración dentro del juego
-        configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 200
-        configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height() - 300
+        configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 100
+        configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height() - 250
 
         # Creamos una nueva superficie para la pantalla de configuración
-        config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla))
+        config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla), pygame.SRCALPHA)
 
-        config_screen.fill(DARK_BLUE) 
+        imgFondoMenu = pygame.image.load(join("assets", "img", "FONDOS", "dificultad_fondo-removebg-preview.png")).convert_alpha()
+        imgFondoMenu = pygame.transform.scale(imgFondoMenu, (configuracionWidthPantalla, configuracionHeightPantalla))
+        config_screen.blit(imgFondoMenu, (0, 0))
 
         # Agregar título "Menú"
-        titulo = self.font.render("Menú", True, (255, 255, 255))
-        titulo_rect = titulo.get_rect(center=(configuracionWidthPantalla // 2, 50))
+        fontTitulo = pygame.font.Font(join("assets", "fonts", "Transformers Movie.ttf"), 100)
+        titulo = fontTitulo.render("Menu", True, AZUL_TITULO)
+        titulo_rect = titulo.get_rect(center=(configuracionWidthPantalla // 2, 100))
         config_screen.blit(titulo, titulo_rect)
 
         # Agregar boton para reiniciar nivel 
-        botonReiniciarNivel = pygame.Rect(configuracionWidthPantalla // 2 - 210, 150, 200, 50) # Establecer tamaño del boton
-        pygame.draw.rect(config_screen, LIGHTBLUE, botonReiniciarNivel) # dibujar el boton de color azul
-        text = self.font.render("Reiniciar Nivel", True, (255, 255, 255)) # Agregar texto al boton
-        text_rect = text.get_rect(center=botonReiniciarNivel.center) # Centrar el texto en el boton
-        config_screen.blit(text, text_rect) # Mostrar el texto en el boton
+        botonReiniciarNivel = pygame.image.load(join("assets", "img", "BOTONES", "b_reiniciar.png")).convert_alpha()
+        botonReiniciarNivel = pygame.transform.scale(botonReiniciarNivel, (botonReiniciarNivel.get_width() + 20, botonReiniciarNivel.get_height() + 20))
+        botonReiniciarNivelRect = botonReiniciarNivel.get_rect()
+        botonReiniciarNivelRect.center = ((configuracionWidthPantalla // 2) - 50, configuracionHeightPantalla // 2 + 50)
+        config_screen.blit(botonReiniciarNivel, botonReiniciarNivelRect.topleft)
 
         # Agregar boton para volver a seleccionar nivel
-        botonSeleccionarNivel = pygame.Rect(configuracionWidthPantalla // 2 + 10, 150, 200, 50) # Establecer tamaño del boton
-        pygame.draw.rect(config_screen, LIGHTBLUE, botonSeleccionarNivel) # dibujar el boton de color azul
-        text = self.font.render("Seleccionar nivel", True, (255, 255, 255)) # Agregar texto al boton
-        text_rect = text.get_rect(center=botonSeleccionarNivel.center) # Centrar el texto en el boton
-        config_screen.blit(text, text_rect) # Mostrar el texto en el boton
+        botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES", "b_seleccionar.png")).convert_alpha()
+        botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
+        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect()
+        botonSeleccionarNivelRect.center = ((configuracionWidthPantalla // 2) + 50, configuracionHeightPantalla // 2 + 50)
+        config_screen.blit(botonSeleccionarNivel, botonSeleccionarNivelRect.topleft)
 
         banderaEjecutandoNivel1 = True
         while banderaEjecutandoNivel1:
@@ -397,7 +418,7 @@ class Level1Beginner:  # Creamos el nivel 1
                     # Revisamos sí el mouse está encima del botón
                     posicionMousePantallaConfiguración = (posicionMouse[0] - 150, posicionMouse[1] - 150) # Posición del mouse en la pantalla de configuración
                     
-                    if botonReiniciarNivel.collidepoint(posicionMousePantallaConfiguración) or botonSeleccionarNivel.collidepoint(posicionMousePantallaConfiguración):
+                    if botonReiniciarNivelRect.collidepoint(posicionMousePantallaConfiguración) or botonSeleccionarNivelRect.collidepoint(posicionMousePantallaConfiguración):
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
                     else:
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
@@ -409,13 +430,13 @@ class Level1Beginner:  # Creamos el nivel 1
                     # Revisamos sí el mouse está encima del botón
                     posicionMousePantallaConfiguración = (posicionMouse[0] - 150, posicionMouse[1] - 150) # Posición del mouse en la pantalla de configuración
                     
-                    if botonReiniciarNivel.collidepoint(posicionMousePantallaConfiguración): # Sí hace click en reiniciar nivel volvemos a cargar el nivel 1
+                    if botonReiniciarNivelRect.collidepoint(posicionMousePantallaConfiguración): # Sí hace click en reiniciar nivel volvemos a cargar el nivel 1
                         banderaEjecutandoNivel1 = False
                         self.juegoPausado = False
                         tiempo_inicio = pygame.time.get_ticks()  # Tiempo de inicio del nivel
                         self.setup(self.tmx_mapa_1, tiempo_inicio) # Volvemos a cargar el mapa
 
-                    elif botonSeleccionarNivel.collidepoint(posicionMousePantallaConfiguración): # Sí hace click en volver al menú, volv
+                    elif botonSeleccionarNivelRect.collidepoint(posicionMousePantallaConfiguración): # Sí hace click en volver al menú, volv
                         self.volver_menu = True
                         banderaEjecutandoNivel1 = False
                         self.juegoPausado = False
@@ -436,7 +457,7 @@ class Level1Beginner:  # Creamos el nivel 1
 
             self.mostrarSuperficieNivel.blit(config_screen, (150, 150))  # Mostramos la pantalla de configuración
 
-            pygame.display.flip() # Actualizamos la pantalla     
+            pygame.display.flip() # Actualizamos la pantalla
 
     def pantallaPerdioNivel(self):
         # Crear una superficie semi-transparente
