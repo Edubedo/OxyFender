@@ -119,7 +119,7 @@ class Level1Beginner:  # Creamos el nivel 1
 
         self.run() # Una vez cargadas las texturas y colisiones generales inicializamos el juego    
 
-    def reset(self):
+    def reiniciarConfiguraciones(self):
         # Reiniciar todos los estados relevantes
         self.rectBarraOxigeno.hp = 200
         self.contadorOxigenoReparado = 0
@@ -145,7 +145,7 @@ class Level1Beginner:  # Creamos el nivel 1
 
         while True:
             if self.volver_menu:
-                self.reset()  # Reiniciar el nivel cuando se vuelve al menú
+                self.reiniciarConfiguraciones()  # Reiniciar el nivel cuando se vuelve al menú
                 break
 
             tiempo_actual = pygame.time.get_ticks() - self.tiempo_inicio
@@ -199,14 +199,14 @@ class Level1Beginner:  # Creamos el nivel 1
             estaMoviendose = False
             direccionPersonaje = "right"
 
-            if keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
-                movimientoJugador.x -= PLAYER_VEL
+            if keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
+                movimientoJugador.x -= PLAYER_VEL - 1
                 estaMoviendose = True
                 direccionPersonaje = "left"
-            elif keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]:
+            elif keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
                 movimientoJugador.x += PLAYER_VEL
                 estaMoviendose = True
-                direccionPersonaje = "right"
+                direccionPersonaje = "right" 
             if keys[pygame.K_SPACE] and esta_sobre_el_piso:
                 jugador_velocidad_y = PLAYER_FUERZA_SALTO
                 esta_sobre_el_piso = False
@@ -306,9 +306,11 @@ class Level1Beginner:  # Creamos el nivel 1
 
             # Dibujar filtros de aire que le faltan
             self.dibujar_filtros()
-            # self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 25)
-            # self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"Oxygens repaired: {self.contadorOxigenoReparado}/{self.metaOxigenoReparado}", True, (255, 255, 255))
-            # self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 550))
+
+            # Mostrar mensaje de que arregle los filtros
+            self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 25)
+            self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"Repair all filters and head for the exit.", True, (255, 255, 255))
+            self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 550))
 
 
             self.botonPausaRect = self.botonPausa.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 50))
