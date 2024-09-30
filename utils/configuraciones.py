@@ -9,7 +9,7 @@ NAME_ENTERPRISE = 'Zip Studio'
 ICON_GAME = join("assets", "img", "icon", "logo.png")
 
 WIDTH = 1040
-HEIGHT = 600
+HEIGHT = 550
 TILE_SIZE = 32 # 32x32
 
 FPS = 60 
