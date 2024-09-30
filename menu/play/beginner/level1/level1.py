@@ -310,7 +310,7 @@ class Level1Beginner:  # Creamos el nivel 1
             # Mostrar mensaje de que arregle los filtros
             self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 25)
             self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"Repair all filters and head for the exit.", True, (255, 255, 255))
-            self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 550))
+            self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 500))
 
 
             self.botonPausaRect = self.botonPausa.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 50))
