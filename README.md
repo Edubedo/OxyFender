@@ -27,3 +27,5 @@ En este juego te embarcarás en una misión para salvar el planeta reparando má
 
 # 📜 Licencia
 Este proyecto está bajo la licencia MIT License.
+![image](https://github.com/user-attachments/assets/f94dadc8-3ffe-4507-b4db-3f120ee0e7fd)
+
