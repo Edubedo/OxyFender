@@ -19,7 +19,7 @@ Para ejecutar este proyecto en tu máquina local, sigue los pasos a continuació
 
 
 **3. Ejecutar el juego en la terminal**
-python .\main.py
+python.exe main.py
 
 # 🎯 Sobre el Juego
 En este juego te embarcarás en una misión para salvar el planeta reparando máquinas que procesan oxígeno. A lo largo del juego, enfrentarás diversos desafíos en un entorno post-apocalíptico donde el oxígeno es un recurso escaso.
