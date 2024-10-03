@@ -1,6 +1,6 @@
 import pygame
 from menu.configuration.configuration import Configuration
-from utils.configuraciones import *
+from utilerias.configuraciones import *
 from menu.play.menu_game import MenuPlay
 from menu.credits.credits import Creditos
 from os.path import join
@@ -46,7 +46,7 @@ class Menu:
         # volumen
 
         # Cargar sonido de clic
-        self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utils", "click_madera.mp3"))
+        self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "click_madera.mp3"))
 
     def mostrarOpcionesMenu(self, hoverOpcionSeleccionada=None): # Opciones del menú principal
         pygame.display.set_caption(f"Menu - {TITLE_GAME}") # Establecemos tituloPrincipalJuego del Menú
