@@ -1,4 +1,4 @@
-from utils.configuraciones import *
+from utilerias.configuraciones import *
 
 class BarraOxigeno():
     def __init__(self, x, y, w, h, max_hp):
