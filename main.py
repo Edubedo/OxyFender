@@ -13,7 +13,7 @@ def main():
     menuInicial = Menu(screen)
     menuInicial.mostrarMenuInicial()  # Mostrar el menú del juego.
 
-if __name__ == "__main__":
+if __name__ == "__main__": # Iniciar el juego si el nombre del archivo es main
     main()
 
 

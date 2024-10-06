@@ -339,22 +339,27 @@ class Level1Beginner:  # Creamos el nivel 1
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 60, pos_y))
 
     def pantallaArreglarAire(self):
-        self.tmx_filtroUnoNivel1 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel1", "tuberia1.tmx"))  # Cargamos el mapa del nivel 1
+        self.tmx_filtroUnoNivel1 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel1", "tuberia1.tmx"))
         self.arreglo = False
 
-        # Calcular el desplazamiento para centrar el mapa
         map_width = self.tmx_filtroUnoNivel1.width * self.tmx_filtroUnoNivel1.tilewidth
         map_height = self.tmx_filtroUnoNivel1.height * self.tmx_filtroUnoNivel1.tileheight
         offset_x = (self.mostrarSuperficieNivel.get_width() - map_width) // 2
         offset_y = (self.mostrarSuperficieNivel.get_height() - map_height) // 2
 
-        # Crear botón "Fix filter"
         button_font = pygame.font.Font(None, 36)
         button_text = button_font.render("Fix filter", True, (255, 255, 255))
         button_rect = button_text.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() - 50))
+
         banderaEjecutandoNivel1 = True
+        drawing_line = False
+        start_pos = None
+        end_pos = None
+        line_color = None
+        completed_lines = []
+
         while banderaEjecutandoNivel1:
-            if self.volver_menu:  # Sí le dio click a la bandera de volver al menú, rompemos este ciclo y volvemos al anterior
+            if self.volver_menu:
                 break
 
             for event in pygame.event.get():
@@ -362,38 +367,74 @@ class Level1Beginner:  # Creamos el nivel 1
                     pygame.quit()
                     sys.exit()
 
-                # Eventos para los botones
-                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # Sí le da click a la tecla de escape, se cierra la pantalla de configuración
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     banderaEjecutandoNivel1 = False
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if button_rect.collidepoint(event.pos):
-                        self.arreglo = True
-                        banderaEjecutandoNivel1 = False
+                    mouse_pos = pygame.mouse.get_pos()
+                    for layer in self.tmx_filtroUnoNivel1.visible_layers:
+                        if isinstance(layer, pytmx.TiledTileLayer):
+                            for x, y, gid in layer:
+                                tile = self.tmx_filtroUnoNivel1.get_tile_image_by_gid(gid)
+                                if tile:
+                                    tile_rect = pygame.Rect(x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y, self.tmx_filtroUnoNivel1.tilewidth, self.tmx_filtroUnoNivel1.tileheight)
+                                    if tile_rect.collidepoint(mouse_pos):
+                                        if layer.name == 'btn1azul':
+                                            drawing_line = True
+                                            start_pos = tile_rect.center
+                                            line_color = (0, 0, 255)
+                                        elif layer.name == 'btn1rojo':
+                                            drawing_line = True
+                                            start_pos = tile_rect.center
+                                            line_color = (255, 0, 0)
+                                        elif layer.name == 'btn1verde':
+                                            drawing_line = True
+                                            start_pos = tile_rect.center
+                                            line_color = (0, 255, 0)
+                                        elif layer.name == 'btn2azul' and line_color == (0, 0, 255):
+                                            end_pos = tile_rect.center
+                                            completed_lines.append((start_pos, end_pos, line_color))
+                                            drawing_line = False
+                                        elif layer.name == 'btn2rojo' and line_color == (255, 0, 0):
+                                            end_pos = tile_rect.center
+                                            completed_lines.append((start_pos, end_pos, line_color))
+                                            drawing_line = False
+                                        elif layer.name == 'btn2verde' and line_color == (0, 255, 0):
+                                            end_pos = tile_rect.center
+                                            completed_lines.append((start_pos, end_pos, line_color))
+                                            drawing_line = False
 
-            # Cambiar cursor si el mouse está sobre el botón
-            if button_rect.collidepoint(pygame.mouse.get_pos()):
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-            else:
-                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+            if drawing_line:
+                current_pos = pygame.mouse.get_pos()
 
-            if banderaEjecutandoNivel1:  # Solo mostrar la pantalla de configuración si el bucle sigue activo
-                # Dibujar el mapa en la superficie principal
-                for layer in self.tmx_filtroUnoNivel1.visible_layers:
-                    if isinstance(layer, pytmx.TiledTileLayer):  # Si su instancia es de tipo Tile
-                        for x, y, gid in layer:
-                            tile = self.tmx_filtroUnoNivel1.get_tile_image_by_gid(gid)
-                            if tile:
-                                self.mostrarSuperficieNivel.blit(tile, (x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y))
+            # Dibujar el fondo del juego
+            self.mostrarSuperficieNivel.fill((0, 0, 0))  # Limpiar la pantalla
 
-                # Dibujar el botón
-                self.mostrarSuperficieNivel.blit(button_text, button_rect.topleft)
+            for layer in self.tmx_filtroUnoNivel1.visible_layers:
+                if isinstance(layer, pytmx.TiledTileLayer):
+                    for x, y, gid in layer:
+                        tile = self.tmx_filtroUnoNivel1.get_tile_image_by_gid(gid)
+                        if tile:
+                            self.mostrarSuperficieNivel.blit(tile, (x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y))
 
-                pygame.display.flip()  # Actualizamos la pantalla
+            self.mostrarSuperficieNivel.blit(button_text, button_rect.topleft)
+
+            for line in completed_lines:
+                pygame.draw.line(self.mostrarSuperficieNivel, line[2], line[0], line[1], 5)
+
+            if drawing_line:
+                pygame.draw.line(self.mostrarSuperficieNivel, line_color, start_pos, current_pos, 5)
+
+            pygame.display.flip()
+
+            # Verificar si todas las conexiones están completas
+            if len(completed_lines) == 3:
+                self.arreglo = True
+                banderaEjecutandoNivel1 = False
 
         if self.arreglo:
-            self.contadorOxigenoReparado += 1  # Incrementar el contador de oxígeno reparado
-             
+            self.contadorOxigenoReparado += 1
+                  
     def pantallaPausar(self):
         # Posición del menú de configuración dentro del juego
         configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 100
