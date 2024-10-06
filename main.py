@@ -5,7 +5,7 @@ from menu.menu import Menu
 from utilerias.configuraciones import *
 
 def main():
-    pygame.init()  # Inicializar pygame
+    pygame.init()  
     screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Establecer tamaño de pantalla
     pygame.display.set_caption(TITLE_GAME) # Establecer el titulo del juego
     pygame.display.set_icon(pygame.image.load(ICON_GAME))  # Establecer el icono del juego
