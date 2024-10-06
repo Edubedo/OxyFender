@@ -275,11 +275,14 @@ class Level1Beginner:  # Creamos el nivel 1
                     rectTextoArreglarFiltro = pygame.image.load(join("assets", "img", "BOTONES", "img_click_a.png")).convert_alpha()
                     rectTextoArreglarFiltro = pygame.transform.scale(rectTextoArreglarFiltro, (rectTextoArreglarFiltro.get_width() - 70, rectTextoArreglarFiltro.get_height() - 70))
 
-                    if keys[pygame.K_a] and not self.juegoPausado:
-                        self.juegoPausado = True
+                    if keys[pygame.K_a]:
                         self.capturarPantalla = self.mostrarSuperficieNivel.copy()
-                        self.pantallaArreglarAire()
-                        self.juegoPausado = False
+                        
+                        pantalla = self.pantallaArreglarAire()
+                        
+                        print("pantalla: ", pantalla)
+                        if pantalla == 1:
+                            break
 
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
             self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 40
@@ -357,6 +360,9 @@ class Level1Beginner:  # Creamos el nivel 1
         end_pos = None
         line_color = None
         completed_lines = []
+        
+        # Inicializa la bandera para controlar si la tarea fue completada
+        tarea_completada = False
 
         while banderaEjecutandoNivel1:
             if self.volver_menu:
@@ -407,9 +413,6 @@ class Level1Beginner:  # Creamos el nivel 1
             if drawing_line:
                 current_pos = pygame.mouse.get_pos()
 
-            # Dibujar el fondo del juego
-            self.mostrarSuperficieNivel.fill((0, 0, 0))  # Limpiar la pantalla
-
             for layer in self.tmx_filtroUnoNivel1.visible_layers:
                 if isinstance(layer, pytmx.TiledTileLayer):
                     for x, y, gid in layer:
@@ -428,13 +431,15 @@ class Level1Beginner:  # Creamos el nivel 1
             pygame.display.flip()
 
             # Verificar si todas las conexiones están completas
-            if len(completed_lines) == 3:
+            if len(completed_lines) == 3 and not tarea_completada:
                 self.arreglo = True
-                banderaEjecutandoNivel1 = False
+                self.contadorOxigenoReparado += 1
+                print("COMPLETADO")
+                tarea_completada = True  # Establecer la bandera como completada
+                banderaEjecutandoNivel1 = False  # Esto terminará el bucle
 
-        if self.arreglo:
-            self.contadorOxigenoReparado += 1
-                  
+        return 1
+
     def pantallaPausar(self):
         # Posición del menú de configuración dentro del juego
         configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width() - 100
@@ -515,7 +520,7 @@ class Level1Beginner:  # Creamos el nivel 1
                         # * Música de fondo 
                         pygame.mixer.music.stop() # Pausar la música actual
                         # pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música del menú
-                        # pygame.mixer.music.play(-1) # Reproducir la música en bucle
+                        # #pygame.mixer.music.play(-1) # Reproducir la música en bucle
                         # pygame.mixer.music.set_volume(0.2)
 
             if self.capturarPantalla:
@@ -588,7 +593,7 @@ class Level1Beginner:  # Creamos el nivel 1
                         # * Música de fondo 
                         pygame.mixer.music.pause()  # Pausar la música actual
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))  # Cargar la música del menú
-                        pygame.mixer.music.play(-1)  # Reproducir la música en bucle
+                        #pygame.mixer.music.play(-1)  # Reproducir la música en bucle
                         pygame.mixer.music.set_volume(0.2)
 
     def pantallaGanoNivel(self):
@@ -643,7 +648,7 @@ class Level1Beginner:  # Creamos el nivel 1
                         # * Música de fondo 
                         pygame.mixer.music.pause()  # Pausar la música actual
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))  # Cargar la música del menú
-                        pygame.mixer.music.play(-1)  # Reproducir la música en bucle
+                        #pygame.mixer.music.play(-1)  # Reproducir la música en bucle
                         pygame.mixer.music.set_volume(0.2)
 
                     elif botonSeleccionarNivelRect.collidepoint(posicionMouse):  # Sí hace click en volver al menú
@@ -654,7 +659,7 @@ class Level1Beginner:  # Creamos el nivel 1
                         # * Música de fondo 
                         pygame.mixer.music.pause()  # Pausar la música actual
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))  # Cargar la música del menú
-                        pygame.mixer.music.play(-1)  # Reproducir la música en bucle
+                        #pygame.mixer.music.play(-1)  # Reproducir la música en bucle
                         pygame.mixer.music.set_volume(0.2)
 
     
