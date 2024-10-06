@@ -28,11 +28,6 @@ class Menu:
             "image": pygame.image.load(join("assets", "img", "BOTONES", "b_credits.png")).convert_alpha()
         }, 
         {
-            "name": "Configuration",
-            "id": "configuration",
-            "image": pygame.image.load(join("assets", "img", "BOTONES", "b_configuration.png")).convert_alpha()
-        }, 
-        {
             "name": "Quit",
             "id": "quit",
             "image": pygame.image.load(join("assets", "img", "BOTONES", "b_quit.png")).convert_alpha()
@@ -90,7 +85,18 @@ class Menu:
         texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10)) # Rectangulo para mostrar el texto en la pantalla
         self.screen.blit(textoInferiorDerecha, texto_rect) # Mostrar texto en la pantalla
 
+        # Agregar bandera que posteriormente manejare para cambiar de idioma
+        imagenBandera = pygame.image.load(join("assets", "img", "banderas", "bandera_mexico.png")).convert_alpha() # Cargar imagen de la bandera
+        imagenBandera = pygame.transform.scale(imagenBandera, (50, 50)) # Escalar imagen de la bandera
+        self.screen.blit(imagenBandera, (self.screen.get_width() - 60, 10)) # Mostrar texto en la pantalla
+
+        # Agregar boton para la musica que simplemente la prende y la apaga
+        imagenMusica = pygame.image.load(join("assets", "img", "BOTONES", "vol_on.png")).convert_alpha() # Cargar imagen de la bandera
+        imagenMusica = pygame.transform.scale(imagenMusica, (50, 50)) # Escalar imagen de la bandera
+        self.screen.blit(imagenMusica, (self.screen.get_width() - 120, 10)) # Mostrar texto en la pantalla
         pygame.display.flip() # Actualizar pantalla
+
+
 
     def mostrarMenuInicial(self):
         hoverOpcionSeleccionada = None # Se usa para manejar el hover 
