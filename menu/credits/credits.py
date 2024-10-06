@@ -1,7 +1,7 @@
 import pygame
 import cv2
 import sys
-from utils.configuraciones import *
+from utilerias.configuraciones import *
 from os.path import join
 
 class Creditos:

@@ -2,7 +2,7 @@
 # Este software no puede ser copiado o redistribuido sin permiso del autor.
 import pygame
 from menu.menu import Menu
-from utils.configuraciones import *
+from utilerias.configuraciones import *
 
 def main():
     pygame.init()  # Inicializar pygame

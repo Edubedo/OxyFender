@@ -1,7 +1,7 @@
 # Código desarrollado por (E. Escobedo, G. Solorzano, R. Lavariga, N. Laureano, A. Suarez, S. Barroso) 2024
 # Este software no puede ser copiado o redistribuido sin permiso del autor.
 import pygame
-from utils.configuraciones import *
+from utilerias.configuraciones import *
 import sys
 
 # Importamos las librerias de los niveles 
@@ -23,7 +23,7 @@ class MenuPlay:
         self.font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 18) # Fuente de texto
 
         # Cargar sonido de clic
-        self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utils", "click_madera.mp3"))
+        self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "click_madera.mp3"))
 
     def mostrarMenuDificultad(self):
         pygame.display.set_caption(f"Select Difficulty - {TITLE_GAME}")  # Establecer titulo del nivel

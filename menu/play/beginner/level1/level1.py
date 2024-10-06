@@ -1,11 +1,11 @@
 import pygame
-from utils.configuraciones import *
+from utilerias.configuraciones import *
 from os.path import join
 from pytmx import *
 import sys
-from utils.sprites import Sprite
-from utils.jugador import Player
-from utils.clases.barraOxigeno import BarraOxigeno
+from utilerias.sprites import Sprite
+from utilerias.jugador import Player
+from utilerias.clases.barraOxigeno import BarraOxigeno
 
 class Level1Beginner:  # Creamos el nivel 1
     def __init__(self, name, dificultadNivel, id):
