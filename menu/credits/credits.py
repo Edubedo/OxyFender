@@ -25,7 +25,7 @@ class Creditos:
         pygame.mixer.music.stop()
 
         # Inicializar el módulo de sonido de Pygame
-        pygame.mixer.init()
+        #pygame.mixer.init()
 
         # Reproducir el audio del video
         rutaAudio = join("assets", "audio", "music", "Creditos.mpeg")
