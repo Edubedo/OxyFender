@@ -1,0 +1,61 @@
+{
+	"es": {
+		"menu": {
+			"playName": "Jugar",
+			"playId": "play",
+			"playImage": ["assets", "img", "BOTONES", "b_jugar.png"],
+
+			"creditsName": "Creditos",
+			"creditsId": "credits",
+			"creditsImage": ["assets", "img", "BOTONES", "b_creditos.png"],
+
+			"quitName": "Salir",
+			"quitId": "quit",
+			"quitImage": ["assets", "img", "BOTONES", "b_salir.png"]
+		},
+		"difficulty": {
+            "selectDifficulty": "DIFICULTAD",
+
+			"begginerName": "Principiante",
+			"begginerId": "begginer",
+			"begginerImage": ["assets", "img", "BOTONES", "b_principiante.png"],
+
+			"advancedName": "Avanzado",
+			"advancedId": "advanced",
+			"advancedImage": ["assets", "img", "BOTONES", "b_avanzado.png"]
+		},
+        "selectLevel": {
+            "nameLevel": "Nivel",
+            "imagenLevel": ["assets", "img", "BOTONES", "b_nivel.png"]
+        }
+	},
+	"en": {
+		"menu": {
+			"playName": "Play",
+			"playId": "play",
+			"playImage": ["assets", "img", "BOTONES", "b_play.png"],
+
+			"creditsName": "Credits",
+			"creditsId": "credits",
+			"creditsImage": ["assets", "img", "BOTONES", "b_credits.png"],
+
+			"quitName": "Quit",
+			"quitId": "quit",
+			"quitImage": ["assets", "img", "BOTONES", "b_quit.png"]
+		},
+		"difficulty": {
+            "selectDifficulty": "DIFFICULTY",
+
+            "begginerName": "Begginer",
+			"begginerId": "begginer",
+			"begginerImage": ["assets", "img", "BOTONES", "b_beginner.png"],
+
+			"advancedName": "Advanced",
+			"advancedId": "advanced",
+			"advancedImage": ["assets", "img", "BOTONES", "b_advanced.png"]
+		},
+        "selectLevel": {
+            
+        }
+	}
+}
