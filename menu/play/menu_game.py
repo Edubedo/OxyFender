@@ -29,7 +29,7 @@ class MenuPlay:
         self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "click_madera.mp3"))
 
     def mostrarMenuDificultad(self):
-        pygame.display.set_caption(f"{self.datosLanguage[self.configLanguage]['difficulty']["selectDifficulty"]} - {TITLE_GAME}")  # Establecer titulo del nivel
+        pygame.display.set_caption(f"{self.datosLanguage[self.configLanguage]['selectLevel']['nameLevel']}")  # Establecer titulo del nivel
 
         self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "Background","menu", "fondoPrueba1.jpeg")).convert_alpha()  # Fondo para menu de selección de dificultad
         self.fondoMenuDificultad = pygame.transform.scale(self.fondoMenuDificultad, (WIDTH, HEIGHT))
@@ -44,9 +44,9 @@ class MenuPlay:
         
         opcionesDificultad = [
             {
-                "name": self.datosLanguage[self.configLanguage]['difficulty']["begginerName"],
-                "id": self.datosLanguage[self.configLanguage]['difficulty']["begginerId"],
-                "image": pygame.image.load(join(os.path.join(*self.datosLanguage[self.configLanguage]['difficulty']["begginerImage"]))).convert_alpha()
+                "name": self.datosLanguage[self.configLanguage]['difficulty']["beginnerName"],
+                "id": self.datosLanguage[self.configLanguage]['difficulty']["beginnerId"],
+                "image": pygame.image.load(join(os.path.join(*self.datosLanguage[self.configLanguage]['difficulty']["beginnerImage"]))).convert_alpha()
             },
             {
                "name": self.datosLanguage[self.configLanguage]['difficulty']["advancedName"],
@@ -68,7 +68,7 @@ class MenuPlay:
             self.dictMostrarOpcionesDificultad.append((opcionDificultad, image_rect))
         
         # Crear botón de regreso
-        back_button = pygame.image.load(join("assets","img","BOTONES","b_regreso2.png")).convert_alpha()
+        back_button = pygame.image.load(join("assets","img","BOTONES","botones_bn","b_regreso2_bn.png")).convert_alpha()
         back_button = pygame.transform.scale(back_button, (back_button.get_width() - 10, back_button.get_height() - 10))
         back_button_rect = back_button.get_rect(topleft=(40, HEIGHT - 100))
         self.screen.blit(back_button, back_button_rect)
@@ -140,10 +140,10 @@ class MenuPlay:
 
             pygame.display.flip()
 
-    def mostrarMenuNiveles(self, dificultadNivel,configLanguage, datosLanguage):
-        pygame.display.set_caption(f"Select Level - {TITLE_GAME}")  # Establecer titulo del nivel
+    def mostrarMenuNiveles(self, dificultadNivel, configLanguage, datosLanguage):
+        pygame.display.set_caption(f"{self.datosLanguage[self.configLanguage]['selectLevel']['nameLevel']} - {TITLE_GAME}")  # Establecer titulo del nivel
 
-        self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "FONDOS", "secciones_nivel_fondo.png")).convert_alpha()
+        self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "Background","menu", "fondoPrueba1.jpeg")).convert_alpha()
         self.fondoMenuDificultad = pygame.transform.scale(self.fondoMenuDificultad, (WIDTH, HEIGHT))  # Escalar imagen
         self.option_rects = []
 
@@ -154,7 +154,7 @@ class MenuPlay:
 
         # Agregar el título de mostrar nivel
         fontTitulo = pygame.font.Font(join("assets", "fonts", "Transformers Movie.ttf"), 100)
-        titulo = fontTitulo.render("Select Level", True, AZUL_TITULO)
+        titulo = fontTitulo.render(self.datosLanguage[self.configLanguage]['selectLevel']['nameLevel'], True, AZUL_TITULO)
         titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 150))
         self.screen.blit(titulo, titulo_rect)
 
@@ -168,10 +168,10 @@ class MenuPlay:
 
         for i in range(1, 4):
             opcionNiveles.append({
-                "name": f"Level {i}",
+                "name": f"{self.datosLanguage[self.configLanguage]['selectLevel']['nameLevel']} {i}",
                 "dificultadNivel": dificultadNivel['name'],
                 "id": f"{dificultadNivel['id'].lower()}_level_{i}",
-                "image": pygame.image.load(join("assets", "img", "BOTONES", f"img_level{i}.png")).convert_alpha()
+                "image": pygame.image.load(join("assets", "img", "BOTONES", f"{self.datosLanguage[self.configLanguage]['selectLevel']['imagenLevel']}{i}.png")).convert_alpha()
             })
 
         # Dibujamos las opciones de niveles
@@ -187,7 +187,7 @@ class MenuPlay:
             self.option_rects.append((level, image_rect))
         
         # Crear botón de regreso
-        back_button = pygame.image.load(join("assets","img","BOTONES","b_regreso2.png")).convert_alpha()
+        back_button = pygame.image.load(join("assets","img","BOTONES","botones_bn","b_regreso2_bn.png")).convert_alpha()
         back_button = pygame.transform.scale(back_button, (back_button.get_width() - 10, back_button.get_height() - 10))
         back_button_rect = back_button.get_rect(topleft=(40, HEIGHT - 100))
         self.screen.blit(back_button, back_button_rect)
@@ -223,7 +223,10 @@ class MenuPlay:
                         if rectNivel.collidepoint(event.pos):
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Cambiar el cursor al cursor normal
                             # Niveles para principiantes 
+                            print("level['id']: ", level['id'])
+                            print("level['id'] ", level)
                             if level['id'] == "beginner_level_1":
+                                print("juego")
                                 self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id']).run()
                             if level['id'] == "beginner_level_2":
                                 Level2Beginner(level['name'], level['dificultadNivel'], level['id'])

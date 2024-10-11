@@ -14,20 +14,20 @@
 			"quitImage": ["assets", "img", "BOTONES", "b_salir.png"]
 		},
 		"difficulty": {
-            "selectDifficulty": "DIFICULTAD",
+			"selectDifficulty": "DIFICULTAD",
 
-			"begginerName": "Principiante",
-			"begginerId": "begginer",
-			"begginerImage": ["assets", "img", "BOTONES", "b_principiante.png"],
+			"beginnerName": "Principiante",
+			"beginnerId": "beginner",
+			"beginnerImage": ["assets", "img", "BOTONES", "b_principiante.png"],
 
 			"advancedName": "Avanzado",
 			"advancedId": "advanced",
 			"advancedImage": ["assets", "img", "BOTONES", "b_avanzado.png"]
 		},
-        "selectLevel": {
-            "nameLevel": "Nivel",
-            "imagenLevel": ["assets", "img", "BOTONES", "b_nivel.png"]
-        }
+		"selectLevel": {
+			"nameLevel": "Nivel",
+			"imagenLevel": "img_nivel"
+		}
 	},
 	"en": {
 		"menu": {
@@ -44,18 +44,19 @@
 			"quitImage": ["assets", "img", "BOTONES", "b_quit.png"]
 		},
 		"difficulty": {
-            "selectDifficulty": "DIFFICULTY",
+			"selectDifficulty": "DIFFICULTY",
 
-            "begginerName": "Begginer",
-			"begginerId": "begginer",
-			"begginerImage": ["assets", "img", "BOTONES", "b_beginner.png"],
+			"beginnerName": "beginner",
+			"beginnerId": "beginner",
+			"beginnerImage": ["assets", "img", "BOTONES", "b_beginner.png"],
 
 			"advancedName": "Advanced",
 			"advancedId": "advanced",
 			"advancedImage": ["assets", "img", "BOTONES", "b_advanced.png"]
 		},
-        "selectLevel": {
-            
-        }
+		"selectLevel": {
+			"nameLevel": "Level",
+			"imagenLevel": "img_level"
+		}
 	}
 }

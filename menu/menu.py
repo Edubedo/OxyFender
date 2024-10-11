@@ -43,7 +43,7 @@ class Menu:
             }, 
             {
                 "name": self.datosLanguage[self.configLanguage]['menu']["creditsName"],
-                "id": self.datosLanguage[self.configLanguage]['menu']["creditsName"],
+                "id": self.datosLanguage[self.configLanguage]['menu']["creditsId"],
                 "image": pygame.image.load(join(os.path.join(*self.datosLanguage[self.configLanguage]['menu']["creditsImage"]))).convert_alpha()
             }, 
             {
@@ -80,7 +80,7 @@ class Menu:
             else:  # * Si el cursor no está encima de la opción
                 image = opcionMenuPrincipal['image']
                 image = pygame.transform.scale(image, (image.get_width() + 30, image.get_height() + 20))
-                image.set_alpha(150)  # Set the alpha of the image (opacity level)
+                image.set_alpha(200)  # Set the alpha of the image (opacity level)
                 image_rect = image.get_rect(topleft=(10, 150 + i * (image.get_height() + 10)))
                 self.screen.blit(image, image_rect)
 
@@ -153,6 +153,7 @@ class Menu:
                 # Dependiendo de la opción seleccionada, se ejecuta una acción
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     for option, rect in self.rectOpcionesMenuPrincipal: # Recorremos las opciones del menú principal
+                        print("option: ", option)
                         if rect.collidepoint(event.pos):
                             # Reproducir sonido de clic
                             self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
@@ -162,7 +163,7 @@ class Menu:
                                 game_menu.mostrarMenuDificultad()
                                 continue
                             
-                            if option['id'] == "credits" or option['id'] == "créditos":
+                            if option['id'] == "credits":
                                 credits = Creditos(self.screen)
                                 credits.run()
                                 self.bucleInicial = True  # Reiniciar el bucle del menú después de mostrar los créditos
