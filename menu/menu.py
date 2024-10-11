@@ -153,7 +153,6 @@ class Menu:
                 # Dependiendo de la opción seleccionada, se ejecuta una acción
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     for option, rect in self.rectOpcionesMenuPrincipal: # Recorremos las opciones del menú principal
-                        print("option: ", option)
                         if rect.collidepoint(event.pos):
                             # Reproducir sonido de clic
                             self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú

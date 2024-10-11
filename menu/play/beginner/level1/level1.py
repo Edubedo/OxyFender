@@ -6,98 +6,83 @@ import sys
 from utilerias.sprites import Sprite
 from utilerias.jugador import Player
 from utilerias.clases.barraOxigeno import BarraOxigeno
+from utilerias.sprites import FiltroSprite
 
-class Level1Beginner:  # Creamos el nivel 1 self.configLanguage, self.datosLanguage
+class Level1Beginner:
     def __init__(self, name, dificultadNivel, id, configLanguage, datosLanguage):
-        self.name = name # Establcer nombre del nivel 
-        self.dificultadNivel = dificultadNivel # Establecer dificultad del nivel
-        self.id = id # Establecer id del nivel
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Establecer tamaño de la pantala
+        self.name = name
+        self.dificultadNivel = dificultadNivel
+        self.id = id
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
         self.configLanguage = configLanguage
         self.datosLanguage = datosLanguage
-        pygame.display.set_caption(f"{TITLE_GAME} - {name}")  # Establecer titulo del  juego
+        pygame.display.set_caption(f"{TITLE_GAME} - {name}")
 
         self.mostrarSuperficieNivel = pygame.display.get_surface()
 
-        # Cargar y escalar la imagen de fondo
         self.imagen_fondo = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundCiudad.png")).convert()
         self.imagen_fondo_escalada = pygame.transform.scale(self.imagen_fondo, (self.mostrarSuperficieNivel.get_width(), self.mostrarSuperficieNivel.get_height() + 300))
 
-        # Cargamos los sprites
-        self.todos_los_sprites = pygame.sprite.Group()  # grupo de sprites para todos los sprites
-        self.colisiones_sprites = pygame.sprite.Group()  # grupo de sprites para las colisiones
-        self.elevador_piso1_sprites = pygame.sprite.Group()  # grupo de sprites para los elevadores del piso 1
-        self.elevador_piso2_sprites = pygame.sprite.Group()  # grupo de sprites para los elevadores del piso 2
-        self.filtro_sprites = pygame.sprite.Group()  # grupo de sprites para los elevadores
-        self.capa_verificar_gano = pygame.sprite.Group()  # grupo de sprites para verificar si el jugador ganó
-        
-        #  Cargamos el mapa del nivel 1
-        self.tmx_mapa_1 = load_pygame(join("assets", "maps", "beginner", "level1", "SCIENCE.tmx"))  # Cargamos el mapa del nivel 1
+        self.todos_los_sprites = pygame.sprite.Group()
+        self.colisiones_sprites = pygame.sprite.Group()
+        self.elevador_piso1_sprites = pygame.sprite.Group()
+        self.elevador_piso2_sprites = pygame.sprite.Group()
+        self.filtro_sprites = pygame.sprite.Group()
+        self.capa_verificar_gano = pygame.sprite.Group()
 
-        self.camera_offset = pygame.Vector2(0, 0)  # Agregamos esta variable para que la camara siga al jugador
+        self.tmx_mapa_1 = load_pygame(join("assets", "maps", "beginner", "level1", "SCIENCE.tmx"))
 
-        self.jugador = None  # Agregamos esta variable para asignar el jugador jugador
+        self.camera_offset = pygame.Vector2(0, 0)
+        self.jugador = None
 
-        self.ultimoElevador = None  # Último elevador al que fue teletransportado
-        self.tiempoEsperadoElevador = 1000  # Tiempo de espera en milisegundos
-        self.ultimaVezTeletransportado = 0  # Última vez que se teletransportó
+        self.ultimoElevador = None
+        self.tiempoEsperadoElevador = 1000
+        self.ultimaVezTeletransportado = 0
 
-        self.font = pygame.font.Font(None, 36)  # Initialize font
+        self.font = pygame.font.Font(None, 36)
 
-        self.juegoPausado = False  # Bandara para manejar sí le dio click al botón de pausa
-        self.capturarPantalla = None  # Captura de pantalla
-        self.volver_menu = False  # Bandera para manejar sí le dio click al botón de volver al menu
+        self.juegoPausado = False
+        self.capturarPantalla = None
+        self.volver_menu = False
 
-        self.ganoNivel = False  # Bandera para manejar sí el jugador ganó
-        self.perdioJuego = False  # Bandera para manejar sí el jugador perdió
+        self.ganoNivel = False
+        self.perdioJuego = False
 
-        tiempo_inicio = pygame.time.get_ticks()  # Tiempo de inicio del nivel
-        self.setup(self.tmx_mapa_1, tiempo_inicio) # Inicializamos el nivel 1
+        tiempo_inicio = pygame.time.get_ticks()
+        self.setup(self.tmx_mapa_1, tiempo_inicio)
 
     def setup(self, tmx_mapa_1, tiempo_inicio):
-        self.tiempo_inicio = tiempo_inicio  # Guardar el tiempo de inicio
+        self.tiempo_inicio = tiempo_inicio
 
-        # ------------------- AGREGAMOS LA BARRA DE OXIGENO ------------------- #
         self.rectBarraOxigeno = BarraOxigeno(10, 100, 40, 300, 200)
         self.rectBarraOxigeno.hp = 200
 
-        # ------------------- BOTON DE PAUSA ------------------- #
         self.botonPausa = pygame.image.load(join("assets", "img", "BOTONES", "b_tuerca.png")).convert_alpha()
         self.botonPausa = pygame.transform.scale(self.botonPausa, (self.botonPausa.get_width(), self.botonPausa.get_height()))
 
-
-        # Cargar imágenes de filtros de aire
         self.filtro_bn = pygame.image.load(join("assets", "img", "filtros", "filtro_bn.png")).convert_alpha()
         self.filtro_color = pygame.image.load(join("assets", "img", "filtros", "filtro_color.png")).convert_alpha()
-       
+
         self.filtro_bn = pygame.transform.scale(self.filtro_bn, (self.filtro_bn.get_width() + 40, self.filtro_bn.get_height() + 40))
         self.filtro_color = pygame.transform.scale(self.filtro_color, (self.filtro_color.get_width() + 40, self.filtro_color.get_height() + 40))
 
-        #  ------------------- Agregamos el conteo de Oxygens repaired y el objetivo x/y ------------------- #
         self.contadorOxigenoReparado = 0
         self.metaOxigenoReparado = 2
 
-        self.ultimoTiempoCombustible = pygame.time.get_ticks()  # Tiempo inicial para el oxigeno
+        self.ultimoTiempoCombustible = pygame.time.get_ticks()
 
-        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Establecer cursor del mouse
-        
-        self.tmx_tileset = pygame.image.load(join("assets", "maps", "beginner", "level1", "lab_tileset_LITE.png")).convert_alpha()  # Texturas del piso y techo
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
-        self.posicion_x_personaje = 0  # Agregamos esta variable para la posicion del personaje
+        self.tmx_tileset = pygame.image.load(join("assets", "maps", "beginner", "level1", "lab_tileset_LITE.png")).convert_alpha()
 
-        # ------------------- AGREGAMOS LAS CAPAS Y COLISIONES DEL MAPA ------------------- #
+        self.posicion_x_personaje = 0
+
         for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2', 'capaVerificarGano', 'ParedDetener', 'Extra']:
-            for x, y, superficie in tmx_mapa_1.get_layer_by_name(nombreCapa).tiles(): # Recorremos las capas del mapa de Tiled Y obtenemos las superficies
-
-                # Estructuras
-                sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), superficie, self.todos_los_sprites) # Creamos un sprite para las estructuras(capa)
-
-                # Colisiones de las capas del mapa para cuando interactue con el jugador
-                if nombreCapa in ['Paredes', 'Suelo', 'Techo', 'piso','ParedDetener']:
+            for x, y, superficie in tmx_mapa_1.get_layer_by_name(nombreCapa).tiles():
+                sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), superficie, self.todos_los_sprites)
+                if nombreCapa in ['Paredes', 'Suelo', 'Techo', 'piso', 'ParedDetener']:
                     self.colisiones_sprites.add(sprite)
-
-                # Elevadores de las capas del mapa para cuando interactue con el jugador
                 if nombreCapa == 'AscensorPiso1':
                     self.elevador_piso1_sprites.add(sprite)
                 elif nombreCapa == 'AscensorPiso2':
@@ -105,34 +90,19 @@ class Level1Beginner:  # Creamos el nivel 1 self.configLanguage, self.datosLangu
                 elif nombreCapa == 'capaVerificarGano':
                     self.capa_verificar_gano.add(sprite)
 
-        # ------------------- AGREGAMOS EL FILTRO ------------------- #
         filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
-        for obj in filtooo_layer: # Recorremos los objetos de la capa 'filtooo'
+        for obj in filtooo_layer:
             sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
             self.filtro_sprites.add(sprite)
 
-        # ------------------- AGREGAMOS MAS OBJETOS DE TIPO IMG ------------------- #
         for nombreObjeto in ['Objetos']:
             for obj in tmx_mapa_1.get_layer_by_name(nombreObjeto):
                 sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
-                
-        # Personaje
-        self.jugador = Player((800, 420), self.todos_los_sprites)  # Establecemos la pisición del jugador
 
-        self.run() # Una vez cargadas las texturas y colisiones generales inicializamos el juego    
+        self.jugador = Player((800, 420), self.todos_los_sprites)
 
-    def reiniciarConfiguraciones(self):
-        # Reiniciar todos los estados relevantes
-        self.rectBarraOxigeno.hp = 200
-        self.contadorOxigenoReparado = 0
-        self.ganoNivel = False
-        self.perdioJuego = False
-        self.juegoPausado = False
-        self.ultimaVezTeletransportado = 0
-        self.jugador.rect.topleft = (800, 420)  # Reiniciar la posición del jugador
-        self.camera_offset = pygame.Vector2(0, 0)
-        self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
-
+        self.run()
+   
     def run(self):
         pygame.mixer.music.pause()
         pygame.mixer.music.load(join("assets", "audio", "niveles", "musica_nivel_1.mp3"))
@@ -169,6 +139,7 @@ class Level1Beginner:  # Creamos el nivel 1 self.configLanguage, self.datosLangu
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                    
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     if self.juegoPausado:
                         pygame.quit()
@@ -301,6 +272,9 @@ class Level1Beginner:  # Creamos el nivel 1 self.configLanguage, self.datosLangu
             for sprite in self.todos_los_sprites:
                 self.mostrarSuperficieNivel.blit(sprite.image, sprite.rect.topleft - self.camera_offset)
 
+            # Dibujar los sprites del filtro al frente
+            self.filtro_sprites.draw(self.mostrarSuperficieNivel)
+
             if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
                 self.mostrarSuperficieNivel.blit(rectTextoColisionElevador, (self.mostrarSuperficieNivel.get_width() // 2, (self.mostrarSuperficieNivel.get_height() // 2) + 80))
 
@@ -317,14 +291,26 @@ class Level1Beginner:  # Creamos el nivel 1 self.configLanguage, self.datosLangu
             self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"{self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelMission']}", True, (255, 255, 255))
             self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 500))
 
-
             self.botonPausaRect = self.botonPausa.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 50))
             self.mostrarSuperficieNivel.blit(self.botonPausa, self.botonPausaRect.topleft)
 
             pygame.display.flip()
 
             clock.tick(FPS)
+            
+    def reiniciarConfiguraciones(self):
+        # Reiniciar todos los estados relevantes
+        self.rectBarraOxigeno.hp = 200
+        self.contadorOxigenoReparado = 0
+        self.ganoNivel = False
+        self.perdioJuego = False
+        self.juegoPausado = False
+        self.ultimaVezTeletransportado = 0
+        self.jugador.rect.topleft = (800, 420)  # Reiniciar la posición del jugador
+        self.camera_offset = pygame.Vector2(0, 0)
+        self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
 
+    
     def dibujar_filtros(self):
         # Posiciones para las imágenes de los filtros
         pos_x = -20
