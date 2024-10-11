@@ -7,13 +7,15 @@ from utilerias.sprites import Sprite
 from utilerias.jugador import Player
 from utilerias.clases.barraOxigeno import BarraOxigeno
 
-class Level1Beginner:  # Creamos el nivel 1
-    def __init__(self, name, dificultadNivel, id):
+class Level1Beginner:  # Creamos el nivel 1 self.configLanguage, self.datosLanguage
+    def __init__(self, name, dificultadNivel, id, configLanguage, datosLanguage):
         self.name = name # Establcer nombre del nivel 
         self.dificultadNivel = dificultadNivel # Establecer dificultad del nivel
         self.id = id # Establecer id del nivel
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Establecer tamaño de la pantala
 
+        self.configLanguage = configLanguage
+        self.datosLanguage = datosLanguage
         pygame.display.set_caption(f"{TITLE_GAME} - {name}")  # Establecer titulo del  juego
 
         self.mostrarSuperficieNivel = pygame.display.get_surface()
@@ -312,7 +314,7 @@ class Level1Beginner:  # Creamos el nivel 1
 
             # Mostrar mensaje de que arregle los filtros
             self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 25)
-            self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"Repair all filters and head for the exit.", True, (255, 255, 255))
+            self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"{self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelMission']}", True, (255, 255, 255))
             self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 500))
 
 

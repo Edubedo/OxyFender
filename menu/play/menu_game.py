@@ -226,8 +226,7 @@ class MenuPlay:
                             print("level['id']: ", level['id'])
                             print("level['id'] ", level)
                             if level['id'] == "beginner_level_1":
-                                print("juego")
-                                self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id']).run()
+                                self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage).run()
                             if level['id'] == "beginner_level_2":
                                 Level2Beginner(level['name'], level['dificultadNivel'], level['id'])
                             if level['id'] == "beginner_level_3":

@@ -27,6 +27,14 @@
 		"selectLevel": {
 			"nameLevel": "Nivel",
 			"imagenLevel": "img_nivel"
+		},
+		"levelsBeginner": {
+			"level1": {
+				"levelMission": "Repara los filtros y dirigete a la salida."
+			}
+		},
+		"levelsAdvanced": {
+			"level1": {}
 		}
 	},
 	"en": {
@@ -57,6 +65,13 @@
 		"selectLevel": {
 			"nameLevel": "Level",
 			"imagenLevel": "img_level"
+		},
+		"levelsBeginner": {
+			"level1": { "levelMission": "Repair the filters and head to the exit." },
+			"level2": {}
+		},
+		"levelsAdvanced": {
+			"level1": {}
 		}
 	}
 }
