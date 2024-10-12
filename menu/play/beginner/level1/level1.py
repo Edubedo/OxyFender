@@ -549,13 +549,13 @@ class Level1Beginner:
         self.screen.blit(imagePerdio, (0, self.mostrarSuperficieNivel.get_height() // 2))
 
         # Agregar boton para reiniciar nivel 
-        botonReiniciarNivel = pygame.image.load(join("assets", "img", "BOTONES", "b_reiniciar.png")).convert_alpha()
+        botonReiniciarNivel = pygame.image.load(join("assets", "img", "BOTONES","botones_bn", "b_reiniciar.png")).convert_alpha()
         botonReiniciarNivel = pygame.transform.scale(botonReiniciarNivel, (botonReiniciarNivel.get_width() + 20, botonReiniciarNivel.get_height() + 20))
         botonReiniciarNivelRect = botonReiniciarNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) - 100, (self.mostrarSuperficieNivel.get_height() // 2) + 150))
         self.screen.blit(botonReiniciarNivel, botonReiniciarNivelRect.topleft)
 
         # Agregar boton para volver a seleccionar nivel
-        botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES", "b_seleccionar.png")).convert_alpha()
+        botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES","botones_bn", "b_seleccionar.png")).convert_alpha()
         botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
         botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) + 100, (self.mostrarSuperficieNivel.get_height() // 2) + 150))
         self.screen.blit(botonSeleccionarNivel, botonSeleccionarNivelRect.topleft)
@@ -610,13 +610,13 @@ class Level1Beginner:
         self.screen.blit(imagePerdio, (0, self.mostrarSuperficieNivel.get_height() // 2))
 
         # Agregar boton para siguiente nivel 
-        botonSiguienteNivel = pygame.image.load(join("assets", "img", "BOTONES", "b_siguiente.png")).convert_alpha()
+        botonSiguienteNivel = pygame.image.load(join("assets", "img", "BOTONES","botones_bn", "b_siguiente_bn.png")).convert_alpha()
         botonSiguienteNivel = pygame.transform.scale(botonSiguienteNivel, (botonSiguienteNivel.get_width() + 20, botonSiguienteNivel.get_height() + 20))
         botonSiguienteNivelRect = botonSiguienteNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) - 100, (self.mostrarSuperficieNivel.get_height() // 2) + 150))
         self.screen.blit(botonSiguienteNivel, botonSiguienteNivelRect.topleft)
 
         # Agregar boton para volver a seleccionar nivel
-        botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES", "b_seleccionar.png")).convert_alpha()
+        botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES","botones_bn", "b_seleccionar.png")).convert_alpha()
         botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
         botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) + 100, (self.mostrarSuperficieNivel.get_height() // 2) + 150))
         self.screen.blit(botonSeleccionarNivel, botonSeleccionarNivelRect.topleft)
