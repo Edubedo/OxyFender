@@ -26,9 +26,9 @@ class Menu:
 
         # * Música de fondo 
         #pygame.mixer.init() # Inicializar el módulo de sonido
-        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
+        #pygame.mixer.music.set_volume(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
         #pygame.mixer.music.play(-1) # Reproducir la música en bucle
-        pygame.mixer.music.set_volume(1)
+        #pygame.mixer.music.set_volume(1)
         # volumen
 
         # Cargar sonido de clic
@@ -116,9 +116,9 @@ class Menu:
 
         # Agregar boton para la musica que simplemente la prende y la apaga
         if self.volumen == "on":
-            imagenMusica = pygame.image.load(join("assets", "img", "BOTONES","config", "volumen1.png")).convert_alpha() # Cargar imagen de la bandera
+            imagenMusica = pygame.image.load(join("assets", "img", "BOTONES","config", "btnsound.png")).convert_alpha() # Cargar imagen de la bandera
         else:
-            imagenMusica = pygame.image.load(join("assets", "img", "BOTONES","config", "volumen_off.png")).convert_alpha() # Cargar imagen de la bandera
+            imagenMusica = pygame.image.load(join("assets", "img", "BOTONES","config", "btnmute.png")).convert_alpha() # Cargar imagen de la bandera
 
         imagenMusica = pygame.transform.scale(imagenMusica, (50, 50)) # Escalar imagen de la bandera
         volumen_rect = self.screen.blit(imagenMusica, (self.screen.get_width() - 120, 10)) # Mostrar texto en la pantalla
@@ -169,7 +169,7 @@ class Menu:
                                 # Reproducir la música de fondo nuevamente
                                 pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))
                                 #pygame.mixer.music.play(-1)
-                                pygame.mixer.music.set_volume(0.2)
+                                #pygame.mixer.music.set_volume(0.2)
 
                             elif option['id'] == "quit" or option['id'] == "salir":
                                 pygame.quit()
@@ -187,9 +187,11 @@ class Menu:
                             elif option['id'] == "volumen":
                                 self.volumen = "off" if self.volumen == "on" else "on"
                                 if self.volumen == "on":
-                                    pygame.mixer.music.set_volume(1)
+                                    #pygame.mixer.music.set_volume(1)
+                                    pass
                                 else:
-                                    pygame.mixer.music.set_volume(0)
+                                    #pygame.mixer.music.set_volume(0)
+                                    pass
                                 
                             else:
                                 return option['id']

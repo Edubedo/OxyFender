@@ -58,29 +58,32 @@ class Level1Beginner:
         self.rectBarraOxigeno = BarraOxigeno(10, 100, 40, 300, 200)
         self.rectBarraOxigeno.hp = 200
 
-        self.botonPausa = pygame.image.load(join("assets", "img", "BOTONES", "b_tuerca.png")).convert_alpha()
+        self.botonPausa = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_tuerca_bn.png")).convert_alpha()
         self.botonPausa = pygame.transform.scale(self.botonPausa, (self.botonPausa.get_width(), self.botonPausa.get_height()))
 
-        self.filtro_bn = pygame.image.load(join("assets", "img", "filtros", "filtro_bn.png")).convert_alpha()
-        self.filtro_color = pygame.image.load(join("assets", "img", "filtros", "filtro_color.png")).convert_alpha()
+        self.filtro_bn = pygame.image.load(join("assets", "img", "filtros", "filtro_bn.png")).convert_alpha() # Cargar la imagen del filtro en blanco
+        self.filtro_color = pygame.image.load(join("assets", "img", "filtros", "filtro_color.png")).convert_alpha() # Cargar la imagen del filtro a color
 
-        self.filtro_bn = pygame.transform.scale(self.filtro_bn, (self.filtro_bn.get_width() + 40, self.filtro_bn.get_height() + 40))
-        self.filtro_color = pygame.transform.scale(self.filtro_color, (self.filtro_color.get_width() + 40, self.filtro_color.get_height() + 40))
+        self.filtro_bn = pygame.transform.scale(self.filtro_bn, (self.filtro_bn.get_width() + 40, self.filtro_bn.get_height() + 40)) # Escalar la imagen
+        self.filtro_color = pygame.transform.scale(self.filtro_color, (self.filtro_color.get_width() + 40, self.filtro_color.get_height() + 40)) # Escalar la imagen
 
         self.contadorOxigenoReparado = 0
         self.metaOxigenoReparado = 2
 
         self.ultimoTiempoCombustible = pygame.time.get_ticks()
-
-        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-
-        self.tmx_tileset = pygame.image.load(join("assets", "maps", "beginner", "level1", "lab_tileset_LITE.png")).convert_alpha()
+        # ! CODIGO 1 MOSTRAR
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW) # Establecer el cursor del mouse como una flecha
+        
+        # join es una función que une las rutas de los archivos
+        self.tmx_tileset = pygame.image.load(join("assets", "maps", "beginner", "level1", "lab_tileset_LITE.png")).convert_alpha() # Cargar el tileset que son las imagenes del mapa de tiled que usaremos posteriomente
 
         self.posicion_x_personaje = 0
+        # Nos pasamos el mapa principal tmx_mapa_1 por parametros desde el init y ahora lo estamos usando para dibujar los elementos
 
+        # Dibujamos los elementos generales del mapa
         for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2', 'capaVerificarGano', 'ParedDetener', 'Extra']:
-            for x, y, superficie in tmx_mapa_1.get_layer_by_name(nombreCapa).tiles():
-                sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), superficie, self.todos_los_sprites)
+            for x, y, superficie in tmx_mapa_1.get_layer_by_name(nombreCapa).tiles(): # obtenemos la capa por nombre que se obtiene x, y, la superficie(imagenes)
+                sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), superficie, self.todos_los_sprites) # Creamos un sprite con la posición x, y y la superficie
                 if nombreCapa in ['Paredes', 'Suelo', 'Techo', 'piso', 'ParedDetener']:
                     self.colisiones_sprites.add(sprite)
                 if nombreCapa == 'AscensorPiso1':
@@ -90,24 +93,28 @@ class Level1Beginner:
                 elif nombreCapa == 'capaVerificarGano':
                     self.capa_verificar_gano.add(sprite)
 
+        # Dibujamos los filtros de aire
         filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
         for obj in filtooo_layer:
-            sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
+            sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites) # Creamos un sprite con la posición x, y y la superficie
             self.filtro_sprites.add(sprite)
 
+        # Dibujamos los objetos del mapa
         for nombreObjeto in ['Objetos']:
             for obj in tmx_mapa_1.get_layer_by_name(nombreObjeto):
                 sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
 
+        # Dibujamos el jugador
         self.jugador = Player((800, 420), self.todos_los_sprites)
 
+        # Empezamos con el juego
         self.run()
    
     def run(self):
-        pygame.mixer.music.pause()
-        pygame.mixer.music.load(join("assets", "audio", "niveles", "musica_nivel_1.mp3"))
-        pygame.mixer.music.play(1)
-        pygame.mixer.music.set_volume(0.5)
+        #pygame.mixer.music.pause()
+        #pygame.mixer.music.load(join("assets", "audio", "niveles", "musica_nivel_1.mp3"))
+        #pygame.mixer.music.play(1)
+        #pygame.mixer.music.set_volume(0.5)
 
         clock = pygame.time.Clock()
         gravedad = PLAYER_GRAVEDAD
@@ -214,7 +221,7 @@ class Level1Beginner:
             colisionesElevadoresPiso2 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso2_sprites, False)
 
             if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
-                rectTextoColisionElevador = pygame.image.load(join("assets", "img", "BOTONES", "img_click_x.png")).convert_alpha()
+                rectTextoColisionElevador = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "img_click_x.png")).convert_alpha()
                 rectTextoColisionElevador = pygame.transform.scale(rectTextoColisionElevador, (rectTextoColisionElevador.get_width() - 70, rectTextoColisionElevador.get_height() - 70))
 
                 if keys[pygame.K_x]:
@@ -253,7 +260,6 @@ class Level1Beginner:
                         
                         pantalla = self.pantallaArreglarAire()
                         
-                        print("pantalla: ", pantalla)
                         if pantalla == 1:
                             break
 
@@ -298,6 +304,7 @@ class Level1Beginner:
 
             clock.tick(FPS)
             
+    # ! CONFIGURACION INCIALES
     def reiniciarConfiguraciones(self):
         # Reiniciar todos los estados relevantes
         self.rectBarraOxigeno.hp = 200
@@ -305,26 +312,29 @@ class Level1Beginner:
         self.ganoNivel = False
         self.perdioJuego = False
         self.juegoPausado = False
-        self.ultimaVezTeletransportado = 0
+        self.ultimaVezTeletransportado = 0 # Maneja el tiempo de espera de los teletransportadores
         self.jugador.rect.topleft = (800, 420)  # Reiniciar la posición del jugador
-        self.camera_offset = pygame.Vector2(0, 0)
+        self.camera_offset = pygame.Vector2(0, 0) # Reiniciar la cámara
         self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
 
-    
+    # ! SAHID explicar dibujar filtros
     def dibujar_filtros(self):
         # Posiciones para las imágenes de los filtros
         pos_x = -20
         pos_y = -60
 
-        # Dependiendo de la cantidad de oxigenos, diibujamos diferentes imagenes, exactmeente las iamgenes de blanco y negro y color
+         # Dependiendo de la cantidad de oxigenos, diibujamos diferentes imagenes, exactmeente las iamgenes de blanco y negro y color
         if self.contadorOxigenoReparado == 0:
+            # Se dibujan los filtros en blanco y negro
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 60, pos_y))
 
         elif self.contadorOxigenoReparado == 1:
+            # Se dibuja un filtro a color y un filtro a blanco y negro
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 60, pos_y))
 
+        # Se dibujan los dos filtros a color
         elif self.contadorOxigenoReparado >= 2:
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 60, pos_y))
@@ -447,14 +457,14 @@ class Level1Beginner:
         config_screen.blit(titulo, titulo_rect)
 
         # Agregar boton para reiniciar nivel 
-        botonReiniciarNivel = pygame.image.load(join("assets", "img", "BOTONES", "b_reiniciar.png")).convert_alpha()
+        botonReiniciarNivel = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_reiniciar.png")).convert_alpha()
         botonReiniciarNivel = pygame.transform.scale(botonReiniciarNivel, (botonReiniciarNivel.get_width() + 20, botonReiniciarNivel.get_height() + 20))
         botonReiniciarNivelRect = botonReiniciarNivel.get_rect()
         botonReiniciarNivelRect.center = ((configuracionWidthPantalla // 2) - 50, configuracionHeightPantalla // 2 + 50)
         config_screen.blit(botonReiniciarNivel, botonReiniciarNivelRect.topleft)
 
         # Agregar boton para volver a seleccionar nivel
-        botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES", "b_seleccionar.png")).convert_alpha()
+        botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_seleccionar.png")).convert_alpha()
         botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
         botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect()
         botonSeleccionarNivelRect.center = ((configuracionWidthPantalla // 2) + 50, configuracionHeightPantalla // 2 + 50)
@@ -509,7 +519,7 @@ class Level1Beginner:
                         pygame.mixer.music.stop() # Pausar la música actual
                         # pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música del menú
                         # #pygame.mixer.music.play(-1) # Reproducir la música en bucle
-                        # pygame.mixer.music.set_volume(0.2)
+                        # #pygame.mixer.music.set_volume(0.2)
 
             if self.capturarPantalla:
                 self.mostrarSuperficieNivel.blit(self.capturarPantalla, (0, 0))
@@ -582,7 +592,7 @@ class Level1Beginner:
                         pygame.mixer.music.pause()  # Pausar la música actual
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))  # Cargar la música del menú
                         #pygame.mixer.music.play(-1)  # Reproducir la música en bucle
-                        pygame.mixer.music.set_volume(0.2)
+                        #pygame.mixer.music.set_volume(0.2)
 
     def pantallaGanoNivel(self):
         # Crear una superficie semi-transparente
@@ -637,7 +647,7 @@ class Level1Beginner:
                         pygame.mixer.music.pause()  # Pausar la música actual
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))  # Cargar la música del menú
                         #pygame.mixer.music.play(-1)  # Reproducir la música en bucle
-                        pygame.mixer.music.set_volume(0.2)
+                        #pygame.mixer.music.set_volume(0.2)
 
                     elif botonSeleccionarNivelRect.collidepoint(posicionMouse):  # Sí hace click en volver al menú
                         self.volver_menu = True
@@ -648,6 +658,6 @@ class Level1Beginner:
                         pygame.mixer.music.pause()  # Pausar la música actual
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))  # Cargar la música del menú
                         #pygame.mixer.music.play(-1)  # Reproducir la música en bucle
-                        pygame.mixer.music.set_volume(0.2)
+                        #pygame.mixer.music.set_volume(0.2)
 
     
