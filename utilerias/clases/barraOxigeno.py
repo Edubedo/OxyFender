@@ -1,4 +1,5 @@
 from utilerias.configuraciones import *
+import pygame
 
 class BarraOxigeno():
     def __init__(self, x, y, w, h, max_hp):
@@ -20,6 +21,9 @@ class BarraOxigeno():
             imagen = pygame.image.load(f"assets/img/BOTONES/OXIGENO/tanque_{i}%.png").convert_alpha()
             self.imagenes_tanque.append(imagen)
 
+        # Inicializar la fuente para el texto
+        self.font = pygame.font.Font(None, 36)  # Puedes cambiar el tamaño de la fuente según sea necesario
+
     def actualizar_tiempo(self, tiempo_actual, juegoPausado):
         if not juegoPausado:
             # Calcular el tiempo transcurrido considerando las pausas
@@ -38,8 +42,19 @@ class BarraOxigeno():
             indice = max(1, int((self.hp / self.max_hp) * 10))
         # Ensure indice is within the valid range
         indice = min(indice, len(self.imagenes_tanque) - 1)
-        return self.imagenes_tanque[indice]
+        return self.imagenes_tanque[indice], indice * 10
 
     def draw(self, surface):
-        imagen_tanque = self.obtener_imagen_tanque()
+        imagen_tanque, porcentaje = self.obtener_imagen_tanque()
         surface.blit(imagen_tanque, (self.x, self.y))
+
+        # Renderizar el texto del porcentaje
+        texto = self.font.render(f"{porcentaje}%", True, (255, 255, 255))  # Texto en blanco
+        texto_rect = texto.get_rect(center=((self.x + self.w // 2) + 10, self.y + self.h + 50))  # Ajustar la posición del texto
+        surface.blit(texto, texto_rect)
+
+    def reiniciar(self):
+        # Reinicia los valores del temporizador y el oxígeno
+        self.tiempo_restante = self.tiempo_total
+        self.hp = self.max_hp
+        self.tiempo_ultimo = pygame.time.get_ticks()

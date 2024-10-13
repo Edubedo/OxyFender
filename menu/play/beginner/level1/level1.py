@@ -305,17 +305,121 @@ class Level1Beginner:
             clock.tick(FPS)
             
     # ! CONFIGURACION INCIALES
+    # level1.py
+
     def reiniciarConfiguraciones(self):
         # Reiniciar todos los estados relevantes
         self.rectBarraOxigeno.hp = 200
+        self.rectBarraOxigeno.tiempo_ultimo = pygame.time.get_ticks()  # Restablecer el tiempo de inicio de la barra de oxígeno
+        self.rectBarraOxigeno.tiempo_restante = self.rectBarraOxigeno.tiempo_total
+        self.rectBarraOxigeno.hp = self.rectBarraOxigeno.max_hp
+        self.rectBarraOxigeno.tiempo_ultimo = pygame.time.get_ticks()
         self.contadorOxigenoReparado = 0
         self.ganoNivel = False
         self.perdioJuego = False
         self.juegoPausado = False
-        self.ultimaVezTeletransportado = 0 # Maneja el tiempo de espera de los teletransportadores
+        self.ultimaVezTeletransportado = 0  # Maneja el tiempo de espera de los teletransportadores
         self.jugador.rect.topleft = (800, 420)  # Reiniciar la posición del jugador
-        self.camera_offset = pygame.Vector2(0, 0) # Reiniciar la cámara
+        self.rectBarraOxigeno.reiniciar()
+        self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
         self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
+
+    def pantallaPausar(self):
+        # Posición del menú de configuración dentro del juego
+        configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width()
+        configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height()
+
+        # Creamos una nueva superficie para la pantalla de configuración
+        config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla), pygame.SRCALPHA)
+
+        # imgFondoMenu = pygame.image.load(join("assets", "img", "FONDOS", "dificultad_fondo-removebg-preview.png")).convert_alpha()
+        # imgFondoMenu = pygame.transform.scale(imgFondoMenu, (configuracionWidthPantalla, configuracionHeightPantalla))
+        # config_screen.blit(imgFondoMenu, (0, 0))
+
+
+        # Agregar botón para continuar en la esquina superior derecha
+        botonContinuarMenu = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_continuar.png")).convert_alpha()
+        botonContinuarMenu = pygame.transform.scale(botonContinuarMenu, (botonContinuarMenu.get_width() + 20, botonContinuarMenu.get_height() + 20))
+        botonContinuarMenuRect = botonContinuarMenu.get_rect()
+        botonContinuarMenuRect.center = ((configuracionWidthPantalla // 2), configuracionHeightPantalla // 2 - 120)
+        config_screen.blit(botonContinuarMenu, botonContinuarMenuRect.topleft)
+
+        # Agregar botón para volver a seleccionar nivel
+        botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_seleccionar.png")).convert_alpha()
+        botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
+        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect()
+        botonSeleccionarNivelRect.center = ((configuracionWidthPantalla // 2), configuracionHeightPantalla // 2 - 20)
+        config_screen.blit(botonSeleccionarNivel, botonSeleccionarNivelRect.topleft)
+
+        # Agregar botón para reiniciar nivel
+        botonReiniciarNivel = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_reiniciar.png")).convert_alpha()
+        botonReiniciarNivel = pygame.transform.scale(botonReiniciarNivel, (botonReiniciarNivel.get_width() + 20, botonReiniciarNivel.get_height() + 20))
+        botonReiniciarNivelRect = botonReiniciarNivel.get_rect()
+        botonReiniciarNivelRect.center = ((configuracionWidthPantalla // 2), configuracionHeightPantalla // 2 + 80)
+        config_screen.blit(botonReiniciarNivel, botonReiniciarNivelRect.topleft)
+        
+        banderaEjecutandoNivel1 = True
+        while banderaEjecutandoNivel1:
+            if self.volver_menu:  # Sí le dio click a la bandera de volver al menú, rompemos este ciclo y volvemos al anterior
+                break
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                # Eventos para los botones
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    self.juegoPausado = False
+                    banderaEjecutandoNivel1 = False
+                    pygame.mixer.music.unpause()  # Reanudar la música
+
+                elif event.type == pygame.MOUSEMOTION:
+                    posicionMouse = event.pos
+                    posicionMousePantallaConfiguración = (posicionMouse[0], posicionMouse[1])
+
+                    if (botonReiniciarNivelRect.collidepoint(posicionMousePantallaConfiguración) or 
+                        botonSeleccionarNivelRect.collidepoint(posicionMousePantallaConfiguración) or 
+                        botonContinuarMenuRect.collidepoint(posicionMousePantallaConfiguración)):
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+                    else:
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    posicionMouse = event.pos
+                    posicionMousePantallaConfiguración = (posicionMouse[0], posicionMouse[1])
+
+                    if botonReiniciarNivelRect.collidepoint(posicionMousePantallaConfiguración):
+                        banderaEjecutandoNivel1 = False
+                        self.juegoPausado = False
+                        tiempo_inicio = pygame.time.get_ticks()
+                        self.reiniciarConfiguraciones()
+                        self.setup(self.tmx_mapa_1, tiempo_inicio)
+
+                    elif botonSeleccionarNivelRect.collidepoint(posicionMousePantallaConfiguración):
+                        self.volver_menu = True
+                        banderaEjecutandoNivel1 = False
+                        self.juegoPausado = False
+                        self.reiniciarConfiguraciones()
+                        pygame.mixer.music.stop()
+
+                    elif botonContinuarMenuRect.collidepoint(posicionMousePantallaConfiguración):
+                        self.juegoPausado = False
+                        banderaEjecutandoNivel1 = False
+                        pygame.mixer.music.unpause()  # Reanudar la música
+
+            if self.capturarPantalla:
+                self.mostrarSuperficieNivel.blit(self.capturarPantalla, (0, 0))
+
+            fondoOscuro = pygame.Surface(self.mostrarSuperficieNivel.get_size(), pygame.SRCALPHA)
+            fondoOscuro.fill((0, 0, 0, 150))
+            self.mostrarSuperficieNivel.blit(fondoOscuro, (0, 0))
+
+            # Centrar la imagen del menú en la pantalla
+            config_screen_rect = config_screen.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() // 2))
+            self.mostrarSuperficieNivel.blit(config_screen, config_screen_rect.topleft)
+
+            pygame.display.flip()  # Actualizar la pantalla
 
     # ! SAHID explicar dibujar filtros
     def dibujar_filtros(self):
@@ -436,104 +540,6 @@ class Level1Beginner:
                 banderaEjecutandoNivel1 = False  # Esto terminará el bucle
 
         return 1
-
-    def pantallaPausar(self):
-        # Posición del menú de configuración dentro del juego
-        configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width()
-        configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height()
-
-        # Creamos una nueva superficie para la pantalla de configuración
-        config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla), pygame.SRCALPHA)
-
-        # imgFondoMenu = pygame.image.load(join("assets", "img", "FONDOS", "dificultad_fondo-removebg-preview.png")).convert_alpha()
-        # imgFondoMenu = pygame.transform.scale(imgFondoMenu, (configuracionWidthPantalla, configuracionHeightPantalla))
-        # config_screen.blit(imgFondoMenu, (0, 0))
-
-
-        # Agregar botón para continuar en la esquina superior derecha
-        botonContinuarMenu = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_continuar.png")).convert_alpha()
-        botonContinuarMenu = pygame.transform.scale(botonContinuarMenu, (botonContinuarMenu.get_width() + 20, botonContinuarMenu.get_height() + 20))
-        botonContinuarMenuRect = botonContinuarMenu.get_rect()
-        botonContinuarMenuRect.center = ((configuracionWidthPantalla // 2), configuracionHeightPantalla // 2 - 120)
-        config_screen.blit(botonContinuarMenu, botonContinuarMenuRect.topleft)
-
-        # Agregar botón para volver a seleccionar nivel
-        botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_seleccionar.png")).convert_alpha()
-        botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
-        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect()
-        botonSeleccionarNivelRect.center = ((configuracionWidthPantalla // 2), configuracionHeightPantalla // 2 - 20)
-        config_screen.blit(botonSeleccionarNivel, botonSeleccionarNivelRect.topleft)
-
-        # Agregar botón para reiniciar nivel
-        botonReiniciarNivel = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_reiniciar.png")).convert_alpha()
-        botonReiniciarNivel = pygame.transform.scale(botonReiniciarNivel, (botonReiniciarNivel.get_width() + 20, botonReiniciarNivel.get_height() + 20))
-        botonReiniciarNivelRect = botonReiniciarNivel.get_rect()
-        botonReiniciarNivelRect.center = ((configuracionWidthPantalla // 2), configuracionHeightPantalla // 2 + 80)
-        config_screen.blit(botonReiniciarNivel, botonReiniciarNivelRect.topleft)
-
-        
-        
-
-        banderaEjecutandoNivel1 = True
-        while banderaEjecutandoNivel1:
-            if self.volver_menu:  # Sí le dio click a la bandera de volver al menú, rompemos este ciclo y volvemos al anterior
-                break
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-
-                # Eventos para los botones
-                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                    self.juegoPausado = False
-                    banderaEjecutandoNivel1 = False
-                    pygame.mixer.music.unpause()  # Reanudar la música
-
-                elif event.type == pygame.MOUSEMOTION:
-                    posicionMouse = event.pos
-                    posicionMousePantallaConfiguración = (posicionMouse[0], posicionMouse[1])
-
-                    if (botonReiniciarNivelRect.collidepoint(posicionMousePantallaConfiguración) or 
-                        botonSeleccionarNivelRect.collidepoint(posicionMousePantallaConfiguración) or 
-                        botonContinuarMenuRect.collidepoint(posicionMousePantallaConfiguración)):
-                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-                    else:
-                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    posicionMouse = event.pos
-                    posicionMousePantallaConfiguración = (posicionMouse[0], posicionMouse[1])
-
-                    if botonReiniciarNivelRect.collidepoint(posicionMousePantallaConfiguración):
-                        banderaEjecutandoNivel1 = False
-                        self.juegoPausado = False
-                        tiempo_inicio = pygame.time.get_ticks()
-                        self.setup(self.tmx_mapa_1, tiempo_inicio)
-
-                    elif botonSeleccionarNivelRect.collidepoint(posicionMousePantallaConfiguración):
-                        self.volver_menu = True
-                        banderaEjecutandoNivel1 = False
-                        self.juegoPausado = False
-                        pygame.mixer.music.stop()
-
-                    elif botonContinuarMenuRect.collidepoint(posicionMousePantallaConfiguración):
-                        self.juegoPausado = False
-                        banderaEjecutandoNivel1 = False
-                        pygame.mixer.music.unpause()  # Reanudar la música
-
-            if self.capturarPantalla:
-                self.mostrarSuperficieNivel.blit(self.capturarPantalla, (0, 0))
-
-            fondoOscuro = pygame.Surface(self.mostrarSuperficieNivel.get_size(), pygame.SRCALPHA)
-            fondoOscuro.fill((0, 0, 0, 150))
-            self.mostrarSuperficieNivel.blit(fondoOscuro, (0, 0))
-
-            # Centrar la imagen del menú en la pantalla
-            config_screen_rect = config_screen.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() // 2))
-            self.mostrarSuperficieNivel.blit(config_screen, config_screen_rect.topleft)
-
-            pygame.display.flip()  # Actualizar la pantalla
 
     def pantallaPerdioNivel(self):
         # Crear una superficie semi-transparente
