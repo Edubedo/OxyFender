@@ -1,0 +1,191 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/PQ3E5391/SCIENCE_LAB_1[1].tmx",
+    "expandedProjectPaths": [
+        "NIVEL 1",
+        "."
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/PQ3E5391/CABLEADO.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/PQ3E5391/SCIENCE_LAB_1[1].tmx": {
+            "scale": 0.289453125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1710.1214574898786,
+                "y": 718.5964912280702
+            }
+        },
+        "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/PQ3E5391/SCIENCE_LAB_1[1].tmx#CABLEADO": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/PQ3E5391/boecta.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/PQ3E5391/oiso 1.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/QW92M1LR/CABLEADO.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/QW92M1LR/SCIENCE_LAB_1[1].tmx": {
+            "scale": 0.5046875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 959.0092879256968,
+                "y": 601.3622291021672
+            }
+        },
+        "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/QW92M1LR/SCIENCE_LAB_1[1].tmx#CABLEADO": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/QW92M1LR/boecta.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/QW92M1LR/oiso 1.tsx": {
+            "scaleInDock": 1
+        },
+        "CABLEADO.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "FDSL.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 0.5,
+            "scaleInEditor": 0.125
+        },
+        "NIVEL 1/CABLEADO.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "NIVEL 1/FDSL.tsx": {
+            "scaleInDock": 1
+        },
+        "NIVEL 1/SCIENCE LAB.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 811,
+                "y": 255
+            }
+        },
+        "NIVEL 1/SCIENCE LAB.tmx#CABLEADO": {
+            "scaleInDock": 1
+        },
+        "NIVEL 1/gvvndmkdlk.tsx": {
+            "scaleInDock": 1
+        },
+        "NIVEL 1/topp.tsx": {
+            "scaleInDock": 1
+        },
+        "SCIENCE.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 959.9999999999999,
+                "y": 319.33333333333326
+            }
+        },
+        "SCIENCE.tmx#CABLEADO": {
+            "scaleInDock": 0.06
+        },
+        "SCIENCE LAB.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1143.6666666666665,
+                "y": 201
+            }
+        },
+        "SCIENCE LAB.tmx#CABLEADO": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.06
+        },
+        "TOP.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "boecta.tsx": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        },
+        "decoo.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "gvvndmkdlk.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "niv.tsx": {
+            "scaleInDock": 0.33,
+            "scaleInEditor": 1.5
+        },
+        "oiso 1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "perso.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "personaje.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "pp.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "textura.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tierra.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "topp.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "C:/Users/abisu/OneDrive/Documentos/Tiled Map/NIVEL 1",
+    "map.height": 20,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 60,
+    "openFiles": [
+        "SCIENCE.tmx",
+        "CABLEADO.tsx",
+        "boecta.tsx",
+        "oiso 1.tsx",
+        "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/PQ3E5391/SCIENCE_LAB_1[1].tmx"
+    ],
+    "project": "Primer Nivel.tiled-project",
+    "recentFiles": [
+        "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/QW92M1LR/SCIENCE_LAB_1[1].tmx",
+        "SCIENCE.tmx",
+        "CABLEADO.tsx",
+        "boecta.tsx",
+        "oiso 1.tsx",
+        "C:/Users/abisu/AppData/Local/Microsoft/Windows/INetCache/IE/PQ3E5391/SCIENCE_LAB_1[1].tmx",
+        "SCIENCE LAB.tmx",
+        "niv.tsx",
+        "NIVEL 1/SCIENCE LAB.tmx",
+        "TOP.tsx",
+        "topp.tsx",
+        "gvvndmkdlk.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}
