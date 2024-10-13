@@ -223,8 +223,6 @@ class MenuPlay:
                         if rectNivel.collidepoint(event.pos):
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Cambiar el cursor al cursor normal
                             # Niveles para principiantes 
-                            print("level['id']: ", level['id'])
-                            print("level['id'] ", level)
                             if level['id'] == "beginner_level_1":
                                 self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage).run()
                             if level['id'] == "beginner_level_2":

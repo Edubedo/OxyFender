@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
         images = []
         for i in range(1, 6):  # Asumiendo que tienes 5 imágenes para el sprite
             image = pygame.image.load(join("assets", "sprites", "character", direction, f"SPRITE_PRIN100%{i}.png")).convert_alpha()
-            images.append(image)
+            images.append(image) # append para agregar la imagen a la lista
         return images
 
     def update(self, moving, direction, juegoPausado):

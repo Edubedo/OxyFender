@@ -25,9 +25,9 @@ class Menu:
         self.actualizarOpcionesMenu()
 
         # * Música de fondo 
-        #pygame.mixer.init() # Inicializar el módulo de sonido
+        pygame.mixer.init() # Inicializar el módulo de sonido
         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
-        #pygame.mixer.music.play(-1) # Reproducir la música en bucle
+        pygame.mixer.music.play(-1) # Reproducir la música en bucle
         pygame.mixer.music.set_volume(1)
         # volumen
 
@@ -116,9 +116,9 @@ class Menu:
 
         # Agregar boton para la musica que simplemente la prende y la apaga
         if self.volumen == "on":
-            imagenMusica = pygame.image.load(join("assets", "img", "BOTONES","config", "volumen1.png")).convert_alpha() # Cargar imagen de la bandera
+            imagenMusica = pygame.image.load(join("assets", "img", "BOTONES","config", "btnsound.png")).convert_alpha() # Cargar imagen de la bandera
         else:
-            imagenMusica = pygame.image.load(join("assets", "img", "BOTONES","config", "volumen_off.png")).convert_alpha() # Cargar imagen de la bandera
+            imagenMusica = pygame.image.load(join("assets", "img", "BOTONES","config", "btnmute.png")).convert_alpha() # Cargar imagen de la bandera
 
         imagenMusica = pygame.transform.scale(imagenMusica, (50, 50)) # Escalar imagen de la bandera
         volumen_rect = self.screen.blit(imagenMusica, (self.screen.get_width() - 120, 10)) # Mostrar texto en la pantalla
@@ -153,7 +153,6 @@ class Menu:
                 # Dependiendo de la opción seleccionada, se ejecuta una acción
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     for option, rect in self.rectOpcionesMenuPrincipal: # Recorremos las opciones del menú principal
-                        print("option: ", option)
                         if rect.collidepoint(event.pos):
                             # Reproducir sonido de clic
                             self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
@@ -169,7 +168,7 @@ class Menu:
                                 self.bucleInicial = True  # Reiniciar el bucle del menú después de mostrar los créditos
                                 # Reproducir la música de fondo nuevamente
                                 pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))
-                                #pygame.mixer.music.play(-1)
+                                pygame.mixer.music.play(-1)
                                 pygame.mixer.music.set_volume(0.2)
 
                             elif option['id'] == "quit" or option['id'] == "salir":

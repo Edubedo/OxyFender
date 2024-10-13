@@ -4,4 +4,3 @@ class Level2Advanced:
         self.dificultadNivel = dificultadNivel
         self.id = id
         self.enemies = []
-        print(self.name, self.dificultadNivel, self.id)
