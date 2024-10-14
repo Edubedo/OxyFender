@@ -9,7 +9,7 @@ class Configuration:
     def __init__(self, config_file="language.json"):
         self.config_file = config_file
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "click_madera.mp3"))
+        self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "magicut.mp3"))
 
     def setup(self):
         pygame.display.set_caption(f"Configuration - {TITLE_GAME}")  # Establecer titulo del nivel
