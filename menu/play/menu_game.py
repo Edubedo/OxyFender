@@ -17,16 +17,18 @@ from os.path import join
 import os
 
 class MenuPlay:
-    def __init__(self, screen, configLanguage, datosLanguage):
+    def __init__(self, screen, configLanguage, datosLanguage, volumen):
         # Guardar atributos generales
         self.screen = screen 
         self.font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 18) # Fuente de texto
 
         self.configLanguage = configLanguage  # Configuración de idioma es / en
         self.datosLanguage = datosLanguage  
+        self.volumen = volumen  
         
         # Cargar sonido de clic
         self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "click_madera.mp3"))
+        self.sonidoDeClick.set_volume(1 if self.volumen == "on" else 0)
 
     def mostrarMenuDificultad(self):
         pygame.display.set_caption(f"{self.datosLanguage[self.configLanguage]['selectLevel']['nameLevel']}")  # Establecer titulo del nivel
@@ -224,7 +226,7 @@ class MenuPlay:
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Cambiar el cursor al cursor normal
                             # Niveles para principiantes 
                             if level['id'] == "beginner_level_1":
-                                self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage).run()
+                                self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage, self.volumen)
                             if level['id'] == "beginner_level_2":
                                 Level2Beginner(level['name'], level['dificultadNivel'], level['id'])
                             if level['id'] == "beginner_level_3":

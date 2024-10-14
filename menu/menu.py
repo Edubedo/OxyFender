@@ -8,7 +8,7 @@ import sys
 import json
 
 class Menu:
-    def __init__(self, screen):
+    def __init__(self, screen, volumen="on"):
         self.screen = screen 
         pygame.display.set_caption(f"Menu - {TITLE_GAME}") # Establecemos tituloPrincipalJuego del Menú
 
@@ -16,7 +16,7 @@ class Menu:
         self.font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 18) # Establecemos la Fuente de texto
         
         self.configLanguage = "es"  # Default language configuration
-        self.volumen = "on"  # Default volume state
+        self.volumen = volumen  # Default volume state
         self.datosLanguage = {} # Datos del menú
 
         with open('language.json') as archivo:
@@ -28,12 +28,12 @@ class Menu:
         pygame.mixer.init() # Inicializar el módulo de sonido
         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
         pygame.mixer.music.play(-1) # Reproducir la música en bucle
-        pygame.mixer.music.set_volume(1)
-        # volumen
+        pygame.mixer.music.set_volume(1 if self.volumen == "on" else 0)
 
         # Cargar sonido de clic
         self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "click_madera.mp3"))
-
+        self.sonidoDeClick.set_volume(1 if self.volumen == "on" else 0)
+        
     def actualizarOpcionesMenu(self):
         self.opcionesMenuPrincipal = [
             {
@@ -158,7 +158,7 @@ class Menu:
                             self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                             
                             if option['id'] == "play" or option['id'] == "jugar":
-                                game_menu = MenuPlay(self.screen, self.configLanguage, self.datosLanguage)
+                                game_menu = MenuPlay(self.screen, self.configLanguage, self.datosLanguage, self.volumen)
                                 game_menu.mostrarMenuDificultad()
                                 continue
                             
@@ -169,7 +169,7 @@ class Menu:
                                 # Reproducir la música de fondo nuevamente
                                 pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))
                                 pygame.mixer.music.play(-1)
-                                pygame.mixer.music.set_volume(0.2)
+                                pygame.mixer.music.set_volume(0.2 if self.volumen == "on" else 0)
 
                             elif option['id'] == "quit" or option['id'] == "salir":
                                 pygame.quit()
@@ -186,10 +186,8 @@ class Menu:
 
                             elif option['id'] == "volumen":
                                 self.volumen = "off" if self.volumen == "on" else "on"
-                                if self.volumen == "on":
-                                    pygame.mixer.music.set_volume(1)
-                                else:
-                                    pygame.mixer.music.set_volume(0)
+                                pygame.mixer.music.set_volume(1 if self.volumen == "on" else 0)
+                                self.sonidoDeClick.set_volume(1 if self.volumen == "on" else 0)  # Actualizar el volumen del sonido de clic
                                 
                             else:
                                 return option['id']
