@@ -446,7 +446,7 @@ class Level1Beginner:
         offset_y = (self.mostrarSuperficieNivel.get_height() - map_height) // 2
 
         button_font = pygame.font.Font(None, 36)
-        button_text = button_font.render("Fix filter", True, (255, 255, 255))
+        button_text = button_font.render(self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelFilterMessage'], True, (255, 255, 255))
         button_rect = button_text.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() - 50))
 
         banderaEjecutandoNivel1 = True
@@ -555,7 +555,7 @@ class Level1Beginner:
 
         # Mostrar mensaje de que el jugador perdió
         # Agregar texto de que perdió nivel
-        imagePerdio = pygame.image.load(join("assets", "img", "PantallasFinales", "gameOver_en.png")).convert_alpha()
+        imagePerdio = pygame.image.load(join(*self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['imgGameOver'])).convert_alpha()
         imagePerdio = pygame.transform.scale(imagePerdio, (imagePerdio.get_width(), imagePerdio.get_height()))
         self.screen.blit(imagePerdio, (0, self.mostrarSuperficieNivel.get_height() // 2))
 
@@ -617,7 +617,9 @@ class Level1Beginner:
 
         # Mostrar mensaje de que el jugador perdió
         # Agregar texto de que perdió nivel
-        imagePerdio = pygame.image.load(join("assets", "img", "PantallasFinales", "missionCompleted_en.png")).convert_alpha()
+
+        
+        imagePerdio = pygame.image.load(join(*self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['imgMissionCompleted'])).convert_alpha()
         imagePerdio = pygame.transform.scale(imagePerdio, (imagePerdio.get_width(), imagePerdio.get_height()))
         self.screen.blit(imagePerdio, (0, self.mostrarSuperficieNivel.get_height() // 2))
 

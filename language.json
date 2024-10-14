@@ -30,7 +30,15 @@
 		},
 		"levelsBeginner": {
 			"level1": {
-				"levelMission": "Repara los filtros y dirigete a la salida."
+				"levelMission": "Repara los filtros y dirigete a la salida.",
+				"levelFilterMessage": "Une las lineas.",
+				"imgMissionCompleted": [
+					"assets",
+					"img",
+					"PantallasFinales",
+					"missionCompleted_es.png"
+				],
+				"imgGameOver": ["assets", "img", "PantallasFinales", "gameOver_es.png"]
 			}
 		},
 		"levelsAdvanced": {
@@ -67,7 +75,17 @@
 			"imagenLevel": "img_level"
 		},
 		"levelsBeginner": {
-			"level1": { "levelMission": "Repair the filters and head to the exit." },
+			"level1": {
+				"levelMission": "Repair the filters and head to the exit.",
+				"levelFilterMessage": "Match the lines.",
+				"imgMissionCompleted": [
+					"assets",
+					"img",
+					"PantallasFinales",
+					"missionCompleted_en.png"
+				],
+				"imgGameOver": ["assets", "img", "PantallasFinales", "gameOver_en.png"]
+			},
 			"level2": {}
 		},
 		"levelsAdvanced": {
