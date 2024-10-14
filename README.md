@@ -34,7 +34,7 @@ Este proyecto está bajo la licencia MIT License.
 Vistas previas del juego.
 
 Menu:
-![image](https://github.com/user-attachments/assets/f94dadc8-3ffe-4507-b4db-3f120ee0e7fd)
+![image](https://github.com/user-attachments/assets/f9f7fb09-6036-4677-ba5a-de2711fcac74)
 
 Select Difficulty:
 ![image](https://github.com/user-attachments/assets/ed78f3aa-b1c6-44c5-bb89-9dd1a87a5949)
@@ -43,5 +43,5 @@ Select Level:
 ![image](https://github.com/user-attachments/assets/45dd5178-523f-4e2d-87a3-d6019001d985)
 
 Level 1:
-![image](https://github.com/user-attachments/assets/caf591ff-8d75-4d8c-a7b6-1506d7aa47d2)
+![image](https://github.com/user-attachments/assets/60db547c-0488-4b40-98a8-c0e87879cdac)
 
