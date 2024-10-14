@@ -5,7 +5,7 @@ from pytmx import *
 import sys
 from utilerias.sprites import Sprite
 from utilerias.jugador import Player
-from utilerias.clases.barraOxigeno import BarraOxigeno
+from utilerias.clases.barraOxigenoAdvanced import BarraOxigenoAdvanced
 from utilerias.sprites import FiltroSprite
 
 class Level1Advanced:
@@ -60,8 +60,8 @@ class Level1Advanced:
     def setup(self, tmx_mapa_1, tiempo_inicio):
         self.tiempo_inicio = tiempo_inicio
 
-        self.rectBarraOxigeno = BarraOxigeno(10, 100, 40, 300, 200)
-        self.rectBarraOxigeno.hp = 200
+        self.rectBarraOxigenoAdvanced = BarraOxigenoAdvanced(10, 100, 40, 300, 200)
+        self.rectBarraOxigenoAdvanced.hp = 200
 
         self.botonPausa = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_tuerca_bn.png")).convert_alpha()
         self.botonPausa = pygame.transform.scale(self.botonPausa, (self.botonPausa.get_width(), self.botonPausa.get_height()))
@@ -148,10 +148,10 @@ class Level1Advanced:
                 self.tiempo_actual = self.tiempo_inicio
 
             # Si el juego esta pausado
-            if self.tiempo_actual >= 120000:  # 120000 MILISEGUNDOS ES IGUAL 2 MINUTOS
+            if self.tiempo_actual >= 90000:  # 90000 MILISEGUNDOS ES IGUAL MINUTO Y MEDIO
                 self.perdioJuego = True
 
-            self.rectBarraOxigeno.actualizar_tiempo(self.tiempo_actual, self.juegoPausado)
+            self.rectBarraOxigenoAdvanced.actualizar_tiempo(self.tiempo_actual, self.juegoPausado)
 
             if self.botonPausaRect.collidepoint(pygame.mouse.get_pos()):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
@@ -299,7 +299,7 @@ class Level1Advanced:
             if colisionesFiltros:
                 self.mostrarSuperficieNivel.blit(rectTextoArreglarFiltro, (self.mostrarSuperficieNivel.get_width() // 2, (self.mostrarSuperficieNivel.get_width() // 2) - 140))
 
-            self.rectBarraOxigeno.draw(self.screen)
+            self.rectBarraOxigenoAdvanced.draw(self.screen)
 
             # Dibujar filtros de aire que le faltan
             self.dibujar_filtros()
@@ -402,18 +402,18 @@ class Level1Advanced:
     # level1.py
     def reiniciarConfiguraciones(self):
         # Reiniciar todos los estados relevantes
-        self.rectBarraOxigeno.hp = 200
-        self.rectBarraOxigeno.tiempo_ultimo = pygame.time.get_ticks()  # Restablecer el tiempo de inicio de la barra de oxígeno
-        self.rectBarraOxigeno.tiempo_restante = self.rectBarraOxigeno.tiempo_total
-        self.rectBarraOxigeno.hp = self.rectBarraOxigeno.max_hp
-        self.rectBarraOxigeno.tiempo_ultimo = pygame.time.get_ticks()
+        self.rectBarraOxigenoAdvanced.hp = 200
+        self.rectBarraOxigenoAdvanced.tiempo_ultimo = pygame.time.get_ticks()  # Restablecer el tiempo de inicio de la barra de oxígeno
+        self.rectBarraOxigenoAdvanced.tiempo_restante = self.rectBarraOxigenoAdvanced.tiempo_total
+        self.rectBarraOxigenoAdvanced.hp = self.rectBarraOxigenoAdvanced.max_hp
+        self.rectBarraOxigenoAdvanced.tiempo_ultimo = pygame.time.get_ticks()
         self.contadorOxigenoReparado = 0
         self.ganoNivel = False
         self.perdioJuego = False
         self.juegoPausado = False
         self.ultimaVezTeletransportado = 0  # Maneja el tiempo de espera de los teletransportadores
         self.jugador.rect.topleft = (800, 420)  # Reiniciar la posición del jugador
-        self.rectBarraOxigeno.reiniciar()
+        self.rectBarraOxigenoAdvanced.reiniciar()
         self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
         self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
     # ! SAHID explicar dibujar filtros
@@ -427,20 +427,25 @@ class Level1Advanced:
             # Se dibujan los filtros en blanco y negro
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 60, pos_y))
+            self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 120, pos_y))
 
         elif self.contadorOxigenoReparado == 1:
-            # Se dibuja un filtro a color y un filtro a blanco y negro
+            # Se dibuja un filtro a color y dos filtros a blanco y negro
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 60, pos_y))
+            self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 120, pos_y))
 
-        # Se dibujan los dos filtros a color
+        # Se dibujan dos filtros a color y uno a blanco y negro
         elif self.contadorOxigenoReparado >= 2:
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 60, pos_y))
+            self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 120, pos_y))
 
-        elif self.contadorOxigenoReparado >= 2:
+        # Se dibujan tres filtros a color 
+        elif self.contadorOxigenoReparado >= 3:
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 60, pos_y))
+            self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 120, pos_y))
     
 
     def pantallaArreglarAire(self):
