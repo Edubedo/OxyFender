@@ -148,6 +148,7 @@ class Level1Beginner:
                 self.tiempo_actual = self.tiempo_inicio
 
             # Si el juego esta pausado
+            print("self.tiempo_actual", self.tiempo_actual)
             if self.tiempo_actual >= 120000:  # 120000 MILISEGUNDOS ES IGUAL 2 MINUTOS
                 self.perdioJuego = True
 
