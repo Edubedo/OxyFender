@@ -26,7 +26,7 @@ python.exe main.py
 En este juego te embarcarás en una misión para salvar el planeta reparando máquinas que procesan oxígeno. A lo largo del juego, enfrentarás diversos desafíos en un entorno post-apocalíptico donde el oxígeno es un recurso escaso.
 
 # 🤝 Contribuciones
-¡Tu colaboración es bienvenida! Si deseas contribuir, no dudes en abrir un pull request o reportar cualquier error
+¡Tu colaboración es bienvenida! Si deseas contribuir, no dudes en abrir un pull request o reportar cualquier error.
 
 # 📜 Licencia
 Este proyecto está bajo la licencia MIT License.
