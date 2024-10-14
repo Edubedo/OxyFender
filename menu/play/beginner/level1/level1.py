@@ -444,12 +444,14 @@ class Level1Beginner:
         line_color = None
         completed_lines = []
         
-        # Inicializa la bandera para controlar si la tarea fue completada
         tarea_completada = False
 
         while banderaEjecutandoNivel1:
             if self.volver_menu:
                 break
+
+            mouse_pos = pygame.mouse.get_pos()
+            hand_cursor = False
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -460,7 +462,6 @@ class Level1Beginner:
                     banderaEjecutandoNivel1 = False
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_pos = pygame.mouse.get_pos()
                     for layer in self.tmx_filtroUnoNivel1.visible_layers:
                         if isinstance(layer, pytmx.TiledTileLayer):
                             for x, y, gid in layer:
@@ -493,15 +494,20 @@ class Level1Beginner:
                                             completed_lines.append((start_pos, end_pos, line_color))
                                             drawing_line = False
 
-            if drawing_line:
-                current_pos = pygame.mouse.get_pos()
-
             for layer in self.tmx_filtroUnoNivel1.visible_layers:
                 if isinstance(layer, pytmx.TiledTileLayer):
                     for x, y, gid in layer:
                         tile = self.tmx_filtroUnoNivel1.get_tile_image_by_gid(gid)
                         if tile:
+                            tile_rect = pygame.Rect(x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y, self.tmx_filtroUnoNivel1.tilewidth, self.tmx_filtroUnoNivel1.tileheight)
+                            if tile_rect.collidepoint(mouse_pos) and layer.name in ['btn1azul', 'btn1rojo', 'btn1verde', 'btn2azul', 'btn2rojo', 'btn2verde']:
+                                hand_cursor = True
                             self.mostrarSuperficieNivel.blit(tile, (x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y))
+
+            if hand_cursor:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
             self.mostrarSuperficieNivel.blit(button_text, button_rect.topleft)
 
@@ -509,16 +515,23 @@ class Level1Beginner:
                 pygame.draw.line(self.mostrarSuperficieNivel, line[2], line[0], line[1], 5)
 
             if drawing_line:
-                pygame.draw.line(self.mostrarSuperficieNivel, line_color, start_pos, current_pos, 5)
+                current_pos = pygame.mouse.get_pos()
+                # Check if the current position is within the "basecons" layer
+                basecons_layer = next((layer for layer in self.tmx_filtroUnoNivel1.visible_layers if layer.name == 'basecons'), None)
+                if basecons_layer:
+                    for x, y, gid in basecons_layer:
+                        base_tile_rect = pygame.Rect(x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y, self.tmx_filtroUnoNivel1.tilewidth, self.tmx_filtroUnoNivel1.tileheight)
+                        if base_tile_rect.collidepoint(current_pos):
+                            pygame.draw.line(self.mostrarSuperficieNivel, line_color, start_pos, current_pos, 5)
+                            break
 
             pygame.display.flip()
 
-            # Verificar si todas las conexiones están completas
             if len(completed_lines) == 3 and not tarea_completada:
                 self.arreglo = True
                 self.contadorOxigenoReparado += 1
-                tarea_completada = True  # Establecer la bandera como completada
-                banderaEjecutandoNivel1 = False  # Esto terminará el bucle
+                tarea_completada = True
+                banderaEjecutandoNivel1 = False
 
         return 1
 
