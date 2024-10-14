@@ -13,9 +13,10 @@ Para ejecutar este proyecto en tu máquina local, sigue los pasos a continuació
 - cd OxyFender
 
 **2. Descargar las siguientes librerias usando pip**
-- pip install pygame
-- pip install pytmx
-- pip install opencv-python
+- pip 24.2
+- pip install pygame-ce 2.5.1
+- pip install pytmx 3.32
+- pip install opencv-python 4.10.0.84
 
 
 **3. Ejecutar el juego en la terminal**
