@@ -12,6 +12,7 @@ Para ejecutar este proyecto en tu máquina local, sigue los pasos a continuació
 
 - cd OxyFender
 
+- python  3.11.9
 **2. Descargar las siguientes librerias usando pip**
 - pip 24.2
 - pip install pygame-ce 2.5.1
