@@ -26,7 +26,7 @@
 		},
 		"selectLevel": {
 			"nameLevel": "Nivel",
-			"imagenLevel": "img_nivel"
+			"imagenLevel": "img_nv_nivel"
 		},
 		"levelsBeginner": {
 			"level1": {
