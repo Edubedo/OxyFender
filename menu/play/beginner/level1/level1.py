@@ -62,6 +62,7 @@ class Level1Beginner:
 
         self.botonPausa = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_tuerca_bn.png")).convert_alpha()
         self.botonPausa = pygame.transform.scale(self.botonPausa, (self.botonPausa.get_width(), self.botonPausa.get_height()))
+        self.botonPausaRect = self.botonPausa.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 50))
 
         self.filtro_bn = pygame.image.load(join("assets", "img", "filtros", "filtro_bn.png")).convert_alpha() # Cargar la imagen del filtro en blanco
         self.filtro_color = pygame.image.load(join("assets", "img", "filtros", "filtro_color.png")).convert_alpha() # Cargar la imagen del filtro a color
@@ -135,13 +136,18 @@ class Level1Beginner:
             else:
                 self.tiempo_actual = self.tiempo_inicio
 
-            print("self.tiempo_actual", self.tiempo_actual)   
+            print("self.tiempo_actual", self.tiempo_actual) 
 
             # Si el juego esta pausado
             if self.tiempo_actual >= 120000:  # 120000 MILISEGUNDOS ES IGUAL 2 MINUTOS
                 self.perdioJuego = True
 
             self.rectBarraOxigeno.actualizar_tiempo(self.tiempo_actual, self.juegoPausado)
+
+            if self.botonPausaRect.collidepoint(pygame.mouse.get_pos()):
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
             if self.perdioJuego:
                 self.pantallaPerdioNivel()
