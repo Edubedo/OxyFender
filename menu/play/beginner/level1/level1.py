@@ -9,7 +9,7 @@ from utilerias.clases.barraOxigeno import BarraOxigeno
 from utilerias.sprites import FiltroSprite
 
 class Level1Beginner:
-    def __init__(self, name, dificultadNivel, id, configLanguage, datosLanguage):
+    def __init__(self, name, dificultadNivel, id, configLanguage, datosLanguage, volumen):
         self.name = name
         self.dificultadNivel = dificultadNivel
         self.id = id
@@ -17,6 +17,8 @@ class Level1Beginner:
 
         self.configLanguage = configLanguage
         self.datosLanguage = datosLanguage
+        self.volumen = volumen
+
         pygame.display.set_caption(f"{TITLE_GAME} - {name}")
 
         self.mostrarSuperficieNivel = pygame.display.get_surface()
@@ -114,7 +116,7 @@ class Level1Beginner:
         pygame.mixer.music.pause()
         pygame.mixer.music.load(join("assets", "audio", "niveles", "HKCrossroads.mp3"))
         pygame.mixer.music.play(1)
-        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.set_volume(0.5 if self.volumen == "on" else 0)
 
         clock = pygame.time.Clock()
         gravedad = PLAYER_GRAVEDAD
@@ -574,7 +576,7 @@ class Level1Beginner:
                         pygame.mixer.music.pause()  # Pausar la música actual
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))  # Cargar la música del menú
                         pygame.mixer.music.play(-1)  # Reproducir la música en bucle
-                        pygame.mixer.music.set_volume(0.2)
+                        pygame.mixer.music.set_volume(0.2 if self.volumen == "on" else 0)
 
     def pantallaGanoNivel(self):
         # Crear una superficie semi-transparente
@@ -629,7 +631,7 @@ class Level1Beginner:
                         pygame.mixer.music.pause()  # Pausar la música actual
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))  # Cargar la música del menú
                         pygame.mixer.music.play(-1)  # Reproducir la música en bucle
-                        pygame.mixer.music.set_volume(0.2)
+                        pygame.mixer.music.set_volume(0.2 if self.volumen == "on" else 0)
 
                     elif botonSeleccionarNivelRect.collidepoint(posicionMouse):  # Sí hace click en volver al menú
                         self.volver_menu = True
@@ -640,6 +642,6 @@ class Level1Beginner:
                         pygame.mixer.music.pause()  # Pausar la música actual
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))  # Cargar la música del menú
                         pygame.mixer.music.play(-1)  # Reproducir la música en bucle
-                        pygame.mixer.music.set_volume(0.2)
+                        pygame.mixer.music.set_volume(0.2 if self.volumen == "on" else 0)
 
     
