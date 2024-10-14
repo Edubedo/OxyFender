@@ -51,6 +51,9 @@ class Level1Beginner:
         self.ganoNivel = False
         self.perdioJuego = False
 
+        self.filtros_arreglados = []  # Lista para almacenar los filtros arreglados
+        self.filtro_pares = {}  # Diccionario para almacenar los pares de filtros
+
         tiempo_inicio = pygame.time.get_ticks()
         self.setup(self.tmx_mapa_1, tiempo_inicio)
 
@@ -100,7 +103,15 @@ class Level1Beginner:
         filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
         for obj in filtooo_layer:
             sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites) # Creamos un sprite con la posición x, y y la superficie
+            sprite.name = obj.name  # Añadir el nombre al sprite
             self.filtro_sprites.add(sprite)
+            # Agrupar los filtros en pares
+            if 'abajoFiltro' in obj.name:
+                pair_name = obj.name.replace('abajoFiltro', 'arribaFiltro')
+                self.filtro_pares[obj.name] = pair_name
+            elif 'arribaFiltro' in obj.name:
+                pair_name = obj.name.replace('arribaFiltro', 'abajoFiltro')
+                self.filtro_pares[obj.name] = pair_name
 
         # Dibujamos los objetos del mapa
         for nombreObjeto in ['Objetos']:
@@ -135,8 +146,6 @@ class Level1Beginner:
                 self.tiempo_actual += 1000 // FPS
             else:
                 self.tiempo_actual = self.tiempo_inicio
-
-            print("self.tiempo_actual", self.tiempo_actual) 
 
             # Si el juego esta pausado
             if self.tiempo_actual >= 120000:  # 120000 MILISEGUNDOS ES IGUAL 2 MINUTOS
@@ -247,7 +256,6 @@ class Level1Beginner:
                         break
 
             colisionesFiltros = pygame.sprite.spritecollide(self.jugador, self.filtro_sprites, False)
-
             if colisionesFiltros:
                 for filtro in colisionesFiltros:
                     rectTextoArreglarFiltro = pygame.image.load(join("assets", "img", "BOTONES", "img_click_a.png")).convert_alpha()
@@ -259,8 +267,14 @@ class Level1Beginner:
                         pantalla = self.pantallaArreglarAire()
                         
                         if pantalla == 1:
+                            # Arreglar ambos filtros del par
+                            pair_name = self.filtro_pares[filtro.name]
+                            for sprite in self.filtro_sprites:
+                                if sprite.name == filtro.name or sprite.name == pair_name:
+                                    self.filtros_arreglados.append(sprite)
+                                    self.filtro_sprites.remove(sprite)
                             break
-
+                    
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
             self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 40
 
@@ -382,10 +396,8 @@ class Level1Beginner:
             self.mostrarSuperficieNivel.blit(config_screen, config_screen_rect.topleft)
 
             pygame.display.flip()
-  
     # ! CONFIGURACION INCIALES
     # level1.py
-
     def reiniciarConfiguraciones(self):
         # Reiniciar todos los estados relevantes
         self.rectBarraOxigeno.hp = 200
