@@ -330,23 +330,42 @@ class Level1Advanced:
         configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height()
         config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla), pygame.SRCALPHA)
 
+        fondoSuperior = pygame.image.load(join("assets", "img", "FONDOS", "marco_superior.png")).convert_alpha()
+        fondoSuperior = pygame.transform.scale(fondoSuperior, (fondoSuperior.get_width() + 20, fondoSuperior.get_height() + 20))
+        fondoSuperiorRect = fondoSuperior.get_rect(center=(configuracionWidthPantalla // 2, configuracionHeightPantalla // 2 - 80))
+        config_screen.blit(fondoSuperior, fondoSuperiorRect.topleft)
+
+        #cargar y escalar los botones
         botonContinuarMenu = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_continuar.png")).convert_alpha()
         botonContinuarMenu = pygame.transform.scale(botonContinuarMenu, (botonContinuarMenu.get_width() + 20, botonContinuarMenu.get_height() + 20))
-        botonContinuarMenuRect = botonContinuarMenu.get_rect(center=(configuracionWidthPantalla // 2, configuracionHeightPantalla // 2 - 120))
-        config_screen.blit(botonContinuarMenu, botonContinuarMenuRect.topleft)
-
-
+        
         botonReiniciarNivel = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_reiniciar.png")).convert_alpha()
         botonReiniciarNivel = pygame.transform.scale(botonReiniciarNivel, (botonReiniciarNivel.get_width() + 20, botonReiniciarNivel.get_height() + 20))
-        botonReiniciarNivelRect = botonReiniciarNivel.get_rect(center=(configuracionWidthPantalla // 2, configuracionHeightPantalla // 2  - 20))
-        config_screen.blit(botonReiniciarNivel, botonReiniciarNivelRect.topleft)
 
         botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_seleccionar.png")).convert_alpha()
         botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
-        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect(center=(configuracionWidthPantalla // 2, configuracionHeightPantalla // 2 + 80 ))
+
+        # Calcular las posiciones de los botones para que estén alineados horizontalmente
+        espacio_entre_botones = 20
+        total_ancho_botones = botonContinuarMenu.get_width() + botonReiniciarNivel.get_width() + botonSeleccionarNivel.get_width() + 2 * espacio_entre_botones
+        inicio_x = (configuracionWidthPantalla - total_ancho_botones) // 2
+        centro_y = configuracionHeightPantalla // 2
+
+        # Posicionar y dibujar los botones
+        botonContinuarMenuRect = botonContinuarMenu.get_rect(topleft=(inicio_x, centro_y))
+        config_screen.blit(botonContinuarMenu, botonContinuarMenuRect.topleft)
+
+        botonReiniciarNivelRect = botonReiniciarNivel.get_rect(topleft=(inicio_x + botonContinuarMenu.get_width() + espacio_entre_botones, centro_y))
+        config_screen.blit(botonReiniciarNivel, botonReiniciarNivelRect.topleft)
+
+        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect(topleft=(inicio_x + botonContinuarMenu.get_width() + botonReiniciarNivel.get_width() + 2 * espacio_entre_botones, centro_y))
         config_screen.blit(botonSeleccionarNivel, botonSeleccionarNivelRect.topleft)
 
+        fondoInferior = pygame.image.load(join("assets", "img", "FONDOS", "marco_inferior.png")).convert_alpha()
+        fondoInferior = pygame.transform.scale(fondoInferior, (fondoInferior.get_width() + 20, fondoInferior.get_height() + 20))
+        fondoInferiorRect = fondoInferior.get_rect(center=(configuracionWidthPantalla // 2, configuracionHeightPantalla // 2 + 140))
 
+        config_screen.blit(fondoInferior, fondoInferiorRect.topleft)
         banderaEjecutandoNivel1 = True
         while banderaEjecutandoNivel1:
             if self.volver_menu:
@@ -436,7 +455,7 @@ class Level1Advanced:
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 120, pos_y))
 
         # Se dibujan dos filtros a color y uno a blanco y negro
-        elif self.contadorOxigenoReparado >= 2:
+        elif self.contadorOxigenoReparado == 2:
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 60, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 120, pos_y))
