@@ -224,7 +224,7 @@ class MenuPlay:
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Cambiar el cursor al cursor normal
                             # Niveles para principiantes 
                             if level['id'] == "beginner_level_1":
-                                self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage).run()
+                                self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage)
                             if level['id'] == "beginner_level_2":
                                 Level2Beginner(level['name'], level['dificultadNivel'], level['id'])
                             if level['id'] == "beginner_level_3":

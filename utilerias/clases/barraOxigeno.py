@@ -58,3 +58,5 @@ class BarraOxigeno():
         self.tiempo_restante = self.tiempo_total
         self.hp = self.max_hp
         self.tiempo_ultimo = pygame.time.get_ticks()
+
+        

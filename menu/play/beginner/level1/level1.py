@@ -121,18 +121,25 @@ class Level1Beginner:
         maxima_velocidad_caida = 4
         jugador_velocidad_y = 1
         esta_sobre_el_piso = False
+        self.tiempo_actual = 0
 
         while True:
             if self.volver_menu:
                 self.reiniciarConfiguraciones()  # Reiniciar el nivel cuando se vuelve al menú
                 break
 
-            tiempo_actual = pygame.time.get_ticks() - self.tiempo_inicio
+            if not self.juegoPausado:
+                self.tiempo_actual += 1000 // FPS
+            else:
+                self.tiempo_actual = self.tiempo_inicio
 
-            if tiempo_actual >= 120000:  # 120000 MILISEGUNDOS ES IGUAL 2 MINUTOS
+            print("self.tiempo_actual", self.tiempo_actual)   
+
+            # Si el juego esta pausado
+            if self.tiempo_actual >= 120000:  # 120000 MILISEGUNDOS ES IGUAL 2 MINUTOS
                 self.perdioJuego = True
 
-            self.rectBarraOxigeno.actualizar_tiempo(tiempo_actual, self.juegoPausado)
+            self.rectBarraOxigeno.actualizar_tiempo(self.tiempo_actual, self.juegoPausado)
 
             if self.perdioJuego:
                 self.pantallaPerdioNivel()
@@ -303,26 +310,6 @@ class Level1Beginner:
             pygame.display.flip()
 
             clock.tick(FPS)
-            
-    # ! CONFIGURACION INCIALES
-    # level1.py
-
-    def reiniciarConfiguraciones(self):
-        # Reiniciar todos los estados relevantes
-        self.rectBarraOxigeno.hp = 200
-        self.rectBarraOxigeno.tiempo_ultimo = pygame.time.get_ticks()  # Restablecer el tiempo de inicio de la barra de oxígeno
-        self.rectBarraOxigeno.tiempo_restante = self.rectBarraOxigeno.tiempo_total
-        self.rectBarraOxigeno.hp = self.rectBarraOxigeno.max_hp
-        self.rectBarraOxigeno.tiempo_ultimo = pygame.time.get_ticks()
-        self.contadorOxigenoReparado = 0
-        self.ganoNivel = False
-        self.perdioJuego = False
-        self.juegoPausado = False
-        self.ultimaVezTeletransportado = 0  # Maneja el tiempo de espera de los teletransportadores
-        self.jugador.rect.topleft = (800, 420)  # Reiniciar la posición del jugador
-        self.rectBarraOxigeno.reiniciar()
-        self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
-        self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
 
     def pantallaPausar(self):
         # Posición del menú de configuración dentro del juego
@@ -392,8 +379,9 @@ class Level1Beginner:
                     if botonReiniciarNivelRect.collidepoint(posicionMousePantallaConfiguración):
                         banderaEjecutandoNivel1 = False
                         self.juegoPausado = False
-                        tiempo_inicio = pygame.time.get_ticks()
                         self.reiniciarConfiguraciones()
+
+                        tiempo_inicio = pygame.time.get_ticks()
                         self.setup(self.tmx_mapa_1, tiempo_inicio)
 
                     elif botonSeleccionarNivelRect.collidepoint(posicionMousePantallaConfiguración):
@@ -420,7 +408,26 @@ class Level1Beginner:
             self.mostrarSuperficieNivel.blit(config_screen, config_screen_rect.topleft)
 
             pygame.display.flip()  # Actualizar la pantalla
+  
+    # ! CONFIGURACION INCIALES
+    # level1.py
 
+    def reiniciarConfiguraciones(self):
+        # Reiniciar todos los estados relevantes
+        self.rectBarraOxigeno.hp = 200
+        self.rectBarraOxigeno.tiempo_ultimo = pygame.time.get_ticks()  # Restablecer el tiempo de inicio de la barra de oxígeno
+        self.rectBarraOxigeno.tiempo_restante = self.rectBarraOxigeno.tiempo_total
+        self.rectBarraOxigeno.hp = self.rectBarraOxigeno.max_hp
+        self.rectBarraOxigeno.tiempo_ultimo = pygame.time.get_ticks()
+        self.contadorOxigenoReparado = 0
+        self.ganoNivel = False
+        self.perdioJuego = False
+        self.juegoPausado = False
+        self.ultimaVezTeletransportado = 0  # Maneja el tiempo de espera de los teletransportadores
+        self.jugador.rect.topleft = (800, 420)  # Reiniciar la posición del jugador
+        self.rectBarraOxigeno.reiniciar()
+        self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
+        self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
     # ! SAHID explicar dibujar filtros
     def dibujar_filtros(self):
         # Posiciones para las imágenes de los filtros
@@ -588,6 +595,7 @@ class Level1Beginner:
                     if botonReiniciarNivelRect.collidepoint(posicionMouse):  # Sí hace click en reiniciar nivel volvemos a cargar el nivel 1
                         banderaEjecutandoNivel1 = False
                         self.perdioJuego = False
+
                         tiempo_inicio = pygame.time.get_ticks()  # Tiempo de inicio del nivel
                         self.setup(self.tmx_mapa_1, tiempo_inicio)  # Volvemos a cargar el mapa
 
