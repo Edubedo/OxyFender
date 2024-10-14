@@ -234,7 +234,7 @@ class MenuPlay:
                             
                             # Niveles para avanzados 
                             if level['id'] == "advanced_level_1":
-                                Level1Advanced(level['name'], level['dificultadNivel'], level['id'])
+                                self.current_stage = Level1Advanced(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage, self.volumen)
                             if level['id'] == "advanced_level_2":
                                 Level2Advanced(level['name'], level['dificultadNivel'], level['id'])
                             if level['id'] == "advanced_level_3":
