@@ -335,15 +335,17 @@ class Level1Beginner:
         botonContinuarMenuRect = botonContinuarMenu.get_rect(center=(configuracionWidthPantalla // 2, configuracionHeightPantalla // 2 - 120))
         config_screen.blit(botonContinuarMenu, botonContinuarMenuRect.topleft)
 
-        botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_seleccionar.png")).convert_alpha()
-        botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
-        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect(center=(configuracionWidthPantalla // 2, configuracionHeightPantalla // 2 - 20))
-        config_screen.blit(botonSeleccionarNivel, botonSeleccionarNivelRect.topleft)
 
         botonReiniciarNivel = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_reiniciar.png")).convert_alpha()
         botonReiniciarNivel = pygame.transform.scale(botonReiniciarNivel, (botonReiniciarNivel.get_width() + 20, botonReiniciarNivel.get_height() + 20))
-        botonReiniciarNivelRect = botonReiniciarNivel.get_rect(center=(configuracionWidthPantalla // 2, configuracionHeightPantalla // 2 + 80))
+        botonReiniciarNivelRect = botonReiniciarNivel.get_rect(center=(configuracionWidthPantalla // 2, configuracionHeightPantalla // 2  - 20))
         config_screen.blit(botonReiniciarNivel, botonReiniciarNivelRect.topleft)
+
+        botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_seleccionar.png")).convert_alpha()
+        botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
+        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect(center=(configuracionWidthPantalla // 2, configuracionHeightPantalla // 2 + 80 ))
+        config_screen.blit(botonSeleccionarNivel, botonSeleccionarNivelRect.topleft)
+
 
         banderaEjecutandoNivel1 = True
         while banderaEjecutandoNivel1:
