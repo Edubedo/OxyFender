@@ -14,7 +14,7 @@
 			"quitImage": ["assets", "img", "BOTONES", "b_salir.png"]
 		},
 		"difficulty": {
-			"selectDifficulty": "DIFICULTAD",
+			"selectDifficulty": "Dificultad",
 
 			"beginnerName": "Principiante",
 			"beginnerId": "beginner",
@@ -60,7 +60,7 @@
 			"quitImage": ["assets", "img", "BOTONES", "b_quit.png"]
 		},
 		"difficulty": {
-			"selectDifficulty": "DIFFICULTY",
+			"selectDifficulty": "Difficulty",
 
 			"beginnerName": "beginner",
 			"beginnerId": "beginner",

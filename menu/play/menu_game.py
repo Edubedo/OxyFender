@@ -31,7 +31,7 @@ class MenuPlay:
         self.sonidoDeClick.set_volume(1 if self.volumen == "on" else 0)
 
     def mostrarMenuDificultad(self):
-        pygame.display.set_caption(f"{self.datosLanguage[self.configLanguage]['selectLevel']['nameLevel']}")  # Establecer titulo del nivel
+        pygame.display.set_caption(f"{self.datosLanguage[self.configLanguage]['difficulty']['selectDifficulty']}")  # Establecer titulo del nivel
 
         self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "Background","menu", "fondoPrueba2.jpeg")).convert_alpha()  # Fondo para menu de selección de dificultad
         self.fondoMenuDificultad = pygame.transform.scale(self.fondoMenuDificultad, (WIDTH, HEIGHT))
@@ -61,7 +61,7 @@ class MenuPlay:
 
         # Dibujamos las opciones de dificultad
         margin = 20
-        start_y = 300  # Ajustar este valor para mover los botones más arriba
+        start_y = 250  # Ajustar este valor para mover los botones más arriba
 
         for i, opcionDificultad in enumerate(opcionesDificultad):
             image = opcionDificultad['image']

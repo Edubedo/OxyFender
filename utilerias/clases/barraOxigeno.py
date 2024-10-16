@@ -34,6 +34,10 @@ class BarraOxigeno():
             # Actualiza el último tiempo cuando el juego se pausa
             self.tiempo_ultimo = tiempo_actual
 
+        if tiempo_actual >= 119000:
+            self.hp = 0
+            self.tiempo_restante = 0
+
     def obtener_imagen_tanque(self):
         # Asegurarse de que la imagen no cambie a 0% hasta que el tiempo restante sea 0
         if self.tiempo_restante == 0:
