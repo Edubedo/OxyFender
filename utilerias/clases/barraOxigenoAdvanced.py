@@ -9,7 +9,7 @@ class BarraOxigenoAdvanced():
         self.h = h
         self.hp = 0
         self.max_hp = max_hp
-        self.tiempo_total = 90  # minuto y medio en segundos
+        self.tiempo_total = 60  # minuto y medio en segundos
         self.tiempo_restante = self.tiempo_total
         self.tiempo_pausa = 0  # Nuevo: Variable para manejar el tiempo de pausa
         self.tiempo_ultimo = pygame.time.get_ticks()  # Tiempo cuando el juego empieza o se reanuda
