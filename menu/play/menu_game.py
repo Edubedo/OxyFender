@@ -27,7 +27,7 @@ class MenuPlay:
         self.volumen = volumen  
         
         # Cargar sonido de clic
-        self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "magicut.mp3"))
+        self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "click_madera.mp3"))
         self.sonidoDeClick.set_volume(1 if self.volumen == "on" else 0)
 
     def mostrarMenuDificultad(self):
@@ -38,10 +38,9 @@ class MenuPlay:
         
         self.screen.blit(self.fondoMenuDificultad, [0, 0])
 
-        # Agregar el título de mostrar dificultad
-        fontTitulo = pygame.font.Font(join("assets", "fonts", "Transformers Movie.ttf"), 100)
-        titulo = fontTitulo.render(self.datosLanguage[self.configLanguage]['difficulty']["selectDifficulty"], True, AZUL_TITULO)
-        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 150))
+        # Agregar el título de mostrar nivel
+        titulo = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", self.datosLanguage[self.configLanguage]['difficulty']['imgTitleDifficultySection'])).convert_alpha()
+        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 100))
         self.screen.blit(titulo, titulo_rect)
         
         opcionesDificultad = [
@@ -155,9 +154,8 @@ class MenuPlay:
         self.screen.blit(self.fondoMenuDificultad, [0, 0])
 
         # Agregar el título de mostrar nivel
-        fontTitulo = pygame.font.Font(join("assets", "fonts", "Transformers Movie.ttf"), 100)
-        titulo = fontTitulo.render(self.datosLanguage[self.configLanguage]['selectLevel']['nameLevel'], True, AZUL_TITULO)
-        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 150))
+        titulo = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", self.datosLanguage[self.configLanguage]['selectLevel']['imgTitleLevelSection'])).convert_alpha()
+        titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 100))
         self.screen.blit(titulo, titulo_rect)
 
         # Agregar nombre de la empresa
