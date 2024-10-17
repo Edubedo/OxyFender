@@ -72,7 +72,7 @@ class Level1Advanced:
         self.botonControles = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_int_naranja.png")).convert_alpha()
         self.botonControles = pygame.transform.scale(self.botonControles, (self.botonControles.get_width(), self.botonControles.get_height()))
         self.botonControlesRect = self.botonControles.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 500))
-        self.imagen_controles = pygame.image.load(join("assets", "img", "TITULLOS_FONDOS", "imagenControles.jpeg")).convert_alpha
+       
 
         self.filtro_bn = pygame.image.load(join("assets", "img", "filtros", "filtro_bn.png")).convert_alpha() # Cargar la imagen del filtro en blanco
         self.filtro_color = pygame.image.load(join("assets", "img", "filtros", "filtro_color.png")).convert_alpha() # Cargar la imagen del filtro a color
