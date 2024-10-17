@@ -56,16 +56,23 @@ class Level1Advanced:
 
         tiempo_inicio = pygame.time.get_ticks()
         self.setup(self.tmx_mapa_1, tiempo_inicio)
+
+        self.mostrar_imagen_controles = False
         
     def setup(self, tmx_mapa_1, tiempo_inicio):
         self.tiempo_inicio = tiempo_inicio
 
-        self.rectBarraOxigenoAdvanced = BarraOxigenoAdvanced(10, 100, 40, 300, 200)
-        self.rectBarraOxigenoAdvanced.hp = 200
+        self.rectBarraOxigenoAdvanced = BarraOxigenoAdvanced(10, 100, 40, 300, 100)
+        self.rectBarraOxigenoAdvanced.hp = 100
 
         self.botonPausa = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_tuerca_bn.png")).convert_alpha()
         self.botonPausa = pygame.transform.scale(self.botonPausa, (self.botonPausa.get_width(), self.botonPausa.get_height()))
         self.botonPausaRect = self.botonPausa.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 50))
+
+        self.botonControles = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_int_naranja.png")).convert_alpha()
+        self.botonControles = pygame.transform.scale(self.botonControles, (self.botonControles.get_width(), self.botonControles.get_height()))
+        self.botonControlesRect = self.botonControles.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 500))
+        self.imagen_controles = pygame.image.load(join("assets", "img", "TITULLOS_FONDOS", "imagenControles.jpeg")).convert_alpha
 
         self.filtro_bn = pygame.image.load(join("assets", "img", "filtros", "filtro_bn.png")).convert_alpha() # Cargar la imagen del filtro en blanco
         self.filtro_color = pygame.image.load(join("assets", "img", "filtros", "filtro_color.png")).convert_alpha() # Cargar la imagen del filtro a color
@@ -152,6 +159,12 @@ class Level1Advanced:
                 self.perdioJuego = True
 
             self.rectBarraOxigenoAdvanced.actualizar_tiempo(self.tiempo_actual, self.juegoPausado)
+
+            if self.botonControlesRect.collidepoint(pygame.mouse.get_pos()):
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+            
 
             if self.botonPausaRect.collidepoint(pygame.mouse.get_pos()):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
@@ -325,6 +338,7 @@ class Level1Advanced:
         else:
             pygame.mixer.music.unpause()
 
+
     def pantallaPausar(self):
         configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width()
         configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height()
@@ -345,6 +359,7 @@ class Level1Advanced:
         botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_seleccionar.png")).convert_alpha()
         botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
 
+        
         # Calcular las posiciones de los botones para que estén alineados horizontalmente
         espacio_entre_botones = 20
         total_ancho_botones = botonContinuarMenu.get_width() + botonReiniciarNivel.get_width() + botonSeleccionarNivel.get_width() + 2 * espacio_entre_botones
@@ -417,6 +432,22 @@ class Level1Advanced:
             self.mostrarSuperficieNivel.blit(config_screen, config_screen_rect.topleft)
 
             pygame.display.flip()
+
+
+    
+    def mostrarControles(self):
+
+        overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 128))  # Negro con 50% de opacidad
+        self.screen.blit(overlay, (0, 0))
+
+        configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width()
+        configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height()
+        config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla), pygame.SRCALPHA)
+
+
+
+
     # ! CONFIGURACION INCIALES
     # level1.py
     def reiniciarConfiguraciones(self):
@@ -586,7 +617,7 @@ class Level1Advanced:
 
         # Mostrar mensaje de que el jugador perdió
         # Agregar texto de que perdió nivel
-        imagePerdio = pygame.image.load(join(*self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['imgGameOver'])).convert_alpha()
+        imagePerdio = pygame.image.load(join(*self.datosLanguage[self.configLanguage]['levelsBegginer']['level1']['imgGameOver'])).convert_alpha()
         imagePerdio = pygame.transform.scale(imagePerdio, (imagePerdio.get_width(), imagePerdio.get_height()))
         self.screen.blit(imagePerdio, (0, self.mostrarSuperficieNivel.get_height() // 2))
 
@@ -708,4 +739,3 @@ class Level1Advanced:
                         pygame.mixer.music.play(-1)  # Reproducir la música en bucle
                         pygame.mixer.music.set_volume(0.2 if self.volumen == "on" else 0)
 
-        
