@@ -87,7 +87,7 @@ class Level1Beginner:
 
         # Cargar los efectos de sonido
         self.sonido_abrir_elevador = pygame.mixer.Sound(join("assets", "audio","utilerias", "abrirElevador.mp3"))
-        self.sonido_cerrar_elevador = pygame.mixer.Sound(join("assets", "audio","utilerias", "abrirElevador.mp3"))
+        self.sonido_cerrar_elevador = pygame.mixer.Sound(join("assets", "audio","utilerias", "elevadorsube.mp3"))
 
         self.elevador_1_abierto = False  # Estado del elevador
 
@@ -581,9 +581,9 @@ class Level1Beginner:
         offset_x = (self.mostrarSuperficieNivel.get_width() - map_width) // 2
         offset_y = (self.mostrarSuperficieNivel.get_height() - map_height) // 2
 
-        button_font = pygame.font.Font(None, 36)
+        button_font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 20) # Establecemos la Fuente de texto
         button_text = button_font.render(self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelFilterMessage'], True, (255, 255, 255))
-        button_rect = button_text.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() - 50))
+        button_rect = button_text.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, 110))
 
         banderaEjecutandoNivel1 = True
         drawing_line = False

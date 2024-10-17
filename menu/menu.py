@@ -31,7 +31,7 @@ class Menu:
         pygame.mixer.music.set_volume(1 if self.volumen == "on" else 0)
 
         # Cargar sonido de clic
-        self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "magicut.mp3"))
+        self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "click_madera.mp3"))
         self.sonidoDeClick.set_volume(1 if self.volumen == "on" else 0)
         
     def actualizarOpcionesMenu(self):
