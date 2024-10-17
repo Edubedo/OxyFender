@@ -54,6 +54,9 @@ class Level1Beginner:
 
         self.filtros_arreglados = []  # Lista para almacenar los filtros arreglados
         self.filtro_pares = {}  # Diccionario para almacenar los pares de filtros
+        
+        self.jugador_oculto_hasta = 0
+        self.teletransportando = False
 
         tiempo_inicio = pygame.time.get_ticks()
         self.setup(self.tmx_mapa_1, tiempo_inicio)
@@ -218,6 +221,11 @@ class Level1Beginner:
                 self.reiniciarConfiguraciones()  # Reiniciar el nivel cuando se vuelve al menú
                 break
 
+            if pygame.time.get_ticks() > self.jugador_oculto_hasta:
+                self.jugador.image.set_alpha(255)  # Hacer al jugador visible nuevamente
+                self.teletransportando = False  # Terminar teletransportación
+
+
             if not self.juegoPausado:
                 self.tiempo_actual += 1000 // FPS
             else:
@@ -256,48 +264,48 @@ class Level1Beginner:
             if self.juegoPausado:
                 self.pantallaPausar()
                 continue
+            if not self.teletransportando:
+                keys = pygame.key.get_pressed()
+                movimientoJugador = pygame.Vector2(0, 0)
+                estaMoviendose = False
+                direccionPersonaje = self.jugador.direction  # Mantener la dirección actual
 
-            keys = pygame.key.get_pressed()
-            movimientoJugador = pygame.Vector2(0, 0)
-            estaMoviendose = False
-            direccionPersonaje = self.jugador.direction  # Mantener la dirección actual
+                if keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
+                    movimientoJugador.x -= PLAYER_VEL - 1
+                    estaMoviendose = True
+                    direccionPersonaje = "left"
+                elif keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
+                    movimientoJugador.x += PLAYER_VEL
+                    estaMoviendose = True
+                    direccionPersonaje = "right" 
+                if keys[pygame.K_SPACE] and esta_sobre_el_piso:
+                    jugador_velocidad_y = PLAYER_FUERZA_SALTO
+                    esta_sobre_el_piso = False
+                if not esta_sobre_el_piso:
+                    jugador_velocidad_y += gravedad
+                    if jugador_velocidad_y > maxima_velocidad_caida:
+                        jugador_velocidad_y = maxima_velocidad_caida
+                movimientoJugador.y += jugador_velocidad_y
 
-            if keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
-                movimientoJugador.x -= PLAYER_VEL - 1
-                estaMoviendose = True
-                direccionPersonaje = "left"
-            elif keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
-                movimientoJugador.x += PLAYER_VEL
-                estaMoviendose = True
-                direccionPersonaje = "right" 
-            if keys[pygame.K_SPACE] and esta_sobre_el_piso:
-                jugador_velocidad_y = PLAYER_FUERZA_SALTO
-                esta_sobre_el_piso = False
-            if not esta_sobre_el_piso:
-                jugador_velocidad_y += gravedad
-                if jugador_velocidad_y > maxima_velocidad_caida:
-                    jugador_velocidad_y = maxima_velocidad_caida
-            movimientoJugador.y += jugador_velocidad_y
+                self.jugador.rect.y += movimientoJugador.y
+                spriteColisionesCapas = pygame.sprite.spritecollide(self.jugador, self.colisiones_sprites, False)
 
-            self.jugador.rect.y += movimientoJugador.y
-            spriteColisionesCapas = pygame.sprite.spritecollide(self.jugador, self.colisiones_sprites, False)
+                for sprite in spriteColisionesCapas:
+                    if movimientoJugador.y > 0:
+                        self.jugador.rect.bottom = sprite.rect.top
+                        esta_sobre_el_piso = True
+                        jugador_velocidad_y = 0
+                    elif movimientoJugador.y < 0:
+                        self.jugador.rect.top = sprite.rect.bottom
+                        jugador_velocidad_y = 0
 
-            for sprite in spriteColisionesCapas:
-                if movimientoJugador.y > 0:
-                    self.jugador.rect.bottom = sprite.rect.top
-                    esta_sobre_el_piso = True
-                    jugador_velocidad_y = 0
-                elif movimientoJugador.y < 0:
-                    self.jugador.rect.top = sprite.rect.bottom
-                    jugador_velocidad_y = 0
-
-            self.jugador.rect.x += movimientoJugador.x
-            spriteColisionesCapas = pygame.sprite.spritecollide(self.jugador, self.colisiones_sprites, False)
-            for sprite in spriteColisionesCapas:
-                if movimientoJugador.x > 0:
-                    self.jugador.rect.right = sprite.rect.left
-                elif movimientoJugador.x < 0:
-                    self.jugador.rect.left = sprite.rect.right
+                self.jugador.rect.x += movimientoJugador.x
+                spriteColisionesCapas = pygame.sprite.spritecollide(self.jugador, self.colisiones_sprites, False)
+                for sprite in spriteColisionesCapas:
+                    if movimientoJugador.x > 0:
+                        self.jugador.rect.right = sprite.rect.left
+                    elif movimientoJugador.x < 0:
+                        self.jugador.rect.left = sprite.rect.right
 
             tiempoActualElevadores = pygame.time.get_ticks()
             colisionesElevadoresPiso1 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso1_sprites, False)
@@ -307,7 +315,7 @@ class Level1Beginner:
                 rectTextoColisionElevador = pygame.image.load(join("assets", "img", "BOTONES", "img_click_x.png")).convert_alpha()
                 rectTextoColisionElevador = pygame.transform.scale(rectTextoColisionElevador, (rectTextoColisionElevador.get_width() - 70, rectTextoColisionElevador.get_height() - 70))
 
-                if keys[pygame.K_x]:
+                if keys[pygame.K_x] and not self.teletransportando:
                     if colisionesElevadoresPiso1 or colisionesElevadoresPiso2:
                         if colisionesElevadoresPiso1 and not self.elevador_1_abierto:
                             self.sonido_abrir_elevador.play()
@@ -323,15 +331,18 @@ class Level1Beginner:
                             self.elevador_2_abierto = True
                         else:
                             self.sonido_cerrar_elevador.play()
+                            self.teletransportando = True  # Iniciar teletransportación
                             if colisionesElevadoresPiso1:
                                 self.elevador_sprite_piso1.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
                                 pygame.display.flip()
-                                pygame.time.delay(3000)
+                                self.jugador.image.set_alpha(0)  # Hacer al jugador invisible
+                                self.jugador_oculto_hasta = pygame.time.get_ticks() + 3000  # Ocultar por 3000ms
                                 self.elevador_1_abierto = False
                             elif colisionesElevadoresPiso2:
                                 self.elevador_sprite_piso2.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
                                 pygame.display.flip()
-                                pygame.time.delay(3000)
+                                self.jugador.image.set_alpha(0)  # Hacer al jugador invisible
+                                self.jugador_oculto_hasta = pygame.time.get_ticks() + 3000  # Ocultar por 3000ms
                                 self.elevador_2_abierto = False
 
                             if colisionesElevadoresPiso1:
@@ -550,6 +561,8 @@ class Level1Beginner:
         self.jugador.rect.topleft = (800, 420)  # Reiniciar la posición del jugador
         self.todos_los_sprites.add(self.jugador)  # Asegurarse de que el jugador esté en el grupo de todos los sprites
 
+        self.jugador_oculto_hasta = 0
+        self.teletransportando = False
     #  ! SAHID explicar dibujar filtros
     def dibujar_filtros(self):
         # Posiciones para las imágenes de los filtros
