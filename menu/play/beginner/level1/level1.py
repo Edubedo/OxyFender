@@ -148,6 +148,7 @@ class Level1Beginner:
                 self.tiempo_actual = self.tiempo_inicio
 
             # Si el juego esta pausado
+            print("self.tiempo_actual", self.tiempo_actual)
             if self.tiempo_actual >= 120000:  # 120000 MILISEGUNDOS ES IGUAL 2 MINUTOS
                 self.perdioJuego = True
 
@@ -184,7 +185,7 @@ class Level1Beginner:
             keys = pygame.key.get_pressed()
             movimientoJugador = pygame.Vector2(0, 0)
             estaMoviendose = False
-            direccionPersonaje = "right"
+            direccionPersonaje = self.jugador.direction  # Mantener la dirección actual
 
             if keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
                 movimientoJugador.x -= PLAYER_VEL - 1

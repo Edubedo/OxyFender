@@ -1,9 +1,5 @@
-# Código desarrollado por (E. Escobedo, G. Solorzano, R. Lavariga, N. Laureano, A. Suarez, S. Barroso) 2024
-# Este software no puede ser copiado o redistribuido sin permiso del autor.
 import pygame
 from os.path import join
-
-# jugador.py
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
@@ -23,9 +19,9 @@ class Player(pygame.sprite.Sprite):
 
     def cargar_imagenes(self, direction):
         images = []
-        for i in range(1, 6):  # Asumiendo que tienes 5 imágenes para el sprite
+        for i in range(0, 6):  # Incluir la imagen 0
             image = pygame.image.load(join("assets", "sprites", "character", direction, f"SPRITE_PRIN100%{i}.png")).convert_alpha()
-            images.append(image) # append para agregar la imagen a la lista
+            images.append(image)
         return images
 
     def update(self, moving, direction, juegoPausado):
@@ -44,9 +40,9 @@ class Player(pygame.sprite.Sprite):
                 self.sonido_pasos.play()
 
             if self.rect.left < 0:  # Establece el limite de lado izquierdo para no salir del mapa
-                self.rect.left = 0  # Correctly set the left attribute instead of the entire rect
+                self.rect.left = 0
         else:
-            # Detener el sonido de caminar si el personaje deja de moverse o el juego está en pausa
+            self.image = self.images[0]  # Usar la imagen 0 cuando no se está moviendo
             self.sonido_pasos.stop()
 
         # Ajustar la posición del rectángulo de colisión

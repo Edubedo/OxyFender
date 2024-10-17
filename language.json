@@ -14,7 +14,7 @@
 			"quitImage": ["assets", "img", "BOTONES", "b_salir.png"]
 		},
 		"difficulty": {
-			"selectDifficulty": "DIFICULTAD",
+			"selectDifficulty": "Dificultad",
 
 			"beginnerName": "Principiante",
 			"beginnerId": "beginner",
@@ -26,7 +26,7 @@
 		},
 		"selectLevel": {
 			"nameLevel": "Nivel",
-			"imagenLevel": "img_nivel"
+			"imagenLevel": "img_nv_nivel"
 		},
 		"levelsBeginner": {
 			"level1": {
@@ -60,7 +60,7 @@
 			"quitImage": ["assets", "img", "BOTONES", "b_quit.png"]
 		},
 		"difficulty": {
-			"selectDifficulty": "DIFFICULTY",
+			"selectDifficulty": "Difficulty",
 
 			"beginnerName": "beginner",
 			"beginnerId": "beginner",

@@ -31,7 +31,7 @@ class MenuPlay:
         self.sonidoDeClick.set_volume(1 if self.volumen == "on" else 0)
 
     def mostrarMenuDificultad(self):
-        pygame.display.set_caption(f"{self.datosLanguage[self.configLanguage]['selectLevel']['nameLevel']}")  # Establecer titulo del nivel
+        pygame.display.set_caption(f"{self.datosLanguage[self.configLanguage]['difficulty']['selectDifficulty']}")  # Establecer titulo del nivel
 
         self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "Background","menu", "fondoPrueba2.jpeg")).convert_alpha()  # Fondo para menu de selección de dificultad
         self.fondoMenuDificultad = pygame.transform.scale(self.fondoMenuDificultad, (WIDTH, HEIGHT))
@@ -61,7 +61,7 @@ class MenuPlay:
 
         # Dibujamos las opciones de dificultad
         margin = 20
-        start_y = 300  # Ajustar este valor para mover los botones más arriba
+        start_y = 250  # Ajustar este valor para mover los botones más arriba
 
         for i, opcionDificultad in enumerate(opcionesDificultad):
             image = opcionDificultad['image']
@@ -78,7 +78,7 @@ class MenuPlay:
         # Agregar nombre de la empresa
         fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24)  # Fuente
         textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, WHITE)  # Texto
-        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 45, self.screen.get_height() - 45))  # Rectangulo para mostrar el texto en la pantalla
+        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10)) # Rectangulo para mostrar el texto en la pantalla
         self.screen.blit(textoInferiorDerecha, texto_rect)  # Mostrar texto en la pantalla
 
         pygame.display.flip()
@@ -163,7 +163,7 @@ class MenuPlay:
         # Agregar nombre de la empresa
         fontTextoInferiorDerecha = pygame.font.Font(join("assets", "fonts", "Font_Name_Enterprise.ttf"), 24)  # Fuente
         textoInferiorDerecha = fontTextoInferiorDerecha.render(NAME_ENTERPRISE, True, WHITE)  # Texto
-        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 45, self.screen.get_height() - 45))  # Rectangulo para mostrar el texto en la pantalla
+        texto_rect = textoInferiorDerecha.get_rect(bottomright=(self.screen.get_width() - 10, self.screen.get_height() - 10)) # Rectangulo para mostrar el texto en la pantalla
         self.screen.blit(textoInferiorDerecha, texto_rect)  # Mostrar texto en la pantalla
 
         opcionNiveles = []
@@ -180,7 +180,7 @@ class MenuPlay:
         margin = 20
         total_width = sum(level['image'].get_width() for level in opcionNiveles) + margin * (len(opcionNiveles) - 1)
         start_x = (self.screen.get_width() - total_width) // 2
-        start_y = self.screen.get_height() // 2 - 100  # Ajustar este valor para mover los botones más arriba
+        start_y = self.screen.get_height() // 2 - 60  # Ajustar este valor para mover los botones más arriba
 
         for i, level in enumerate(opcionNiveles):
             image = level['image']
