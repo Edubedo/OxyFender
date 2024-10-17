@@ -32,7 +32,7 @@ En este juego te embarcarás en una misión para salvar el planeta reparando má
 # 📜 Licencia
 Este proyecto está bajo la licencia MIT License.
 
-# 📜 Juego
+# 🎮 Juego
 Vistas previas del juego.
 
 Menu:
