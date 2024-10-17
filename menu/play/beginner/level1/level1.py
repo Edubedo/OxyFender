@@ -510,6 +510,8 @@ class Level1Beginner:
         self.tiempo_ultimo = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.indice_animacion_elevador = 0
         self.tiempo_cambio_animacion = pygame.time.get_ticks()  
+        self.elevador_1_abierto = False  # Estado del elevador
+
     #  ! SAHID explicar dibujar filtros
     def dibujar_filtros(self):
         # Posiciones para las imágenes de los filtros
