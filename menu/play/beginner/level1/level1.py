@@ -58,10 +58,14 @@ class Level1Beginner:
         self.setup(self.tmx_mapa_1, tiempo_inicio)
 
     def setup(self, tmx_mapa_1, tiempo_inicio):
+
+         # Initialize rectBarraOxigeno
         self.tiempo_inicio = tiempo_inicio
 
         self.rectBarraOxigeno = BarraOxigeno(10, 100, 40, 300, 200)
         self.rectBarraOxigeno.hp = 200
+        self.rectBarraOxigeno.reiniciar()  # Llamar al método reiniciar de BarraOxigeno
+
 
         self.botonPausa = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_tuerca_bn.png")).convert_alpha()
         self.botonPausa = pygame.transform.scale(self.botonPausa, (self.botonPausa.get_width(), self.botonPausa.get_height()))
@@ -121,6 +125,9 @@ class Level1Beginner:
         # Dibujamos el jugador
         self.jugador = Player((800, 420), self.todos_los_sprites)
 
+        # Reiniciamos configuraciones antes de inciiar el juego
+        self.reiniciarConfiguraciones()
+
         # Empezamos con el juego
         self.run()
    
@@ -148,7 +155,6 @@ class Level1Beginner:
                 self.tiempo_actual = self.tiempo_inicio
 
             # Si el juego esta pausado
-            print("self.tiempo_actual", self.tiempo_actual)
             if self.tiempo_actual >= 120000:  # 120000 MILISEGUNDOS ES IGUAL 2 MINUTOS
                 self.perdioJuego = True
 
@@ -393,14 +399,13 @@ class Level1Beginner:
                     if botonReiniciarNivelRect.collidepoint(posicionMouse):
                         banderaEjecutandoNivel1 = False
                         self.juegoPausado = False
-                        self.reiniciarConfiguraciones()
                         tiempo_inicio = pygame.time.get_ticks()
                         self.setup(self.tmx_mapa_1, tiempo_inicio)
+
                     elif botonSeleccionarNivelRect.collidepoint(posicionMouse):
                         self.volver_menu = True
                         banderaEjecutandoNivel1 = False
                         self.juegoPausado = False
-                        self.reiniciarConfiguraciones()
                         pygame.mixer.music.stop()
                     elif botonContinuarMenuRect.collidepoint(posicionMouse):
                         self.juegoPausado = False
@@ -422,21 +427,17 @@ class Level1Beginner:
     # level1.py
     def reiniciarConfiguraciones(self):
         # Reiniciar todos los estados relevantes
-        self.rectBarraOxigeno.hp = 200
-        self.rectBarraOxigeno.tiempo_ultimo = pygame.time.get_ticks()  # Restablecer el tiempo de inicio de la barra de oxígeno
-        self.rectBarraOxigeno.tiempo_restante = self.rectBarraOxigeno.tiempo_total
-        self.rectBarraOxigeno.hp = self.rectBarraOxigeno.max_hp
-        self.rectBarraOxigeno.tiempo_ultimo = pygame.time.get_ticks()
         self.contadorOxigenoReparado = 0
         self.ganoNivel = False
         self.perdioJuego = False
         self.juegoPausado = False
         self.ultimaVezTeletransportado = 0  # Maneja el tiempo de espera de los teletransportadores
         self.jugador.rect.topleft = (800, 420)  # Reiniciar la posición del jugador
-        self.rectBarraOxigeno.reiniciar()
         self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
         self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
-    # ! SAHID explicar dibujar filtros
+        self.tiempo_ultimo = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
+
+    #  ! SAHID explicar dibujar filtros
     def dibujar_filtros(self):
         # Posiciones para las imágenes de los filtros
         pos_x = -20
