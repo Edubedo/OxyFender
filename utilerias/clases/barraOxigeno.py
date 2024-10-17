@@ -32,8 +32,6 @@ class BarraOxigeno():
             self.tiempo_restante = max(0, self.tiempo_total - tiempo_transcurrido)
             self.hp = (self.tiempo_restante / self.tiempo_total) * self.max_hp
 
-            print("tiempo_actual", tiempo_actual)
-            print("self.ultimo_cambio_imagen", self.ultimo_cambio_imagen)
             # Verificar si han pasado 12,000 segundos desde el último cambio de imagen
             if (tiempo_actual - self.ultimo_cambio_imagen) >= 12000:
                 self.ultimo_cambio_imagen = tiempo_actual
@@ -54,7 +52,6 @@ class BarraOxigeno():
             indice = 0
         else:
             indice = self.indice
-        print("indice", indice)
         # Ensure indice is within the valid range
         indice = min(indice, len(self.imagenes_tanque) - 1)
         return self.imagenes_tanque[indice], indice * 10

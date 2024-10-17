@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="103" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="39" nextobjectid="80">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="103" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="40" nextobjectid="123">
  <tileset firstgid="1" source="CABLEADO.tsx"/>
  <tileset firstgid="82" source="piso1b.tsx"/>
  <tileset firstgid="362" source="piso2b.tsx"/>
@@ -7,6 +7,7 @@
  <tileset firstgid="631" source="fondooo.tsx"/>
  <tileset firstgid="1831" source="pisoo.tsx"/>
  <tileset firstgid="2011" source="fff.tsx"/>
+ <tileset firstgid="3313" source="elevador1.tsx"/>
  <layer id="9" name="Suelo" width="103" height="30">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -191,10 +192,10 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,461,462,463,464,465,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,513,514,515,516,517,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,565,566,567,568,569,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,617,618,619,620,621,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -211,6 +212,108 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="39" name="Ascensor1">
+  <object id="103" name="tile1_1" gid="3328" x="2368" y="512" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="104" name="tile1_2" gid="3329" x="2400" y="512" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="105" name="tile1_3" gid="3330" x="2432" y="512" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="106" name="tile1_4" gid="3331" x="2464" y="512" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="107" name="tile1_5" gid="3332" x="2496" y="512" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="108" name="tile2_1" gid="3323" x="2368" y="480" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="109" name="tile2_2" gid="3324" x="2400" y="480" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="110" name="tile2_3" gid="3325" x="2432" y="480" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="111" name="tile2_4" gid="3326" x="2464" y="480" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="112" name="tile2_5" gid="3327" x="2496" y="480" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="113" name="tile3_1" gid="3318" x="2368" y="448" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="114" name="tile3_2" gid="3319" x="2400" y="448" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="115" name="tile3_3" gid="3320" x="2432" y="448" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="116" name="tile3_4" gid="3321" x="2464" y="448" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="117" name="tile3_5" gid="3322" x="2496" y="448" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="118" name="tile4_1" gid="3313" x="2368" y="416" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="119" name="tile4_2" gid="3314" x="2400" y="416" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="120" name="tile4_3" gid="3315" x="2432" y="416" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="121" name="tile4_4" gid="3316" x="2464" y="416" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+  <object id="122" name="tile4_5" gid="3317" x="2496" y="416" width="32" height="32">
+   <properties>
+    <property name="tipo" value="elevador1"/>
+   </properties>
+  </object>
+ </objectgroup>
  <layer id="35" name="AscensorPiso2" width="103" height="30">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

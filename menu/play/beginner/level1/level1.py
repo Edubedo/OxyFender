@@ -21,6 +21,7 @@ class Level1Beginner:
 
         pygame.display.set_caption(f"{TITLE_GAME} - {name}")
 
+
         self.mostrarSuperficieNivel = pygame.display.get_surface()
 
         self.imagen_fondo = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundCiudad.png")).convert()
@@ -54,6 +55,23 @@ class Level1Beginner:
         self.filtros_arreglados = []  # Lista para almacenar los filtros arreglados
         self.filtro_pares = {}  # Diccionario para almacenar los pares de filtros
 
+        # Imagenes del elevador
+        self.elevador_imagenes = [
+            pygame.image.load(join("assets", "sprites", "elevador", "elevador1.png")).convert_alpha(),
+            pygame.image.load(join("assets", "sprites", "elevador", "elevador2.png")).convert_alpha(),
+            pygame.image.load(join("assets", "sprites", "elevador", "elevador3.png")).convert_alpha(),
+            pygame.image.load(join("assets", "sprites", "elevador", "elevador4.png")).convert_alpha(),
+        ]
+
+        # Crear un solo sprite para el elevador
+        self.elevador_sprite = Sprite((0, 0), self.elevador_imagenes[0], self.todos_los_sprites)
+        self.elevador_sprite.rect.size = (self.elevador_imagenes[0].get_width(), self.elevador_imagenes[0].get_height())
+        self.elevador_piso1_sprites.add(self.elevador_sprite)
+        
+        self.indice_animacion_elevador = 0
+        self.tiempo_cambio_animacion = pygame.time.get_ticks()
+
+        print("self.elevador_imagenes", self.elevador_imagenes)
         tiempo_inicio = pygame.time.get_ticks()
         self.setup(self.tmx_mapa_1, tiempo_inicio)
 
@@ -96,8 +114,8 @@ class Level1Beginner:
                 sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), superficie, self.todos_los_sprites) # Creamos un sprite con la posición x, y y la superficie
                 if nombreCapa in ['Paredes', 'Suelo', 'Techo', 'piso', 'ParedDetener']:
                     self.colisiones_sprites.add(sprite)
-                if nombreCapa == 'AscensorPiso1':
-                    self.elevador_piso1_sprites.add(sprite)
+                #if nombreCapa == 'AscensorPiso1':
+                    #self.elevador_piso1_sprites.add(sprite)
                 elif nombreCapa == 'AscensorPiso2':
                     self.elevador_piso2_sprites.add(sprite)
                 elif nombreCapa == 'capaVerificarGano':
@@ -117,6 +135,14 @@ class Level1Beginner:
                 pair_name = obj.name.replace('arribaFiltro', 'abajoFiltro')
                 self.filtro_pares[obj.name] = pair_name
 
+        # Dibujamos el elevador del piso 1
+        Ascensor1_layer = tmx_mapa_1.get_layer_by_name('Ascensor1')
+        for obj in Ascensor1_layer:
+            self.elevador_sprite.rect.topleft = (obj.x, obj.y - self.elevador_sprite.rect.height + TILE_SIZE)
+            break
+            # Agrupar los filtros en pares
+
+
         # Dibujamos los objetos del mapa
         for nombreObjeto in ['Objetos']:
             for obj in tmx_mapa_1.get_layer_by_name(nombreObjeto):
@@ -130,7 +156,19 @@ class Level1Beginner:
 
         # Empezamos con el juego
         self.run()
-   
+    
+    def actualizar_animacion_elevador(self):
+        tiempo_actual = pygame.time.get_ticks()
+        if tiempo_actual - self.tiempo_cambio_animacion > 250:  # Tiempo entre animaciones
+            self.indice_animacion_elevador = (self.indice_animacion_elevador + 1) % len(self.elevador_imagenes)
+            # Scale the elevator image to fit within the sprite's dimensions
+            scaled_image = pygame.transform.scale(
+                self.elevador_imagenes[self.indice_animacion_elevador],
+                (self.elevador_sprite.rect.width, self.elevador_sprite.rect.height)
+            )
+            self.elevador_sprite.image = scaled_image
+            self.tiempo_cambio_animacion = tiempo_actual
+
     def run(self):
         pygame.mixer.music.pause()
         pygame.mixer.music.load(join("assets", "audio", "niveles", "HKCrossroads.mp3"))
@@ -240,17 +278,27 @@ class Level1Beginner:
 
                 if keys[pygame.K_x]:
                     if colisionesElevadoresPiso1:
+                        self.elevador_estado = "abriendo"
+                        self.actualizar_animacion_elevador()
+                        pygame.time.delay(1000)  # Delay antes de teletransportar
                         for elevator in self.elevador_piso2_sprites:
                             self.jugador.rect.topleft = elevator.rect.topleft
                             self.jugador.rect.y += (self.jugador.rect.height / 3)
                             self.ultimoElevador = elevator
+                            self.elevador_estado = "cerrando"
+                            self.actualizar_animacion_elevador()
                             self.ultimaVezTeletransportado = tiempoActualElevadores
                             break
                     elif colisionesElevadoresPiso2:
+                        self.elevador_estado = "abriendo"
+                        self.actualizar_animacion_elevador()
+                        pygame.time.delay(1000)  # Delay antes de teletransportar
                         for elevator in self.elevador_piso1_sprites:
                             self.jugador.rect.topleft = elevator.rect.topleft
                             self.jugador.rect.y += (self.jugador.rect.height / 3)
                             self.ultimoElevador = elevator
+                            self.elevador_estado = "cerrando"
+                            self.actualizar_animacion_elevador()
                             self.ultimaVezTeletransportado = tiempoActualElevadores
                             break
 
@@ -436,7 +484,8 @@ class Level1Beginner:
         self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
         self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.tiempo_ultimo = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
-
+        self.indice_animacion_elevador = 0
+        self.tiempo_cambio_animacion = pygame.time.get_ticks()  
     #  ! SAHID explicar dibujar filtros
     def dibujar_filtros(self):
         # Posiciones para las imágenes de los filtros
