@@ -55,7 +55,12 @@ class Level1Beginner:
         self.filtros_arreglados = []  # Lista para almacenar los filtros arreglados
         self.filtro_pares = {}  # Diccionario para almacenar los pares de filtros
 
-        # Imagenes del elevador
+        tiempo_inicio = pygame.time.get_ticks()
+        self.setup(self.tmx_mapa_1, tiempo_inicio)
+
+    def setup(self, tmx_mapa_1, tiempo_inicio):
+        # cargar los elevadores
+         # Imagenes del elevador
         self.elevador_imagenes = [
             pygame.image.load(join("assets", "sprites", "elevador", "elevador1.png")).convert_alpha(),
             pygame.image.load(join("assets", "sprites", "elevador", "elevador2.png")).convert_alpha(),
@@ -86,12 +91,7 @@ class Level1Beginner:
 
         self.elevador_1_abierto = False  # Estado del elevador
 
-        tiempo_inicio = pygame.time.get_ticks()
-        self.setup(self.tmx_mapa_1, tiempo_inicio)
-
-    def setup(self, tmx_mapa_1, tiempo_inicio):
-
-         # Initialize rectBarraOxigeno
+        # Initialize rectBarraOxigeno
         self.tiempo_inicio = tiempo_inicio
 
         self.rectBarraOxigeno = BarraOxigeno(10, 100, 40, 300, 200)
@@ -199,7 +199,6 @@ class Level1Beginner:
             )
             self.elevador_sprite_piso2.image = scaled_image
             self.tiempo_cambio_animacion_piso2 = tiempo_actual
-
 
     def run(self):
         pygame.mixer.music.pause()
@@ -312,48 +311,40 @@ class Level1Beginner:
                     if colisionesElevadoresPiso1 or colisionesElevadoresPiso2:
                         if colisionesElevadoresPiso1 and not self.elevador_1_abierto:
                             self.sonido_abrir_elevador.play()
-                            for i in range(len(self.elevador_imagenes)):
-                                self.indice_animacion_elevador_piso1 = i
-                                self.actualizar_animacion_elevador_piso1()
-                                pygame.display.flip()
-                                pygame.time.delay(250)
+                            self.elevador_sprite_piso1.image = self.elevador_imagenes[3]  # Imagen de elevador abierto
+                            pygame.display.flip()
+                            pygame.time.delay(250)
                             self.elevador_1_abierto = True
                         elif colisionesElevadoresPiso2 and not self.elevador_2_abierto:
                             self.sonido_abrir_elevador.play()
-                            for i in range(len(self.elevador_imagenes)):
-                                self.indice_animacion_elevador_piso2 = i
-                                self.actualizar_animacion_elevador_piso2()
-                                pygame.display.flip()
-                                pygame.time.delay(250)
+                            self.elevador_sprite_piso2.image = self.elevador_imagenes[3]  # Imagen de elevador abierto
+                            pygame.display.flip()
+                            pygame.time.delay(250)
                             self.elevador_2_abierto = True
                         else:
                             self.sonido_cerrar_elevador.play()
                             if colisionesElevadoresPiso1:
-                                for i in range(len(self.elevador_imagenes) - 1, -1, -1):
-                                    self.indice_animacion_elevador_piso1 = i
-                                    self.actualizar_animacion_elevador_piso1()
-                                    pygame.display.flip()
-                                    pygame.time.delay(250)
+                                self.elevador_sprite_piso1.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
+                                pygame.display.flip()
+                                pygame.time.delay(250)
                                 self.elevador_1_abierto = False
                             elif colisionesElevadoresPiso2:
-                                for i in range(len(self.elevador_imagenes) - 1, -1, -1):
-                                    self.indice_animacion_elevador_piso2 = i
-                                    self.actualizar_animacion_elevador_piso2()
-                                    pygame.display.flip()
-                                    pygame.time.delay(250)
+                                self.elevador_sprite_piso2.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
+                                pygame.display.flip()
+                                pygame.time.delay(250)
                                 self.elevador_2_abierto = False
 
                             if colisionesElevadoresPiso1:
                                 for elevator in self.elevador_piso2_sprites:
                                     self.jugador.rect.topleft = elevator.rect.topleft
-                                    self.jugador.rect.y += (self.jugador.rect.height / 3)
+                                    self.jugador.rect.y += (self.jugador.rect.height / 2)  + 1  # Ajustar hacia donde se va a tpear el jugador
                                     self.ultimoElevador = elevator
                                     self.ultimaVezTeletransportado = tiempoActualElevadores
                                     break
                             elif colisionesElevadoresPiso2:
                                 for elevator in self.elevador_piso1_sprites:
                                     self.jugador.rect.topleft = elevator.rect.topleft
-                                    self.jugador.rect.y += (self.jugador.rect.height / 3)
+                                    self.jugador.rect.y += (self.jugador.rect.height / 2) + 1   # Ajustar hacia donde se va a tpear el jugador
                                     self.ultimoElevador = elevator
                                     self.ultimaVezTeletransportado = tiempoActualElevadores
                                     break
@@ -543,6 +534,21 @@ class Level1Beginner:
         self.indice_animacion_elevador_piso1 = 0
         self.tiempo_cambio_animacion_piso1 = pygame.time.get_ticks()  
         self.elevador_1_abierto = False  # Estado del elevador
+        self.indice_animacion_elevador_piso2 = 0
+        self.tiempo_cambio_animacion_piso2 = pygame.time.get_ticks()
+        self.elevador_2_abierto = False  # Estado del elevador
+        self.filtros_arreglados = []
+        self.ultimoElevador = None
+
+        self.ultimoElevador = None
+        self.tiempoEsperadoElevador = 1000
+
+        # imagenes del piso
+        self.elevador_sprite_piso1.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
+        self.elevador_sprite_piso2.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
+
+        self.jugador.rect.topleft = (800, 420)  # Reiniciar la posición del jugador
+        self.todos_los_sprites.add(self.jugador)  # Asegurarse de que el jugador esté en el grupo de todos los sprites
 
     #  ! SAHID explicar dibujar filtros
     def dibujar_filtros(self):
