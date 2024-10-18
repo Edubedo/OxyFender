@@ -38,8 +38,9 @@ class MenuPlay:
         
         self.screen.blit(self.fondoMenuDificultad, [0, 0])
 
-        # Agregar el título de mostrar nivel
+        # Agregar el título de mostrar dificultad
         titulo = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", self.datosLanguage[self.configLanguage]['difficulty']['imgTitleDifficultySection'])).convert_alpha()
+        titulo = pygame.transform.scale(titulo, (titulo.get_width() - 30, titulo.get_height() - 30))
         titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 100))
         self.screen.blit(titulo, titulo_rect)
         
@@ -155,6 +156,7 @@ class MenuPlay:
 
         # Agregar el título de mostrar nivel
         titulo = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", self.datosLanguage[self.configLanguage]['selectLevel']['imgTitleLevelSection'])).convert_alpha()
+        titulo = pygame.transform.scale(titulo, (titulo.get_width() - 30, titulo.get_height() - 30))
         titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 100))
         self.screen.blit(titulo, titulo_rect)
 
@@ -171,7 +173,7 @@ class MenuPlay:
                 "name": f"{self.datosLanguage[self.configLanguage]['selectLevel']['nameLevel']} {i}",
                 "dificultadNivel": dificultadNivel['name'],
                 "id": f"{dificultadNivel['id'].lower()}_level_{i}",
-                "image": pygame.image.load(join("assets", "img", "BOTONES", f"{self.datosLanguage[self.configLanguage]['selectLevel']['imagenLevel']}{i}.png")).convert_alpha()
+                "image": pygame.image.load(join("assets", "img", "TITULOS_FONDOS", f"{self.datosLanguage[self.configLanguage]['selectLevel']['imagenLevel']}{i}.png")).convert_alpha()
             })
 
         # Dibujamos las opciones de niveles
