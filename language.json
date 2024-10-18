@@ -15,7 +15,7 @@
 		},
 		"difficulty": {
 			"selectDifficulty": "Dificultad",
-			"imgTitleDifficultySection": "titulo_seleccionar_dificultad.png",
+			"imgTitleDifficultySection": "sdfsp.png",
 
 
 			"beginnerName": "Principiante",
@@ -29,7 +29,7 @@
 		"selectLevel": {
 			"nameLevel": "Nivel",
 			"imagenLevel": "img_nv_nivel",
-			"imgTitleLevelSection": "titulos_seleccionar_nivel.png"
+			"imgTitleLevelSection": "ltsclves.png"
 
 		},
 		"levelsBeginner": {
@@ -65,7 +65,7 @@
 		},
 		"difficulty": {
 			"selectDifficulty": "Difficulty",
-			"imgTitleDifficultySection": "titulo_select_difficulty.png",
+			"imgTitleDifficultySection": "sdfen.png",
 
 			"beginnerName": "beginner",
 			"beginnerId": "beginner",
@@ -78,7 +78,7 @@
 		"selectLevel": {
 			"nameLevel": "Level",
 			"imagenLevel": "img_level",
-			"imgTitleLevelSection": "titulo_select_level.png"
+			"imgTitleLevelSection": "ltsclven.png"
 		},
 		"levelsBeginner": {
 			"level1": {

@@ -33,7 +33,7 @@ class MenuPlay:
     def mostrarMenuDificultad(self):
         pygame.display.set_caption(f"{self.datosLanguage[self.configLanguage]['difficulty']['selectDifficulty']}")  # Establecer titulo del nivel
 
-        self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "Background","menu", "fondoPrueba2.jpeg")).convert_alpha()  # Fondo para menu de selección de dificultad
+        self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "Background","menu", "bg1.jpg")).convert_alpha()  # Fondo para menu de selección de dificultad
         self.fondoMenuDificultad = pygame.transform.scale(self.fondoMenuDificultad, (WIDTH, HEIGHT))
         
         self.screen.blit(self.fondoMenuDificultad, [0, 0])
@@ -144,7 +144,7 @@ class MenuPlay:
     def mostrarMenuNiveles(self, dificultadNivel, configLanguage, datosLanguage):
         pygame.display.set_caption(f"{self.datosLanguage[self.configLanguage]['selectLevel']['nameLevel']} - {TITLE_GAME}")  # Establecer titulo del nivel
 
-        self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "Background","menu", "fondoPrueba2.jpeg")).convert_alpha()
+        self.fondoMenuDificultad = pygame.image.load(join("assets", "img", "Background","menu", "bg1.jpg")).convert_alpha()
         self.fondoMenuDificultad = pygame.transform.scale(self.fondoMenuDificultad, (WIDTH, HEIGHT))  # Escalar imagen
         self.option_rects = []
 

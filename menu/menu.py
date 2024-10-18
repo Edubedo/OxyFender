@@ -56,7 +56,7 @@ class Menu:
     def mostrarOpcionesMenu(self, hoverOpcionSeleccionada=None, mostrarIdioma=False): # Opciones del menú principal
         pygame.display.set_caption(f"Menu - {TITLE_GAME}") # Establecemos tituloPrincipalJuego del Menú
 
-        self.fondoPrincipalVideojuego = pygame.image.load(join("assets", "img", "Background", "menu", "fondoinicio.png")).convert_alpha() # Agregar fondoPrincipalVideojuego al menú
+        self.fondoPrincipalVideojuego = pygame.image.load(join("assets", "img", "Background", "menu", "bg.jpg")).convert_alpha() # Agregar fondoPrincipalVideojuego al menú
         
         self.fondoPrincipalVideojuego = pygame.transform.scale(self.fondoPrincipalVideojuego, (WIDTH, HEIGHT)) # Escalar imagen del fondoPrincipalVideojuego del menú
 
@@ -64,7 +64,7 @@ class Menu:
         self.rectOpcionesMenuPrincipal = []
 
         # Agregar el título del juego como imagen
-        tituloPrincipalJuego = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", "titulo_oxyfender.png")).convert_alpha()
+        tituloPrincipalJuego = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", "wtlt.png")).convert_alpha()
         tituloPrincipalJuego = pygame.transform.scale(tituloPrincipalJuego, (self.screen.get_width(), 115)) # Escalar la imagen si es necesario
         recTituloPrincipalJuego = tituloPrincipalJuego.get_rect(topleft=(-5, 5))
         self.screen.blit(tituloPrincipalJuego, recTituloPrincipalJuego)
