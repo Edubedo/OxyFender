@@ -225,7 +225,6 @@ class Level1Beginner:
                 self.jugador.image.set_alpha(255)  # Hacer al jugador visible nuevamente
                 self.teletransportando = False  # Terminar teletransportación
 
-
             if not self.juegoPausado:
                 self.tiempo_actual += 1000 // FPS
             else:
@@ -268,6 +267,7 @@ class Level1Beginner:
                 keys = pygame.key.get_pressed()
                 movimientoJugador = pygame.Vector2(0, 0)
                 estaMoviendose = False
+                estaSaltando = False
                 direccionPersonaje = self.jugador.direction  # Mantener la dirección actual
 
                 if keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
@@ -281,6 +281,7 @@ class Level1Beginner:
                 if keys[pygame.K_SPACE] and esta_sobre_el_piso:
                     jugador_velocidad_y = PLAYER_FUERZA_SALTO
                     esta_sobre_el_piso = False
+                    estaSaltando = True
                 if not esta_sobre_el_piso:
                     jugador_velocidad_y += gravedad
                     if jugador_velocidad_y > maxima_velocidad_caida:
@@ -391,7 +392,7 @@ class Level1Beginner:
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
             self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 40
 
-            self.todos_los_sprites.update(estaMoviendose, direccionPersonaje, self.juegoPausado)
+            self.todos_los_sprites.update(estaMoviendose, direccionPersonaje, self.juegoPausado, estaSaltando)
 
             self.screen.blit(self.imagen_fondo_escalada, (0, 0))
 
