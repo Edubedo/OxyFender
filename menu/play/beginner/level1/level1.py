@@ -393,7 +393,7 @@ class Level1Beginner:
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
             self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 40
 
-            self.todos_los_sprites.update(estaMoviendose, direccionPersonaje, self.juegoPausado, estaSaltando)
+            self.todos_los_sprites.update(estaMoviendose, direccionPersonaje, self.juegoPausado)
 
             self.screen.blit(self.imagen_fondo_escalada, (0, 0))
 
@@ -699,6 +699,10 @@ class Level1Beginner:
         return 1
 
     def pantallaPerdioNivel(self):
+        pygame.mixer.music.stop()  # Detener la música de fondo
+        pygame.mixer.Sound(join("assets", "audio", "niveles", "defeat.mp3")).play()
+        pygame.mixer.music.set_volume(0.5 if self.volumen == "on" else 0)
+
         # Crear una superficie semi-transparente
         overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 128))  # Negro con 50% de opacidad
@@ -708,7 +712,7 @@ class Level1Beginner:
         # Agregar texto de que perdió nivel
         imagePerdio = pygame.image.load(join(*self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['imgGameOver'])).convert_alpha()
         imagePerdio = pygame.transform.scale(imagePerdio, (imagePerdio.get_width(), imagePerdio.get_height()))
-        self.screen.blit(imagePerdio, (0, (self.mostrarSuperficieNivel.get_height() // 2) + 100))
+        self.screen.blit(imagePerdio, (0, (self.mostrarSuperficieNivel.get_height() // 2) - 100))
 
         # Agregar boton para reiniciar nivel 
         botonReiniciarNivel = pygame.image.load(join("assets", "img", "BOTONES","botones_bn", "b_reiniciar.png")).convert_alpha()
@@ -761,6 +765,11 @@ class Level1Beginner:
                         pygame.mixer.music.set_volume(0.2 if self.volumen == "on" else 0)
 
     def pantallaGanoNivel(self):
+        pygame.mixer.music.stop()  # Detener la música de fondo
+        pygame.mixer.Sound(join("assets", "audio", "niveles", "win.mp3")).play()
+        # volumen del sonido
+        pygame.mixer.music.set_volume(0.5 if self.volumen == "on" else 0)
+
         # Crear una superficie semi-transparente
         overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA) # ponemo s el fondo oscuro 
         overlay.fill((0, 0, 0, 128))  # Negro con 50% de opacidad
