@@ -7,6 +7,7 @@ from utilerias.sprites import Sprite
 from utilerias.jugador import Player
 from utilerias.clases.barraOxigeno import BarraOxigeno
 from utilerias.sprites import FiltroSprite
+from menu.play.beginner.level2.level2 import Level2Beginner
 
 class Level1Beginner:
     def __init__(self, name, dificultadNivel, id, configLanguage, datosLanguage, volumen):
@@ -248,7 +249,7 @@ class Level1Beginner:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-
+            self.perdioJuego = True
             if self.perdioJuego:
                 self.pantallaPerdioNivel()
                 continue
@@ -635,9 +636,9 @@ class Level1Beginner:
         offset_x = (self.mostrarSuperficieNivel.get_width() - map_width) // 2
         offset_y = (self.mostrarSuperficieNivel.get_height() - map_height) // 2
 
-        button_font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 20) # Establecemos la Fuente de texto
-        button_text = button_font.render(self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelFilterMessage'], True, (255, 255, 255))
-        button_rect = button_text.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, 110))
+        # button_font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 20) # Establecemos la Fuente de texto
+        #  = button_font.render(self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelFilterMessage'], True, (255, 255, 255))
+        # button_rect = .get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, 110))
 
         banderaEjecutandoNivel1 = True
         drawing_line = False
@@ -645,6 +646,7 @@ class Level1Beginner:
         end_pos = None
         line_color = None
         completed_lines = []
+        unique_connections = set()
         
         tarea_completada = False
 
@@ -685,15 +687,24 @@ class Level1Beginner:
                                             line_color = (0, 255, 0)
                                         elif layer.name == 'btn2azul' and line_color == (0, 0, 255):
                                             end_pos = tile_rect.center
-                                            completed_lines.append((start_pos, end_pos, line_color))
+                                            connection = (start_pos, end_pos, line_color)
+                                            if connection not in unique_connections:
+                                                completed_lines.append(connection)
+                                                unique_connections.add(connection)
                                             drawing_line = False
                                         elif layer.name == 'btn2rojo' and line_color == (255, 0, 0):
                                             end_pos = tile_rect.center
-                                            completed_lines.append((start_pos, end_pos, line_color))
+                                            connection = (start_pos, end_pos, line_color)
+                                            if connection not in unique_connections:
+                                                completed_lines.append(connection)
+                                                unique_connections.add(connection)
                                             drawing_line = False
                                         elif layer.name == 'btn2verde' and line_color == (0, 255, 0):
                                             end_pos = tile_rect.center
-                                            completed_lines.append((start_pos, end_pos, line_color))
+                                            connection = (start_pos, end_pos, line_color)
+                                            if connection not in unique_connections:
+                                                completed_lines.append(connection)
+                                                unique_connections.add(connection)
                                             drawing_line = False
 
             for layer in self.tmx_filtroUnoNivel1.visible_layers:
@@ -711,7 +722,7 @@ class Level1Beginner:
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
-            self.mostrarSuperficieNivel.blit(button_text, button_rect.topleft)
+            # self.mostrarSuperficieNivel.blit(, button_rect.topleft)
 
             for line in completed_lines:
                 pygame.draw.line(self.mostrarSuperficieNivel, line[2], line[0], line[1], 5)
@@ -734,9 +745,8 @@ class Level1Beginner:
                 self.contadorOxigenoReparado += 1
                 tarea_completada = True
                 banderaEjecutandoNivel1 = False
-
-        return 1
-
+                return 1
+        
     def pantallaPerdioNivel(self):
         pygame.mixer.music.stop()  # Detener la música de fondo
         pygame.mixer.Sound(join("assets", "audio", "niveles", "defeat.mp3")).play()
@@ -822,16 +832,10 @@ class Level1Beginner:
         imagePerdio = pygame.transform.scale(imagePerdio, (imagePerdio.get_width(), imagePerdio.get_height()))
         self.screen.blit(imagePerdio, (0, (self.mostrarSuperficieNivel.get_height() // 2) - 100))
 
-        # Agregar boton para siguiente nivel 
-        botonSiguienteNivel = pygame.image.load(join("assets", "img", "BOTONES","botones_bn", "b_siguiente_bn.png")).convert_alpha()
-        botonSiguienteNivel = pygame.transform.scale(botonSiguienteNivel, (botonSiguienteNivel.get_width() + 20, botonSiguienteNivel.get_height() + 20))
-        botonSiguienteNivelRect = botonSiguienteNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) - 100, (self.mostrarSuperficieNivel.get_height() // 2) + 50))
-        self.screen.blit(botonSiguienteNivel, botonSiguienteNivelRect.topleft)
-
         # Agregar boton para volver a seleccionar nivel
         botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES","botones_bn", "b_seleccionar.png")).convert_alpha()
         botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
-        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) + 100, (self.mostrarSuperficieNivel.get_height() // 2) + 50))
+        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2), (self.mostrarSuperficieNivel.get_height() // 2) + 50))
         self.screen.blit(botonSeleccionarNivel, botonSeleccionarNivelRect.topleft)
 
         pygame.display.flip()
@@ -846,26 +850,12 @@ class Level1Beginner:
                 # Sí pasa el mouse sobre los botones
                 elif event.type == pygame.MOUSEMOTION:
                     posicionMouse = event.pos  # Rastreamos la posicion del mouse
-                    if botonSiguienteNivelRect.collidepoint(posicionMouse) or botonSeleccionarNivelRect.collidepoint(posicionMouse):
-                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-                    else:
-                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
                 # Sí le da click a los botones
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     posicionMouse = event.pos  # Rastreamos la posicion del mouse
-                    if botonSiguienteNivelRect.collidepoint(posicionMouse):  # Sí hace click en siguiente nivel volvemos a cargar el nivel 1
-                        self.volver_menu = True
-                        banderaEjecutandoNivel1 = False
-                        self.perdioJuego = False
-
-                        # * Música de fondo 
-                        pygame.mixer.music.pause()  # Pausar la música actual
-                        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))  # Cargar la música del menú
-                        pygame.mixer.music.play(-1)  # Reproducir la música en bucle
-                        pygame.mixer.music.set_volume(0.2 if self.volumen == "on" else 0)
-
-                    elif botonSeleccionarNivelRect.collidepoint(posicionMouse):  # Sí hace click en volver al menú
+                   
+                    if botonSeleccionarNivelRect.collidepoint(posicionMouse):  # Sí hace click en volver al menú
                         self.volver_menu = True
                         banderaEjecutandoNivel1 = False
                         self.perdioJuego = False

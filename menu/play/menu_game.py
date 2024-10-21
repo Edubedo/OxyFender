@@ -228,7 +228,7 @@ class MenuPlay:
                             if level['id'] == "beginner_level_1":
                                 self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage, self.volumen)
                             if level['id'] == "beginner_level_2":
-                                Level2Beginner(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage, self.volumen)
+                                self.current_stage = Level2Beginner(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage, self.volumen)
                             if level['id'] == "beginner_level_3":
                                 Level3Beginner(level['name'], level['dificultadNivel'], level['id'])
                             

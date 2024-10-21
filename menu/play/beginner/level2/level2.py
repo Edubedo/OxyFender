@@ -395,7 +395,7 @@ class Level2Beginner:
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
             self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 40
 
-            self.todos_los_sprites.update(estaMoviendose, direccionPersonaje, self.juegoPausado, estaSaltando)
+            self.todos_los_sprites.update(estaMoviendose, direccionPersonaje, self.juegoPausado)
 
             self.screen.blit(self.imagen_fondo_escalada, (0, 0))
 

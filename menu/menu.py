@@ -20,7 +20,7 @@ class Menu:
         self.datosLanguage = {} # Datos del menú
 
         with open('language.json') as archivo:
-            self.datosLanguage = json.load(archivo)
+            self.datosLanguage = json.load(archivo) #asignando los datos del archivo json a la variable datosLanguage
 
         self.actualizarOpcionesMenu()
 
