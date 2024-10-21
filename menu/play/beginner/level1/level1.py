@@ -62,6 +62,10 @@ class Level1Beginner:
         self.setup(self.tmx_mapa_1, tiempo_inicio)
 
     def setup(self, tmx_mapa_1, tiempo_inicio):
+        # Cargar sonido de clic
+        self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "click_madera.mp3"))
+        self.sonidoDeClick.set_volume(1 if self.volumen == "on" else 0)
+
         # cargar los elevadores
          # Imagenes del elevador
         self.elevador_imagenes = [
@@ -259,6 +263,7 @@ class Level1Beginner:
                     self.toggle_pause()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.botonPausaRect.collidepoint(event.pos):
+                        self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                         self.toggle_pause()
 
             if self.juegoPausado:
@@ -505,17 +510,26 @@ class Level1Beginner:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     posicionMouse = event.pos
                     if botonReiniciarNivelRect.collidepoint(posicionMouse):
+                        self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                         banderaEjecutandoNivel1 = False
                         self.juegoPausado = False
                         tiempo_inicio = pygame.time.get_ticks()
                         self.setup(self.tmx_mapa_1, tiempo_inicio)
 
                     elif botonSeleccionarNivelRect.collidepoint(posicionMouse):
+                        self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                         self.volver_menu = True
                         banderaEjecutandoNivel1 = False
                         self.juegoPausado = False
                         pygame.mixer.music.stop()
+
+                        # poner la musica de let us adore you
+                        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
+                        pygame.mixer.music.play(-1) # Reproducir la música en bucle
+                        pygame.mixer.music.set_volume(1 if self.volumen == "on" else 0)
+                        
                     elif botonContinuarMenuRect.collidepoint(posicionMouse):
+                        self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                         self.juegoPausado = False
                         banderaEjecutandoNivel1 = False
                         pygame.mixer.music.unpause()

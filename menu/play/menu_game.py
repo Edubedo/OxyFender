@@ -111,15 +111,15 @@ class MenuPlay:
 
                 # Cuando hace click con el mouse                        
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
-
                     # Recorrer las opciones de dificultad para saber cual fue la seleccionada
                     for opcionDificultad, rectDificultad in self.dictMostrarOpcionesDificultad:
                         if rectDificultad.collidepoint(event.pos):
+                            self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                             self.mostrarMenuNiveles(opcionDificultad, self.configLanguage, self.datosLanguage)
                             continue
                     # Si se hace clic en el botón de regreso
                     if back_button_rect.collidepoint(event.pos):
+                        self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                         return
 
             # Pintar las opciones de dificultad en la pantalla
@@ -219,10 +219,10 @@ class MenuPlay:
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
 
                     for level, rectNivel in self.option_rects:
                         if rectNivel.collidepoint(event.pos):
+                            self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Cambiar el cursor al cursor normal
                             # Niveles para principiantes 
                             if level['id'] == "beginner_level_1":
@@ -241,6 +241,7 @@ class MenuPlay:
                                 Level3Advanced(level['name'], level['dificultadNivel'], level['id'])
                     # Si se hace clic en el botón de regreso
                     if back_button_rect.collidepoint(event.pos):
+                        self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                         return
             
             self.screen.blit(self.fondoMenuDificultad, [0, 0])
