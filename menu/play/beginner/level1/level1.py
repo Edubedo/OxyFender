@@ -124,6 +124,7 @@ class Level1Beginner:
 
         self.posicion_x_personaje = 0
         # Nos pasamos el mapa principal tmx_mapa_1 por parametros desde el init y ahora lo estamos usando para dibujar los elementos
+        print("tmx_mapa_1.layers: ", tmx_mapa_1.layers)
 
         # Dibujamos los elementos generales del mapa
         for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2', 'capaVerificarGano', 'ParedDetener', 'Extra']:
@@ -181,7 +182,7 @@ class Level1Beginner:
     
     def actualizar_animacion_elevador_piso1(self):
         tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - self.tiempo_cambio_animacion_piso1 > imgTitleLevelSection:  # Tiempo entre animaciones
+        if tiempo_actual - self.tiempo_cambio_animacion_piso1:  # Tiempo entre animaciones
             self.indice_animacion_elevador_piso1 = (self.indice_animacion_elevador_piso1 + 1) % len(self.elevador_imagenes)
             # Scale the elevator image to fit within the sprite's dimensions
             scaled_image = pygame.transform.scale(
@@ -193,7 +194,7 @@ class Level1Beginner:
 
     def actualizar_animacion_elevador_piso2(self):
         tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - self.tiempo_cambio_animacion_piso2 > imgTitleLevelSection:  # Tiempo entre animaciones
+        if tiempo_actual - self.tiempo_cambio_animacion_piso2:  # Tiempo entre animaciones
             self.indice_animacion_elevador_piso2 = (self.indice_animacion_elevador_piso2 + 1) % len(self.elevador_imagenes)
             # Scale the elevator image to fit within the sprite's dimensions
             scaled_image = pygame.transform.scale(
