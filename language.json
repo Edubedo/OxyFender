@@ -77,7 +77,7 @@
 		},
 		"selectLevel": {
 			"nameLevel": "Level",
-			"imagenLevel": "img_level",
+			"imagenLevel": "img_nv_level",
 			"imgTitleLevelSection": "titulo_select_level.png"
 		},
 		"levelsBeginner": {

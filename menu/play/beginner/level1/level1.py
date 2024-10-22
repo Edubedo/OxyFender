@@ -7,6 +7,7 @@ from utilerias.sprites import Sprite
 from utilerias.jugador import Player
 from utilerias.clases.barraOxigeno import BarraOxigeno
 from utilerias.sprites import FiltroSprite
+from menu.play.beginner.level2.level2 import Level2Beginner
 
 class Level1Beginner:
     def __init__(self, name, dificultadNivel, id, configLanguage, datosLanguage, volumen):
@@ -62,6 +63,10 @@ class Level1Beginner:
         self.setup(self.tmx_mapa_1, tiempo_inicio)
 
     def setup(self, tmx_mapa_1, tiempo_inicio):
+        # Cargar sonido de clic
+        self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "click_madera.mp3"))
+        self.sonidoDeClick.set_volume(1 if self.volumen == "on" else 0)
+
         # cargar los elevadores
          # Imagenes del elevador
         self.elevador_imagenes = [
@@ -101,11 +106,11 @@ class Level1Beginner:
         self.rectBarraOxigeno.hp = 200
         self.rectBarraOxigeno.reiniciar()  # Llamar al método reiniciar de BarraOxigeno
 
-
+        # Botón de pausa
         self.botonPausa = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_tuerca_bn.png")).convert_alpha()
         self.botonPausa = pygame.transform.scale(self.botonPausa, (self.botonPausa.get_width(), self.botonPausa.get_height()))
         self.botonPausaRect = self.botonPausa.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 50))
-
+    
         self.filtro_bn = pygame.image.load(join("assets", "img", "filtros", "filtro_bn.png")).convert_alpha() # Cargar la imagen del filtro en blanco
         self.filtro_color = pygame.image.load(join("assets", "img", "filtros", "filtro_color.png")).convert_alpha() # Cargar la imagen del filtro a color
 
@@ -124,6 +129,7 @@ class Level1Beginner:
 
         self.posicion_x_personaje = 0
         # Nos pasamos el mapa principal tmx_mapa_1 por parametros desde el init y ahora lo estamos usando para dibujar los elementos
+        print("tmx_mapa_1.layers: ", tmx_mapa_1.layers)
 
         # Dibujamos los elementos generales del mapa
         for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2', 'capaVerificarGano', 'ParedDetener', 'Extra']:
@@ -181,7 +187,7 @@ class Level1Beginner:
     
     def actualizar_animacion_elevador_piso1(self):
         tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - self.tiempo_cambio_animacion_piso1 > imgTitleLevelSection:  # Tiempo entre animaciones
+        if tiempo_actual - self.tiempo_cambio_animacion_piso1:  # Tiempo entre animaciones
             self.indice_animacion_elevador_piso1 = (self.indice_animacion_elevador_piso1 + 1) % len(self.elevador_imagenes)
             # Scale the elevator image to fit within the sprite's dimensions
             scaled_image = pygame.transform.scale(
@@ -193,7 +199,7 @@ class Level1Beginner:
 
     def actualizar_animacion_elevador_piso2(self):
         tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - self.tiempo_cambio_animacion_piso2 > imgTitleLevelSection:  # Tiempo entre animaciones
+        if tiempo_actual - self.tiempo_cambio_animacion_piso2:  # Tiempo entre animaciones
             self.indice_animacion_elevador_piso2 = (self.indice_animacion_elevador_piso2 + 1) % len(self.elevador_imagenes)
             # Scale the elevator image to fit within the sprite's dimensions
             scaled_image = pygame.transform.scale(
@@ -221,10 +227,12 @@ class Level1Beginner:
                 self.reiniciarConfiguraciones()  # Reiniciar el nivel cuando se vuelve al menú
                 break
 
-            if pygame.time.get_ticks() > self.jugador_oculto_hasta:
+            tiempo_actual = pygame.time.get_ticks()
+            if tiempo_actual > self.jugador_oculto_hasta:
                 self.jugador.image.set_alpha(255)  # Hacer al jugador visible nuevamente
                 self.teletransportando = False  # Terminar teletransportación
-
+            else:
+                self.jugador.image.set_alpha(0)  # Mantener al jugador invisible
 
             if not self.juegoPausado:
                 self.tiempo_actual += 1000 // FPS
@@ -241,7 +249,6 @@ class Level1Beginner:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-
             if self.perdioJuego:
                 self.pantallaPerdioNivel()
                 continue
@@ -259,6 +266,7 @@ class Level1Beginner:
                     self.toggle_pause()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.botonPausaRect.collidepoint(event.pos):
+                        self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                         self.toggle_pause()
 
             if self.juegoPausado:
@@ -268,6 +276,7 @@ class Level1Beginner:
                 keys = pygame.key.get_pressed()
                 movimientoJugador = pygame.Vector2(0, 0)
                 estaMoviendose = False
+                estaSaltando = False
                 direccionPersonaje = self.jugador.direction  # Mantener la dirección actual
 
                 if keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
@@ -281,6 +290,7 @@ class Level1Beginner:
                 if keys[pygame.K_SPACE] and esta_sobre_el_piso:
                     jugador_velocidad_y = PLAYER_FUERZA_SALTO
                     esta_sobre_el_piso = False
+                    estaSaltando = True
                 if not esta_sobre_el_piso:
                     jugador_velocidad_y += gravedad
                     if jugador_velocidad_y > maxima_velocidad_caida:
@@ -315,14 +325,18 @@ class Level1Beginner:
                 rectTextoColisionElevador = pygame.image.load(join("assets", "img", "BOTONES", "img_click_x.png")).convert_alpha()
                 rectTextoColisionElevador = pygame.transform.scale(rectTextoColisionElevador, (rectTextoColisionElevador.get_width() - 70, rectTextoColisionElevador.get_height() - 70))
 
+                # Verificar si la tecla 'x' está presionada y el jugador no está teletransportándose
                 if keys[pygame.K_x] and not self.teletransportando:
+                    # Verificar si el jugador está colisionando con algún elevador
                     if colisionesElevadoresPiso1 or colisionesElevadoresPiso2:
+                        # Si colisiona con el elevador del piso 1 y la puerta no está abierta
                         if colisionesElevadoresPiso1 and not self.elevador_1_abierto:
                             self.sonido_abrir_elevador.play()
                             self.elevador_sprite_piso1.image = self.elevador_imagenes[3]  # Imagen de elevador abierto
                             pygame.display.flip()
                             pygame.time.delay(500)
                             self.elevador_1_abierto = True
+                        # Si colisiona con el elevador del piso 2 y la puerta no está abierta
                         elif colisionesElevadoresPiso2 and not self.elevador_2_abierto:
                             self.sonido_abrir_elevador.play()
                             self.elevador_sprite_piso2.image = self.elevador_imagenes[3]  # Imagen de elevador abierto
@@ -330,14 +344,33 @@ class Level1Beginner:
                             pygame.time.delay(500)
                             self.elevador_2_abierto = True
                         else:
+                            # Cerrar la puerta del elevador e iniciar la teletransportación
                             self.sonido_cerrar_elevador.play()
                             self.teletransportando = True  # Iniciar teletransportación
+
+                            # Manejar teletransportación del piso 1 al piso 2
                             if colisionesElevadoresPiso1:
                                 self.elevador_sprite_piso1.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
                                 pygame.display.flip()
                                 self.jugador.image.set_alpha(0)  # Hacer al jugador invisible
                                 self.jugador_oculto_hasta = pygame.time.get_ticks() + 3000  # Ocultar por 3000ms
                                 self.elevador_1_abierto = False
+
+                                # Teletransportar jugador al elevador correspondiente en el piso 2
+                                for elevator in self.elevador_piso2_sprites:
+                                    self.jugador.rect.topleft = elevator.rect.topleft
+                                    self.jugador.rect.y += (self.jugador.rect.height / 2) + 1  # Ajustar posición de teletransporte
+                                    self.ultimoElevador = elevator
+                                    self.ultimaVezTeletransportado = tiempoActualElevadores
+                                    break
+
+                                # Abrimos la puerta del segundo piso
+                                pygame.time.delay(500)
+                                self.elevador_sprite_piso2.image = self.elevador_imagenes[3]  # Imagen de elevador abierto
+                                pygame.display.flip()
+                                self.elevador_2_abierto = True
+
+                            # Manejar teletransportación del piso 2 al piso 1
                             elif colisionesElevadoresPiso2:
                                 self.elevador_sprite_piso2.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
                                 pygame.display.flip()
@@ -345,20 +378,19 @@ class Level1Beginner:
                                 self.jugador_oculto_hasta = pygame.time.get_ticks() + 3000  # Ocultar por 3000ms
                                 self.elevador_2_abierto = False
 
-                            if colisionesElevadoresPiso1:
-                                for elevator in self.elevador_piso2_sprites:
-                                    self.jugador.rect.topleft = elevator.rect.topleft
-                                    self.jugador.rect.y += (self.jugador.rect.height / 2)  + 1  # Ajustar hacia donde se va a tpear el jugador
-                                    self.ultimoElevador = elevator
-                                    self.ultimaVezTeletransportado = tiempoActualElevadores
-                                    break
-                            elif colisionesElevadoresPiso2:
+                                # Teletransportar jugador al elevador correspondiente en el piso 1
                                 for elevator in self.elevador_piso1_sprites:
                                     self.jugador.rect.topleft = elevator.rect.topleft
-                                    self.jugador.rect.y += (self.jugador.rect.height / 2) + 1   # Ajustar hacia donde se va a tpear el jugador
+                                    self.jugador.rect.y += (self.jugador.rect.height / 2) + 1  # Ajustar posición de teletransporte
                                     self.ultimoElevador = elevator
                                     self.ultimaVezTeletransportado = tiempoActualElevadores
                                     break
+
+                                # Abrimos la puerta del piso 1
+                                pygame.time.delay(500)
+                                self.elevador_sprite_piso1.image = self.elevador_imagenes[3]  # Imagen de elevador abierto
+                                pygame.display.flip()
+                                self.elevador_1_abierto = True
 
             colisionesVerificarGano = pygame.sprite.spritecollide(self.jugador, self.capa_verificar_gano, False)
 
@@ -418,7 +450,7 @@ class Level1Beginner:
             self.dibujar_filtros()
 
             # Mostrar mensaje de que arregle los filtros
-            self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 25)
+            self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 32) # Font_Name_Enterprise.ttf, ka1.ttf
             self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"{self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelMission']}", True, (255, 255, 255))
             self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 500))
 
@@ -503,17 +535,26 @@ class Level1Beginner:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     posicionMouse = event.pos
                     if botonReiniciarNivelRect.collidepoint(posicionMouse):
+                        self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                         banderaEjecutandoNivel1 = False
                         self.juegoPausado = False
                         tiempo_inicio = pygame.time.get_ticks()
                         self.setup(self.tmx_mapa_1, tiempo_inicio)
 
                     elif botonSeleccionarNivelRect.collidepoint(posicionMouse):
+                        self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                         self.volver_menu = True
                         banderaEjecutandoNivel1 = False
                         self.juegoPausado = False
                         pygame.mixer.music.stop()
+
+                        # poner la musica de let us adore you
+                        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
+                        pygame.mixer.music.play(-1) # Reproducir la música en bucle
+                        pygame.mixer.music.set_volume(1 if self.volumen == "on" else 0)
+                        
                     elif botonContinuarMenuRect.collidepoint(posicionMouse):
+                        self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                         self.juegoPausado = False
                         banderaEjecutandoNivel1 = False
                         pygame.mixer.music.unpause()
@@ -594,9 +635,9 @@ class Level1Beginner:
         offset_x = (self.mostrarSuperficieNivel.get_width() - map_width) // 2
         offset_y = (self.mostrarSuperficieNivel.get_height() - map_height) // 2
 
-        button_font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 20) # Establecemos la Fuente de texto
-        button_text = button_font.render(self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelFilterMessage'], True, (255, 255, 255))
-        button_rect = button_text.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, 110))
+        # button_font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 20) # Establecemos la Fuente de texto
+        #  = button_font.render(self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelFilterMessage'], True, (255, 255, 255))
+        # button_rect = .get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, 110))
 
         banderaEjecutandoNivel1 = True
         drawing_line = False
@@ -604,6 +645,7 @@ class Level1Beginner:
         end_pos = None
         line_color = None
         completed_lines = []
+        unique_connections = set()
         
         tarea_completada = False
 
@@ -644,15 +686,24 @@ class Level1Beginner:
                                             line_color = (0, 255, 0)
                                         elif layer.name == 'btn2azul' and line_color == (0, 0, 255):
                                             end_pos = tile_rect.center
-                                            completed_lines.append((start_pos, end_pos, line_color))
+                                            connection = (start_pos, end_pos, line_color)
+                                            if connection not in unique_connections:
+                                                completed_lines.append(connection)
+                                                unique_connections.add(connection)
                                             drawing_line = False
                                         elif layer.name == 'btn2rojo' and line_color == (255, 0, 0):
                                             end_pos = tile_rect.center
-                                            completed_lines.append((start_pos, end_pos, line_color))
+                                            connection = (start_pos, end_pos, line_color)
+                                            if connection not in unique_connections:
+                                                completed_lines.append(connection)
+                                                unique_connections.add(connection)
                                             drawing_line = False
                                         elif layer.name == 'btn2verde' and line_color == (0, 255, 0):
                                             end_pos = tile_rect.center
-                                            completed_lines.append((start_pos, end_pos, line_color))
+                                            connection = (start_pos, end_pos, line_color)
+                                            if connection not in unique_connections:
+                                                completed_lines.append(connection)
+                                                unique_connections.add(connection)
                                             drawing_line = False
 
             for layer in self.tmx_filtroUnoNivel1.visible_layers:
@@ -670,7 +721,7 @@ class Level1Beginner:
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
-            self.mostrarSuperficieNivel.blit(button_text, button_rect.topleft)
+            # self.mostrarSuperficieNivel.blit(, button_rect.topleft)
 
             for line in completed_lines:
                 pygame.draw.line(self.mostrarSuperficieNivel, line[2], line[0], line[1], 5)
@@ -693,10 +744,13 @@ class Level1Beginner:
                 self.contadorOxigenoReparado += 1
                 tarea_completada = True
                 banderaEjecutandoNivel1 = False
-
-        return 1
-
+                return 1
+        
     def pantallaPerdioNivel(self):
+        pygame.mixer.music.stop()  # Detener la música de fondo
+        pygame.mixer.Sound(join("assets", "audio", "niveles", "defeat.mp3")).play()
+        pygame.mixer.music.set_volume(0.5 if self.volumen == "on" else 0)
+
         # Crear una superficie semi-transparente
         overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 128))  # Negro con 50% de opacidad
@@ -706,18 +760,18 @@ class Level1Beginner:
         # Agregar texto de que perdió nivel
         imagePerdio = pygame.image.load(join(*self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['imgGameOver'])).convert_alpha()
         imagePerdio = pygame.transform.scale(imagePerdio, (imagePerdio.get_width(), imagePerdio.get_height()))
-        self.screen.blit(imagePerdio, (0, self.mostrarSuperficieNivel.get_height() // 2))
+        self.screen.blit(imagePerdio, (0, (self.mostrarSuperficieNivel.get_height() // 2) - 100))
 
         # Agregar boton para reiniciar nivel 
         botonReiniciarNivel = pygame.image.load(join("assets", "img", "BOTONES","botones_bn", "b_reiniciar.png")).convert_alpha()
         botonReiniciarNivel = pygame.transform.scale(botonReiniciarNivel, (botonReiniciarNivel.get_width() + 20, botonReiniciarNivel.get_height() + 20))
-        botonReiniciarNivelRect = botonReiniciarNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) - 100, (self.mostrarSuperficieNivel.get_height() // 2) + 150))
+        botonReiniciarNivelRect = botonReiniciarNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) - 100, (self.mostrarSuperficieNivel.get_height() // 2) + 50))
         self.screen.blit(botonReiniciarNivel, botonReiniciarNivelRect.topleft)
 
         # Agregar boton para volver a seleccionar nivel
         botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES","botones_bn", "b_seleccionar.png")).convert_alpha()
         botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
-        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) + 100, (self.mostrarSuperficieNivel.get_height() // 2) + 150))
+        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) + 100, (self.mostrarSuperficieNivel.get_height() // 2) + 50))
         self.screen.blit(botonSeleccionarNivel, botonSeleccionarNivelRect.topleft)
 
         pygame.display.flip()
@@ -759,6 +813,11 @@ class Level1Beginner:
                         pygame.mixer.music.set_volume(0.2 if self.volumen == "on" else 0)
 
     def pantallaGanoNivel(self):
+        pygame.mixer.music.stop()  # Detener la música de fondo
+        pygame.mixer.Sound(join("assets", "audio", "niveles", "win.mp3")).play()
+        # volumen del sonido
+        pygame.mixer.music.set_volume(0.5 if self.volumen == "on" else 0)
+
         # Crear una superficie semi-transparente
         overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA) # ponemo s el fondo oscuro 
         overlay.fill((0, 0, 0, 128))  # Negro con 50% de opacidad
@@ -767,21 +826,15 @@ class Level1Beginner:
         # Mostrar mensaje de que el jugador perdió
         # Agregar texto de que perdió nivel
 
-        
+        # Imagen de cuando pierde
         imagePerdio = pygame.image.load(join(*self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['imgMissionCompleted'])).convert_alpha()
         imagePerdio = pygame.transform.scale(imagePerdio, (imagePerdio.get_width(), imagePerdio.get_height()))
-        self.screen.blit(imagePerdio, (0, self.mostrarSuperficieNivel.get_height() // 2))
-
-        # Agregar boton para siguiente nivel 
-        botonSiguienteNivel = pygame.image.load(join("assets", "img", "BOTONES","botones_bn", "b_siguiente_bn.png")).convert_alpha()
-        botonSiguienteNivel = pygame.transform.scale(botonSiguienteNivel, (botonSiguienteNivel.get_width() + 20, botonSiguienteNivel.get_height() + 20))
-        botonSiguienteNivelRect = botonSiguienteNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) - 100, (self.mostrarSuperficieNivel.get_height() // 2) + 150))
-        self.screen.blit(botonSiguienteNivel, botonSiguienteNivelRect.topleft)
+        self.screen.blit(imagePerdio, (0, (self.mostrarSuperficieNivel.get_height() // 2) - 100))
 
         # Agregar boton para volver a seleccionar nivel
         botonSeleccionarNivel = pygame.image.load(join("assets", "img", "BOTONES","botones_bn", "b_seleccionar.png")).convert_alpha()
         botonSeleccionarNivel = pygame.transform.scale(botonSeleccionarNivel, (botonSeleccionarNivel.get_width() + 20, botonSeleccionarNivel.get_height() + 20))
-        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2) + 100, (self.mostrarSuperficieNivel.get_height() // 2) + 150))
+        botonSeleccionarNivelRect = botonSeleccionarNivel.get_rect(center=((self.mostrarSuperficieNivel.get_width() // 2), (self.mostrarSuperficieNivel.get_height() // 2) + 50))
         self.screen.blit(botonSeleccionarNivel, botonSeleccionarNivelRect.topleft)
 
         pygame.display.flip()
@@ -796,26 +849,12 @@ class Level1Beginner:
                 # Sí pasa el mouse sobre los botones
                 elif event.type == pygame.MOUSEMOTION:
                     posicionMouse = event.pos  # Rastreamos la posicion del mouse
-                    if botonSiguienteNivelRect.collidepoint(posicionMouse) or botonSeleccionarNivelRect.collidepoint(posicionMouse):
-                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-                    else:
-                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
                 # Sí le da click a los botones
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     posicionMouse = event.pos  # Rastreamos la posicion del mouse
-                    if botonSiguienteNivelRect.collidepoint(posicionMouse):  # Sí hace click en siguiente nivel volvemos a cargar el nivel 1
-                        self.volver_menu = True
-                        banderaEjecutandoNivel1 = False
-                        self.perdioJuego = False
-
-                        # * Música de fondo 
-                        pygame.mixer.music.pause()  # Pausar la música actual
-                        pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))  # Cargar la música del menú
-                        pygame.mixer.music.play(-1)  # Reproducir la música en bucle
-                        pygame.mixer.music.set_volume(0.2 if self.volumen == "on" else 0)
-
-                    elif botonSeleccionarNivelRect.collidepoint(posicionMouse):  # Sí hace click en volver al menú
+                   
+                    if botonSeleccionarNivelRect.collidepoint(posicionMouse):  # Sí hace click en volver al menú
                         self.volver_menu = True
                         banderaEjecutandoNivel1 = False
                         self.perdioJuego = False

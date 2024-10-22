@@ -38,8 +38,9 @@ class MenuPlay:
         
         self.screen.blit(self.fondoMenuDificultad, [0, 0])
 
-        # Agregar el título de mostrar nivel
+        # Agregar el título de mostrar dificultad
         titulo = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", self.datosLanguage[self.configLanguage]['difficulty']['imgTitleDifficultySection'])).convert_alpha()
+        titulo = pygame.transform.scale(titulo, (titulo.get_width() - 30, titulo.get_height() - 30))
         titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 100))
         self.screen.blit(titulo, titulo_rect)
         
@@ -110,15 +111,15 @@ class MenuPlay:
 
                 # Cuando hace click con el mouse                        
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
-
                     # Recorrer las opciones de dificultad para saber cual fue la seleccionada
                     for opcionDificultad, rectDificultad in self.dictMostrarOpcionesDificultad:
                         if rectDificultad.collidepoint(event.pos):
+                            self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                             self.mostrarMenuNiveles(opcionDificultad, self.configLanguage, self.datosLanguage)
                             continue
                     # Si se hace clic en el botón de regreso
                     if back_button_rect.collidepoint(event.pos):
+                        self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                         return
 
             # Pintar las opciones de dificultad en la pantalla
@@ -155,6 +156,7 @@ class MenuPlay:
 
         # Agregar el título de mostrar nivel
         titulo = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", self.datosLanguage[self.configLanguage]['selectLevel']['imgTitleLevelSection'])).convert_alpha()
+        titulo = pygame.transform.scale(titulo, (titulo.get_width() - 30, titulo.get_height() - 30))
         titulo_rect = titulo.get_rect(center=(self.screen.get_width() // 2, 100))
         self.screen.blit(titulo, titulo_rect)
 
@@ -171,7 +173,7 @@ class MenuPlay:
                 "name": f"{self.datosLanguage[self.configLanguage]['selectLevel']['nameLevel']} {i}",
                 "dificultadNivel": dificultadNivel['name'],
                 "id": f"{dificultadNivel['id'].lower()}_level_{i}",
-                "image": pygame.image.load(join("assets", "img", "BOTONES", f"{self.datosLanguage[self.configLanguage]['selectLevel']['imagenLevel']}{i}.png")).convert_alpha()
+                "image": pygame.image.load(join("assets", "img", "TITULOS_FONDOS", f"{self.datosLanguage[self.configLanguage]['selectLevel']['imagenLevel']}{i}.png")).convert_alpha()
             })
 
         # Dibujamos las opciones de niveles
@@ -217,16 +219,16 @@ class MenuPlay:
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
 
                     for level, rectNivel in self.option_rects:
                         if rectNivel.collidepoint(event.pos):
+                            self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Cambiar el cursor al cursor normal
                             # Niveles para principiantes 
                             if level['id'] == "beginner_level_1":
                                 self.current_stage = Level1Beginner(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage, self.volumen)
                             if level['id'] == "beginner_level_2":
-                                Level2Beginner(level['name'], level['dificultadNivel'], level['id'])
+                                self.current_stage = Level2Beginner(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage, self.volumen)
                             if level['id'] == "beginner_level_3":
                                 Level3Beginner(level['name'], level['dificultadNivel'], level['id'])
                             
@@ -239,6 +241,7 @@ class MenuPlay:
                                 Level3Advanced(level['name'], level['dificultadNivel'], level['id'])
                     # Si se hace clic en el botón de regreso
                     if back_button_rect.collidepoint(event.pos):
+                        self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                         return
             
             self.screen.blit(self.fondoMenuDificultad, [0, 0])

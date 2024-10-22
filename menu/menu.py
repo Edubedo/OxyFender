@@ -20,7 +20,7 @@ class Menu:
         self.datosLanguage = {} # Datos del menú
 
         with open('language.json') as archivo:
-            self.datosLanguage = json.load(archivo)
+            self.datosLanguage = json.load(archivo) #asignando los datos del archivo json a la variable datosLanguage
 
         self.actualizarOpcionesMenu()
 
@@ -188,6 +188,10 @@ class Menu:
                                 self.volumen = "off" if self.volumen == "on" else "on"
                                 pygame.mixer.music.set_volume(1 if self.volumen == "on" else 0)
                                 self.sonidoDeClick.set_volume(1 if self.volumen == "on" else 0)  # Actualizar el volumen del sonido de clic
+                                if self.volumen == "on":
+                                    pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))
+                                    pygame.mixer.music.play(-1)
+                                    pygame.mixer.music.set_volume(1)
                                 
                             else:
                                 return option['id']
