@@ -7,13 +7,14 @@ class BarraOxigenoAdvanced():
         self.y = y
         self.w = w
         self.h = h
-        self.hp = 0
+        self.hp = max_hp
         self.max_hp = max_hp
-        self.tiempo_total = 60  # minuto y medio en segundos
+        self.tiempo_total = 60000  # 30,000 segundos
         self.tiempo_restante = self.tiempo_total
         self.tiempo_pausa = 0  # Nuevo: Variable para manejar el tiempo de pausa
         self.tiempo_ultimo = pygame.time.get_ticks()  # Tiempo cuando el juego empieza o se reanuda
-        self.indice = None
+        self.ultimo_cambio_imagen = self.tiempo_ultimo  # Nuevo: Tiempo del último cambio de imagen
+        self.indice = 10  # Inicialmente en 100%
 
         # Cargar imágenes de tanques de oxígeno
         self.imagenes_tanque = []
@@ -30,16 +31,27 @@ class BarraOxigenoAdvanced():
             tiempo_transcurrido = (tiempo_actual - self.tiempo_ultimo) // 1000
             self.tiempo_restante = max(0, self.tiempo_total - tiempo_transcurrido)
             self.hp = (self.tiempo_restante / self.tiempo_total) * self.max_hp
+
+            # Verificar si han pasado 3,000 segundos desde el último cambio de imagen
+            if (tiempo_actual - self.ultimo_cambio_imagen) >= 3000:
+                self.ultimo_cambio_imagen = tiempo_actual
+                # Actualizar el índice de la imagen
+                self.indice = max(0, self.indice - 1)
         else:
             # Actualiza el último tiempo cuando el juego se pausa
             self.tiempo_ultimo = tiempo_actual
+
+        if tiempo_actual >= 59000:
+            self.hp = 0
+            self.tiempo_restante = 0
+            self.indice = 0
 
     def obtener_imagen_tanque(self):
         # Asegurarse de que la imagen no cambie a 0% hasta que el tiempo restante sea 0
         if self.tiempo_restante == 0:
             indice = 0
         else:
-            indice = max(1, int((self.hp / self.max_hp) * 10))
+            indice = self.indice
         # Ensure indice is within the valid range
         indice = min(indice, len(self.imagenes_tanque) - 1)
         return self.imagenes_tanque[indice], indice * 10
@@ -58,5 +70,5 @@ class BarraOxigenoAdvanced():
         self.tiempo_restante = self.tiempo_total
         self.hp = self.max_hp
         self.tiempo_ultimo = pygame.time.get_ticks()
-
-        
+        self.ultimo_cambio_imagen = 0  # Reiniciar el tiempo del último cambio de imagen
+        self.indice = 10  # Reiniciar el índice de la imagen a 100%
