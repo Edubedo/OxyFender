@@ -249,7 +249,6 @@ class Level1Beginner:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-            self.perdioJuego = True
             if self.perdioJuego:
                 self.pantallaPerdioNivel()
                 continue
