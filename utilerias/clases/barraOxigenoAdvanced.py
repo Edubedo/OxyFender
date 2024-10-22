@@ -7,9 +7,9 @@ class BarraOxigenoAdvanced():
         self.y = y
         self.w = w
         self.h = h
-        self.hp = 0
+        self.hp = max_hp
         self.max_hp = max_hp
-        self.tiempo_total = 60  # minuto en segundos
+        self.tiempo_total = 60000  # 30,000 segundos
         self.tiempo_restante = self.tiempo_total
         self.tiempo_pausa = 0  # Nuevo: Variable para manejar el tiempo de pausa
         self.tiempo_ultimo = pygame.time.get_ticks()  # Tiempo cuando el juego empieza o se reanuda
@@ -32,10 +32,8 @@ class BarraOxigenoAdvanced():
             self.tiempo_restante = max(0, self.tiempo_total - tiempo_transcurrido)
             self.hp = (self.tiempo_restante / self.tiempo_total) * self.max_hp
 
-            print("tiempo_actual", tiempo_actual)
-            print("self.ultimo_cambio_imagen", self.ultimo_cambio_imagen)
-            # Verificar si han pasado 12,000 segundos desde el último cambio de imagen
-            if (tiempo_actual - self.ultimo_cambio_imagen) >= 12000:
+            # Verificar si han pasado 3,000 segundos desde el último cambio de imagen
+            if (tiempo_actual - self.ultimo_cambio_imagen) >= 3000:
                 self.ultimo_cambio_imagen = tiempo_actual
                 # Actualizar el índice de la imagen
                 self.indice = max(0, self.indice - 1)
@@ -43,7 +41,7 @@ class BarraOxigenoAdvanced():
             # Actualiza el último tiempo cuando el juego se pausa
             self.tiempo_ultimo = tiempo_actual
 
-        if tiempo_actual >= 119000:
+        if tiempo_actual >= 59000:
             self.hp = 0
             self.tiempo_restante = 0
             self.indice = 0
@@ -53,8 +51,7 @@ class BarraOxigenoAdvanced():
         if self.tiempo_restante == 0:
             indice = 0
         else:
-            indice = max(1, int((self.hp / self.max_hp) * 10))
-        print("indice", indice)
+            indice = self.indice
         # Ensure indice is within the valid range
         indice = min(indice, len(self.imagenes_tanque) - 1)
         return self.imagenes_tanque[indice], indice * 10
