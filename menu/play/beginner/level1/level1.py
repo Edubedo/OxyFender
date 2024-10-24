@@ -129,8 +129,12 @@ class Level1Beginner:
 
         self.posicion_x_personaje = 0
         # Nos pasamos el mapa principal tmx_mapa_1 por parametros desde el init y ahora lo estamos usando para dibujar los elementos
-        print("tmx_mapa_1.layers: ", tmx_mapa_1.layers)
-
+        
+        self.filtro_imagenes = [
+            pygame.image.load(join("assets", "sprites", "filtro", f"FILTRO{i}.png")).convert_alpha()
+            for i in range(1, 7)
+        ]
+        print("self.filtro_imagenes:", self.filtro_imagenes)
         # Dibujamos los elementos generales del mapa
         for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2', 'capaVerificarGano', 'ParedDetener', 'Extra']:
             for x, y, superficie in tmx_mapa_1.get_layer_by_name(nombreCapa).tiles(): # obtenemos la capa por nombre que se obtiene x, y, la superficie(imagenes)
@@ -143,14 +147,14 @@ class Level1Beginner:
                    # self.elevador_piso2_sprites.add(sprite)
                 elif nombreCapa == 'capaVerificarGano':
                     self.capa_verificar_gano.add(sprite)
-
+    
         # Dibujamos los filtros de aire
         filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
+        filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
         for obj in filtooo_layer:
-            sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites) # Creamos un sprite con la posición x, y y la superficie
-            sprite.name = obj.name  # Añadir el nombre al sprite
+            sprite = Sprite((obj.x, obj.y), self.filtro_imagenes[0], self.todos_los_sprites)
+            sprite.name = obj.name
             self.filtro_sprites.add(sprite)
-            # Agrupar los filtros en pares
             if 'abajoFiltro' in obj.name:
                 pair_name = obj.name.replace('abajoFiltro', 'arribaFiltro')
                 self.filtro_pares[obj.name] = pair_name
@@ -317,6 +321,17 @@ class Level1Beginner:
                     elif movimientoJugador.x < 0:
                         self.jugador.rect.left = sprite.rect.right
 
+            # Actualizar los sprites de los filtros
+            for sprite in self.filtro_sprites:
+                if sprite.name not in self.filtros_arreglados:
+                    # Animar los filtros no reparados
+                    tiempo_actual = pygame.time.get_ticks()
+                    indice_imagen = (tiempo_actual // 100) % 6  # Cambiar imagen cada 100ms
+                    sprite.image = self.filtro_imagenes[indice_imagen]
+                else:
+                    # Usar solo la imagen 1 si el filtro está reparado
+                    sprite.image = self.filtro_imagenes[0]
+
             tiempoActualElevadores = pygame.time.get_ticks()
             colisionesElevadoresPiso1 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso1_sprites, False)
             colisionesElevadoresPiso2 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso2_sprites, False)
@@ -416,7 +431,7 @@ class Level1Beginner:
                             pair_name = self.filtro_pares[filtro.name]
                             for sprite in self.filtro_sprites:
                                 if sprite.name == filtro.name or sprite.name == pair_name:
-                                    self.filtros_arreglados.append(sprite)
+                                    self.filtros_arreglados.append(sprite.name)
                                     self.filtro_sprites.remove(sprite)
                             break
                     
