@@ -102,7 +102,7 @@ class Level1Beginner:
         # Initialize rectBarraOxigeno
         self.tiempo_inicio = tiempo_inicio
 
-        self.rectBarraOxigeno = BarraOxigeno(10, 100, 40, 300, 200)
+        self.rectBarraOxigeno = BarraOxigeno(20, 100, 40, 300, 200) #a
         self.rectBarraOxigeno.hp = 200
         self.rectBarraOxigeno.reiniciar()  # Llamar al método reiniciar de BarraOxigeno
 
@@ -450,8 +450,17 @@ class Level1Beginner:
             self.dibujar_filtros()
 
             # Mostrar mensaje de que arregle los filtros
-            self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 32) # Font_Name_Enterprise.ttf, ka1.ttf
+            # Render the text in white color
+            self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 50)
             self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"{self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelMission']}", True, (255, 255, 255))
+
+            # Create a black border by rendering the text multiple times with a slight offset in black color
+            border_offsets = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
+            for offset in border_offsets:
+                border_text = self.fuenteTextoOxigenosReparados.render(f"{self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelMission']}", True, (0, 0, 0))
+                self.mostrarSuperficieNivel.blit(border_text, (10 + offset[0], 500 + offset[1]))
+
+            # Blit the final white text on top of the black border
             self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 500))
 
             self.botonPausaRect = self.botonPausa.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 50))
