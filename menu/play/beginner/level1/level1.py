@@ -150,17 +150,16 @@ class Level1Beginner:
     
         # Dibujamos los filtros de aire
         filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
-        filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
         for obj in filtooo_layer:
-            sprite = Sprite((obj.x, obj.y), self.filtro_imagenes[0], self.todos_los_sprites)
-            sprite.name = obj.name
-            self.filtro_sprites.add(sprite)
-            if 'abajoFiltro' in obj.name:
-                pair_name = obj.name.replace('abajoFiltro', 'arribaFiltro')
-                self.filtro_pares[obj.name] = pair_name
-            elif 'arribaFiltro' in obj.name:
-                pair_name = obj.name.replace('arribaFiltro', 'abajoFiltro')
-                self.filtro_pares[obj.name] = pair_name
+            print("obj.name:", obj.name)
+            if obj.name == 'arribaFiltro1' or obj.name == 'arribaFiltro2':
+                sprite = Sprite((obj.x, obj.y - 30), self.filtro_imagenes[0], self.todos_los_sprites)
+                sprite.name = obj.name
+                self.filtro_sprites.add(sprite)
+                if 'abajoFiltro1' in obj.name or 'arribaFiltro1' in obj.name:
+                    self.filtro_pares[obj.name] = 'Filtro1'
+                elif 'abajoFiltro2' in obj.name or 'arribaFiltro2' in obj.name:
+                    self.filtro_pares[obj.name] = 'Filtro2'
 
         # Dibujamos el elevador del piso 1
         Ascensor1_layer = tmx_mapa_1.get_layer_by_name('Ascensor1')
@@ -189,30 +188,6 @@ class Level1Beginner:
         # Empezamos con el juego
         self.run()
     
-    def actualizar_animacion_elevador_piso1(self):
-        tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - self.tiempo_cambio_animacion_piso1:  # Tiempo entre animaciones
-            self.indice_animacion_elevador_piso1 = (self.indice_animacion_elevador_piso1 + 1) % len(self.elevador_imagenes)
-            # Scale the elevator image to fit within the sprite's dimensions
-            scaled_image = pygame.transform.scale(
-                self.elevador_imagenes[self.indice_animacion_elevador_piso1],
-                (self.elevador_sprite_piso1.rect.width, self.elevador_sprite_piso1.rect.height)
-            )
-            self.elevador_sprite_piso1.image = scaled_image
-            self.tiempo_cambio_animacion_piso1 = tiempo_actual
-
-    def actualizar_animacion_elevador_piso2(self):
-        tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - self.tiempo_cambio_animacion_piso2:  # Tiempo entre animaciones
-            self.indice_animacion_elevador_piso2 = (self.indice_animacion_elevador_piso2 + 1) % len(self.elevador_imagenes)
-            # Scale the elevator image to fit within the sprite's dimensions
-            scaled_image = pygame.transform.scale(
-                self.elevador_imagenes[self.indice_animacion_elevador_piso2],
-                (self.elevador_sprite_piso2.rect.width, self.elevador_sprite_piso2.rect.height)
-            )
-            self.elevador_sprite_piso2.image = scaled_image
-            self.tiempo_cambio_animacion_piso2 = tiempo_actual
-
     def run(self):
         pygame.mixer.music.pause()
         pygame.mixer.music.load(join("assets", "audio", "niveles", "HKCrossroads.mp3"))
@@ -328,10 +303,15 @@ class Level1Beginner:
                     tiempo_actual = pygame.time.get_ticks()
                     indice_imagen = (tiempo_actual // 100) % 6  # Cambiar imagen cada 100ms
                     sprite.image = self.filtro_imagenes[indice_imagen]
+                    print("filtro no reparado")
                 else:
                     # Usar solo la imagen 1 si el filtro está reparado
-                    sprite.image = self.filtro_imagenes[0]
+                    print("filtro reparado")
 
+                    
+            print("sprite.name:", sprite.name)
+            sprite.image = self.filtro_imagenes[0]
+            
             tiempoActualElevadores = pygame.time.get_ticks()
             colisionesElevadoresPiso1 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso1_sprites, False)
             colisionesElevadoresPiso2 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso2_sprites, False)
@@ -484,6 +464,30 @@ class Level1Beginner:
             pygame.display.flip()
 
             clock.tick(FPS)
+
+    def actualizar_animacion_elevador_piso1(self):
+        tiempo_actual = pygame.time.get_ticks()
+        if tiempo_actual - self.tiempo_cambio_animacion_piso1:  # Tiempo entre animaciones
+            self.indice_animacion_elevador_piso1 = (self.indice_animacion_elevador_piso1 + 1) % len(self.elevador_imagenes)
+            # Scale the elevator image to fit within the sprite's dimensions
+            scaled_image = pygame.transform.scale(
+                self.elevador_imagenes[self.indice_animacion_elevador_piso1],
+                (self.elevador_sprite_piso1.rect.width, self.elevador_sprite_piso1.rect.height)
+            )
+            self.elevador_sprite_piso1.image = scaled_image
+            self.tiempo_cambio_animacion_piso1 = tiempo_actual
+
+    def actualizar_animacion_elevador_piso2(self):
+        tiempo_actual = pygame.time.get_ticks()
+        if tiempo_actual - self.tiempo_cambio_animacion_piso2:  # Tiempo entre animaciones
+            self.indice_animacion_elevador_piso2 = (self.indice_animacion_elevador_piso2 + 1) % len(self.elevador_imagenes)
+            # Scale the elevator image to fit within the sprite's dimensions
+            scaled_image = pygame.transform.scale(
+                self.elevador_imagenes[self.indice_animacion_elevador_piso2],
+                (self.elevador_sprite_piso2.rect.width, self.elevador_sprite_piso2.rect.height)
+            )
+            self.elevador_sprite_piso2.image = scaled_image
+            self.tiempo_cambio_animacion_piso2 = tiempo_actual
 
     def toggle_pause(self):
         self.juegoPausado = not self.juegoPausado
