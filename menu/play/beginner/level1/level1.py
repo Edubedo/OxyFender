@@ -303,15 +303,10 @@ class Level1Beginner:
                     tiempo_actual = pygame.time.get_ticks()
                     indice_imagen = (tiempo_actual // 100) % 6  # Cambiar imagen cada 100ms
                     sprite.image = self.filtro_imagenes[indice_imagen]
-                    print("filtro no reparado")
                 else:
-                    # Usar solo la imagen 1 si el filtro está reparado
-                    print("filtro reparado")
+                    # Usar solo la imagen 0 si el filtro está reparado
+                    sprite.image = self.filtro_imagenes[0]
 
-                    
-            print("sprite.name:", sprite.name)
-            sprite.image = self.filtro_imagenes[0]
-            
             tiempoActualElevadores = pygame.time.get_ticks()
             colisionesElevadoresPiso1 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso1_sprites, False)
             colisionesElevadoresPiso2 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso2_sprites, False)
@@ -412,7 +407,7 @@ class Level1Beginner:
                             for sprite in self.filtro_sprites:
                                 if sprite.name == filtro.name or sprite.name == pair_name:
                                     self.filtros_arreglados.append(sprite.name)
-                                    self.filtro_sprites.remove(sprite)
+                                    sprite.image = self.filtro_imagenes[0]  # Set the repaired filter image to the first image
                             break
                     
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
