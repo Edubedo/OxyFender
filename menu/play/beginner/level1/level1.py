@@ -1,3 +1,4 @@
+
 import pygame
 from utilerias.configuraciones import *
 from os.path import join
@@ -55,7 +56,7 @@ class Level1Beginner:
 
         self.filtros_arreglados = []  # Lista para almacenar los filtros arreglados
         self.filtro_pares = {}  # Diccionario para almacenar los pares de filtros
-        
+
         self.jugador_oculto_hasta = 0
         self.teletransportando = False
 
@@ -80,7 +81,7 @@ class Level1Beginner:
         self.elevador_sprite_piso1 = Sprite((0, 0), self.elevador_imagenes[0], self.todos_los_sprites)
         self.elevador_sprite_piso1.rect.size = (self.elevador_imagenes[0].get_width(), self.elevador_imagenes[0].get_height())
         self.elevador_piso1_sprites.add(self.elevador_sprite_piso1)
-        
+
         # Crear un solo sprite para el elevador del piso 2
         self.elevador_sprite_piso2 = Sprite((0, 0), self.elevador_imagenes[0], self.todos_los_sprites)
         self.elevador_sprite_piso2.rect.size = (self.elevador_imagenes[0].get_width(), self.elevador_imagenes[0].get_height())
@@ -110,7 +111,7 @@ class Level1Beginner:
         self.botonPausa = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_tuerca_bn.png")).convert_alpha()
         self.botonPausa = pygame.transform.scale(self.botonPausa, (self.botonPausa.get_width(), self.botonPausa.get_height()))
         self.botonPausaRect = self.botonPausa.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 50))
-    
+
         self.filtro_bn = pygame.image.load(join("assets", "img", "filtros", "filtro_bn.png")).convert_alpha() # Cargar la imagen del filtro en blanco
         self.filtro_color = pygame.image.load(join("assets", "img", "filtros", "filtro_color.png")).convert_alpha() # Cargar la imagen del filtro a color
 
@@ -123,18 +124,18 @@ class Level1Beginner:
         self.ultimoTiempoCombustible = pygame.time.get_ticks()
         # ! CODIGO 1 MOSTRAR
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW) # Establecer el cursor del mouse como una flecha
-        
+
         # join es una función que une las rutas de los archivos
         self.tmx_tileset = pygame.image.load(join("assets", "maps", "beginner", "level1", "lab_tileset_LITE.png")).convert_alpha() # Cargar el tileset que son las imagenes del mapa de tiled que usaremos posteriomente
 
         self.posicion_x_personaje = 0
         # Nos pasamos el mapa principal tmx_mapa_1 por parametros desde el init y ahora lo estamos usando para dibujar los elementos
-        
+
         self.filtro_imagenes = [
             pygame.image.load(join("assets", "sprites", "filtro", f"FILTRO{i}.png")).convert_alpha()
             for i in range(1, 7)
         ]
-        print("self.filtro_imagenes:", self.filtro_imagenes)
+        
         # Dibujamos los elementos generales del mapa
         for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2', 'capaVerificarGano', 'ParedDetener', 'Extra']:
             for x, y, superficie in tmx_mapa_1.get_layer_by_name(nombreCapa).tiles(): # obtenemos la capa por nombre que se obtiene x, y, la superficie(imagenes)
@@ -147,19 +148,21 @@ class Level1Beginner:
                    # self.elevador_piso2_sprites.add(sprite)
                 elif nombreCapa == 'capaVerificarGano':
                     self.capa_verificar_gano.add(sprite)
-    
+
         # Dibujamos los filtros de aire
         filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
         for obj in filtooo_layer:
-            print("obj.name:", obj.name)
             if obj.name == 'arribaFiltro1' or obj.name == 'arribaFiltro2':
                 sprite = Sprite((obj.x, obj.y - 30), self.filtro_imagenes[0], self.todos_los_sprites)
-                sprite.name = obj.name
+                sprite.name = obj.name  # Añadir el nombre al sprite
                 self.filtro_sprites.add(sprite)
-                if 'abajoFiltro1' in obj.name or 'arribaFiltro1' in obj.name:
-                    self.filtro_pares[obj.name] = 'Filtro1'
-                elif 'abajoFiltro2' in obj.name or 'arribaFiltro2' in obj.name:
-                    self.filtro_pares[obj.name] = 'Filtro2'
+                # Agrupar los filtros en pares
+                if 'abajoFiltro' in obj.name:
+                    pair_name = obj.name.replace('abajoFiltro', 'arribaFiltro')
+                    self.filtro_pares[obj.name] = pair_name
+                elif 'arribaFiltro' in obj.name:
+                    pair_name = obj.name.replace('arribaFiltro', 'abajoFiltro')
+                    self.filtro_pares[obj.name] = pair_name
 
         # Dibujamos el elevador del piso 1
         Ascensor1_layer = tmx_mapa_1.get_layer_by_name('Ascensor1')
@@ -187,7 +190,31 @@ class Level1Beginner:
 
         # Empezamos con el juego
         self.run()
-    
+
+    def actualizar_animacion_elevador_piso1(self):
+        tiempo_actual = pygame.time.get_ticks()
+        if tiempo_actual - self.tiempo_cambio_animacion_piso1:  # Tiempo entre animaciones
+            self.indice_animacion_elevador_piso1 = (self.indice_animacion_elevador_piso1 + 1) % len(self.elevador_imagenes)
+            # Scale the elevator image to fit within the sprite's dimensions
+            scaled_image = pygame.transform.scale(
+                self.elevador_imagenes[self.indice_animacion_elevador_piso1],
+                (self.elevador_sprite_piso1.rect.width, self.elevador_sprite_piso1.rect.height)
+            )
+            self.elevador_sprite_piso1.image = scaled_image
+            self.tiempo_cambio_animacion_piso1 = tiempo_actual
+
+    def actualizar_animacion_elevador_piso2(self):
+        tiempo_actual = pygame.time.get_ticks()
+        if tiempo_actual - self.tiempo_cambio_animacion_piso2:  # Tiempo entre animaciones
+            self.indice_animacion_elevador_piso2 = (self.indice_animacion_elevador_piso2 + 1) % len(self.elevador_imagenes)
+            # Scale the elevator image to fit within the sprite's dimensions
+            scaled_image = pygame.transform.scale(
+                self.elevador_imagenes[self.indice_animacion_elevador_piso2],
+                (self.elevador_sprite_piso2.rect.width, self.elevador_sprite_piso2.rect.height)
+            )
+            self.elevador_sprite_piso2.image = scaled_image
+            self.tiempo_cambio_animacion_piso2 = tiempo_actual
+
     def run(self):
         pygame.mixer.music.pause()
         pygame.mixer.music.load(join("assets", "audio", "niveles", "HKCrossroads.mp3"))
@@ -240,7 +267,7 @@ class Level1Beginner:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                    
+
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     self.toggle_pause()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -306,6 +333,7 @@ class Level1Beginner:
                 else:
                     # Usar solo la imagen 0 si el filtro está reparado
                     sprite.image = self.filtro_imagenes[0]
+
 
             tiempoActualElevadores = pygame.time.get_ticks()
             colisionesElevadoresPiso1 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso1_sprites, False)
@@ -398,18 +426,19 @@ class Level1Beginner:
 
                     if keys[pygame.K_a]:
                         self.capturarPantalla = self.mostrarSuperficieNivel.copy()
-                        
+
                         pantalla = self.pantallaArreglarAire()
-                        
+
                         if pantalla == 1:
                             # Arreglar ambos filtros del par
                             pair_name = self.filtro_pares[filtro.name]
                             for sprite in self.filtro_sprites:
                                 if sprite.name == filtro.name or sprite.name == pair_name:
-                                    self.filtros_arreglados.append(sprite.name)
-                                    sprite.image = self.filtro_imagenes[0]  # Set the repaired filter image to the first image
+                                    self.filtros_arreglados.append(sprite)
+                                    self.filtro_sprites.remove(sprite)
+                                    sprite.image = self.filtro_imagenes[0] 
                             break
-                    
+
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
             self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 40
 
@@ -443,13 +472,11 @@ class Level1Beginner:
             # Render the text in white color
             self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 50)
             self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"{self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelMission']}", True, (255, 255, 255))
-
             # Create a black border by rendering the text multiple times with a slight offset in black color
             border_offsets = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
             for offset in border_offsets:
                 border_text = self.fuenteTextoOxigenosReparados.render(f"{self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelMission']}", True, (0, 0, 0))
                 self.mostrarSuperficieNivel.blit(border_text, (10 + offset[0], 500 + offset[1]))
-
             # Blit the final white text on top of the black border
             self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 500))
 
@@ -459,30 +486,6 @@ class Level1Beginner:
             pygame.display.flip()
 
             clock.tick(FPS)
-
-    def actualizar_animacion_elevador_piso1(self):
-        tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - self.tiempo_cambio_animacion_piso1:  # Tiempo entre animaciones
-            self.indice_animacion_elevador_piso1 = (self.indice_animacion_elevador_piso1 + 1) % len(self.elevador_imagenes)
-            # Scale the elevator image to fit within the sprite's dimensions
-            scaled_image = pygame.transform.scale(
-                self.elevador_imagenes[self.indice_animacion_elevador_piso1],
-                (self.elevador_sprite_piso1.rect.width, self.elevador_sprite_piso1.rect.height)
-            )
-            self.elevador_sprite_piso1.image = scaled_image
-            self.tiempo_cambio_animacion_piso1 = tiempo_actual
-
-    def actualizar_animacion_elevador_piso2(self):
-        tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - self.tiempo_cambio_animacion_piso2:  # Tiempo entre animaciones
-            self.indice_animacion_elevador_piso2 = (self.indice_animacion_elevador_piso2 + 1) % len(self.elevador_imagenes)
-            # Scale the elevator image to fit within the sprite's dimensions
-            scaled_image = pygame.transform.scale(
-                self.elevador_imagenes[self.indice_animacion_elevador_piso2],
-                (self.elevador_sprite_piso2.rect.width, self.elevador_sprite_piso2.rect.height)
-            )
-            self.elevador_sprite_piso2.image = scaled_image
-            self.tiempo_cambio_animacion_piso2 = tiempo_actual
 
     def toggle_pause(self):
         self.juegoPausado = not self.juegoPausado
@@ -575,7 +578,7 @@ class Level1Beginner:
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
                         pygame.mixer.music.play(-1) # Reproducir la música en bucle
                         pygame.mixer.music.set_volume(1 if self.volumen == "on" else 0)
-                        
+
                     elif botonContinuarMenuRect.collidepoint(posicionMouse):
                         self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
                         self.juegoPausado = False
@@ -669,7 +672,7 @@ class Level1Beginner:
         line_color = None
         completed_lines = []
         unique_connections = set()
-        
+
         tarea_completada = False
 
         while banderaEjecutandoNivel1:
@@ -768,7 +771,7 @@ class Level1Beginner:
                 tarea_completada = True
                 banderaEjecutandoNivel1 = False
                 return 1
-        
+
     def pantallaPerdioNivel(self):
         pygame.mixer.music.stop()  # Detener la música de fondo
         pygame.mixer.Sound(join("assets", "audio", "niveles", "defeat.mp3")).play()
@@ -876,7 +879,7 @@ class Level1Beginner:
                 # Sí le da click a los botones
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     posicionMouse = event.pos  # Rastreamos la posicion del mouse
-                   
+
                     if botonSeleccionarNivelRect.collidepoint(posicionMouse):  # Sí hace click en volver al menú
                         self.volver_menu = True
                         banderaEjecutandoNivel1 = False
@@ -887,5 +890,3 @@ class Level1Beginner:
                         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3"))  # Cargar la música del menú
                         pygame.mixer.music.play(-1)  # Reproducir la música en bucle
                         pygame.mixer.music.set_volume(0.2 if self.volumen == "on" else 0)
-
-    
