@@ -116,7 +116,7 @@ class Level1Beginner:
         self.botonControles = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_int_naranja.png")).convert_alpha()
         self.botonControles = pygame.transform.scale(self.botonControles, (self.botonControles.get_width(), self.botonControles.get_height()))
         self.botonControlesRect = self.botonControles.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 500))
-        
+
         self.filtro_bn = pygame.image.load(join("assets", "img", "filtros", "filtro_bn.png")).convert_alpha() # Cargar la imagen del filtro en blanco
         self.filtro_color = pygame.image.load(join("assets", "img", "filtros", "filtro_color.png")).convert_alpha() # Cargar la imagen del filtro a color
 
@@ -318,17 +318,17 @@ class Level1Beginner:
                         self.jugador.rect.left = sprite.rect.right
 
             # Actualizar los sprites de los filtros
-            for sprite in self.filtro_sprites:
-                if sprite.name not in self.filtros_arreglados:
-                    # Animar los filtros no reparados
-                    tiempo_actual = pygame.time.get_ticks()
-                    if tiempo_actual - getattr(sprite, 'ultimo_cambio', 0) > 500:  # Cambiar imagen cada 500ms
+            tiempo_actual = pygame.time.get_ticks()
+            if tiempo_actual - getattr(self, 'ultimo_cambio_filtro', 0) > 1100:  # 2000 ms = 2 segundos
+                for sprite in self.filtro_sprites:
+                    if sprite.name not in self.filtros_arreglados:
+                        # Animar los filtros no reparados
                         sprite.indice_imagen = (getattr(sprite, 'indice_imagen', 0) + 1) % 6
                         sprite.image = self.filtro_imagenes[sprite.indice_imagen]
-                        sprite.ultimo_cambio = tiempo_actual
-                else:
-                    # Usar solo la imagen 0 si el filtro está reparado
-                    sprite.image = self.filtro_imagenes[0]
+                    else:
+                        # Usar solo la imagen 0 si el filtro está reparado
+                        sprite.image = self.filtro_imagenes[0]
+                    self.ultimo_cambio_filtro = tiempo_actual
 
 
             tiempoActualElevadores = pygame.time.get_ticks()
@@ -432,7 +432,7 @@ class Level1Beginner:
                                 if sprite.name == filtro.name or sprite.name == pair_name:
                                     self.filtros_arreglados.append(sprite)
                                     self.filtro_sprites.remove(sprite)
-                                    sprite.image = self.filtro_imagenes[0] 
+                                    sprite.image = self.filtro_imagenes[0]
                             break
 
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
