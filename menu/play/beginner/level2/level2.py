@@ -236,6 +236,7 @@ class Level2Beginner:
                         jugador_velocidad_y = maxima_velocidad_caida
                 movimientoJugador.y += jugador_velocidad_y
 
+                # Reemplaza esta sección en el método run
                 self.jugador.rect.y += movimientoJugador.y
                 spriteColisionesCapas = pygame.sprite.spritecollide(self.jugador, self.colisiones_sprites, False)
 
@@ -247,14 +248,27 @@ class Level2Beginner:
                     elif movimientoJugador.y < 0:
                         self.jugador.rect.top = sprite.rect.bottom
                         jugador_velocidad_y = 0
+                    else:
+                        esta_sobre_el_piso = False  # Asegúrate de que el jugador no esté sobre el piso si no hay colisión
 
+                # Reemplaza esta sección en el método run
                 self.jugador.rect.x += movimientoJugador.x
                 spriteColisionesCapas = pygame.sprite.spritecollide(self.jugador, self.colisiones_sprites, False)
                 for sprite in spriteColisionesCapas:
                     if movimientoJugador.x > 0:
                         self.jugador.rect.right = sprite.rect.left
+                        # Ajustar la posición en Y para subir escalones solo si está en contacto con ellos
+                        if 0 < sprite.rect.top - self.jugador.rect.bottom <= 32:
+                            self.jugador.rect.bottom = sprite.rect.top
+                            esta_sobre_el_piso = True
+                            jugador_velocidad_y = 0
                     elif movimientoJugador.x < 0:
                         self.jugador.rect.left = sprite.rect.right
+                        # Ajustar la posición en Y para subir escalones solo si está en contacto con ellos
+                        if 0 < sprite.rect.top - self.jugador.rect.bottom <= 32:
+                            self.jugador.rect.bottom = sprite.rect.top
+                            esta_sobre_el_piso = True
+                            jugador_velocidad_y = 0
 
             # Actualizar los sprites de los filtros
             tiempo_actual = pygame.time.get_ticks()
