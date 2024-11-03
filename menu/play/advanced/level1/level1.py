@@ -1,3 +1,4 @@
+
 import pygame
 from utilerias.configuraciones import *
 from os.path import join
@@ -47,6 +48,7 @@ class Level1Advanced:
         self.font = pygame.font.Font(None, 36)
 
         self.juegoPausado = False
+        self.juegoPausadoControles = False
         self.capturarPantalla = None
         self.volver_menu = False
 
@@ -111,6 +113,11 @@ class Level1Advanced:
         self.botonPausa = pygame.transform.scale(self.botonPausa, (self.botonPausa.get_width(), self.botonPausa.get_height()))
         self.botonPausaRect = self.botonPausa.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 50))
     
+        # Botón de controles
+        self.botonControles = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_int_naranja.png")).convert_alpha()
+        self.botonControles = pygame.transform.scale(self.botonControles, (self.botonControles.get_width(), self.botonControles.get_height()))
+        self.botonControlesRect = self.botonControles.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 500))
+
         self.filtro_bn = pygame.image.load(join("assets", "img", "filtros", "filtro_bn.png")).convert_alpha() # Cargar la imagen del filtro en blanco
         self.filtro_color = pygame.image.load(join("assets", "img", "filtros", "filtro_color.png")).convert_alpha() # Cargar la imagen del filtro a color
 
@@ -125,11 +132,15 @@ class Level1Advanced:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW) # Establecer el cursor del mouse como una flecha
         
         # join es una función que une las rutas de los archivos
-        self.tmx_tileset = pygame.image.load(join("assets", "maps", "beginner", "level1", "lab_tileset_LITE.png")).convert_alpha() # Cargar el tileset que son las imagenes del mapa de tiled que usaremos posteriomente
+        self.tmx_tileset = pygame.image.load(join("assets", "maps", "advanced", "level1", "lab_tileset_LITE.png")).convert_alpha() # Cargar el tileset que son las imagenes del mapa de tiled que usaremos posteriomente
 
         self.posicion_x_personaje = 0
         # Nos pasamos el mapa principal tmx_mapa_1 por parametros desde el init y ahora lo estamos usando para dibujar los elementos
-        print("tmx_mapa_1.layers: ", tmx_mapa_1.layers)
+
+        self.filtro_imagenes = [
+            pygame.image.load(join("assets", "sprites", "filtro", f"FILTRO{i}.png")).convert_alpha()
+            for i in range(1, 7)
+        ]
 
         # Dibujamos los elementos generales del mapa
         for nombreCapa in ['Suelo', 'Paredes', 'Techo', 'FondoPiso1', 'FondoPiso2', 'AscensorPiso1', 'AscensorPiso2', 'capaVerificarGano', 'ParedDetener', 'Extra']:
@@ -147,9 +158,12 @@ class Level1Advanced:
         # Dibujamos los filtros de aire
         filtooo_layer = tmx_mapa_1.get_layer_by_name('filtooo')
         for obj in filtooo_layer:
-            sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites) # Creamos un sprite con la posición x, y y la superficie
-            sprite.name = obj.name  # Añadir el nombre al sprite
-            self.filtro_sprites.add(sprite)
+            if obj.name == 'arribaFiltro1' or obj.name == 'arribaFiltro2' or obj.name == 'arribaFiltro3':
+                sprite = Sprite((obj.x, obj.y - 30), self.filtro_imagenes[0], self.todos_los_sprites)
+                sprite.name = obj.name  # Añadir el nombre al sprite
+                sprite.indice_imagen = 0  # Inicializar el índice de la imagen
+                sprite.ultimo_cambio = 0  # Inicializar el tiempo del último cambio
+                self.filtro_sprites.add(sprite)
             # Agrupar los filtros en pares
             if 'abajoFiltro' in obj.name:
                 pair_name = obj.name.replace('abajoFiltro', 'arribaFiltro')
@@ -185,29 +199,6 @@ class Level1Advanced:
         # Empezamos con el juego
         self.run()
     
-    def actualizar_animacion_elevador_piso1(self):
-        tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - self.tiempo_cambio_animacion_piso1:  # Tiempo entre animaciones
-            self.indice_animacion_elevador_piso1 = (self.indice_animacion_elevador_piso1 + 1) % len(self.elevador_imagenes)
-            # Scale the elevator image to fit within the sprite's dimensions
-            scaled_image = pygame.transform.scale(
-                self.elevador_imagenes[self.indice_animacion_elevador_piso1],
-                (self.elevador_sprite_piso1.rect.width, self.elevador_sprite_piso1.rect.height)
-            )
-            self.elevador_sprite_piso1.image = scaled_image
-            self.tiempo_cambio_animacion_piso1 = tiempo_actual
-
-    def actualizar_animacion_elevador_piso2(self):
-        tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - self.tiempo_cambio_animacion_piso2:  # Tiempo entre animaciones
-            self.indice_animacion_elevador_piso2 = (self.indice_animacion_elevador_piso2 + 1) % len(self.elevador_imagenes)
-            # Scale the elevator image to fit within the sprite's dimensions
-            scaled_image = pygame.transform.scale(
-                self.elevador_imagenes[self.indice_animacion_elevador_piso2],
-                (self.elevador_sprite_piso2.rect.width, self.elevador_sprite_piso2.rect.height)
-            )
-            self.elevador_sprite_piso2.image = scaled_image
-            self.tiempo_cambio_animacion_piso2 = tiempo_actual
 
     def run(self):
         pygame.mixer.music.pause()
@@ -240,7 +231,7 @@ class Level1Advanced:
                 self.tiempo_actual = self.tiempo_inicio
 
             # Si el juego esta pausado
-            if self.tiempo_actual >= 60000:  # 60000 MILISEGUNDOS ES IGUAL A UN MINUTO
+            if self.tiempo_actual >= 90000:  # 90000 MILISEGUNDOS ES IGUAL A UN MINUTO Y MEDIO
                 self.perdioJuego = True
 
             self.rectBarraOxigenoAdvanced.actualizar_tiempo(self.tiempo_actual, self.juegoPausado)
@@ -263,15 +254,25 @@ class Level1Advanced:
                     sys.exit()
                     
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                    self.toggle_pause()
+                    self.menuPausa()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
+                    # Cuando de la click al boton de pausa
                     if self.botonPausaRect.collidepoint(event.pos):
                         self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
-                        self.toggle_pause()
+                        self.menuPausa()
+                    # cuando le da click al boton de controles
+                    elif self.botonControlesRect.collidepoint(event.pos):
+                        self.sonidoDeClick.play()
+                        self.menuControles()
 
             if self.juegoPausado:
                 self.pantallaPausar()
                 continue
+
+            if self.juegoPausadoControles:
+                self.pantallaControles()
+                continue
+
             if not self.teletransportando:
                 keys = pygame.key.get_pressed()
                 movimientoJugador = pygame.Vector2(0, 0)
@@ -316,6 +317,20 @@ class Level1Advanced:
                         self.jugador.rect.right = sprite.rect.left
                     elif movimientoJugador.x < 0:
                         self.jugador.rect.left = sprite.rect.right
+
+            # Actualizar los sprites de los filtros
+            tiempo_actual = pygame.time.get_ticks()
+            if tiempo_actual - getattr(self, 'ultimo_cambio_filtro', 0) > 1100:  # 2000 ms = 2 segundos
+                for sprite in self.filtro_sprites:
+                    if sprite.name not in self.filtros_arreglados:
+                        # Animar los filtros no reparados
+                        sprite.indice_imagen = (getattr(sprite, 'indice_imagen', 0) + 1) % 6
+                        sprite.image = self.filtro_imagenes[sprite.indice_imagen]
+                    else:
+                        # Usar solo la imagen 0 si el filtro está reparado
+                        sprite.image = self.filtro_imagenes[0]
+                    self.ultimo_cambio_filtro = tiempo_actual
+
 
             tiempoActualElevadores = pygame.time.get_ticks()
             colisionesElevadoresPiso1 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso1_sprites, False)
@@ -418,6 +433,7 @@ class Level1Advanced:
                                 if sprite.name == filtro.name or sprite.name == pair_name:
                                     self.filtros_arreglados.append(sprite)
                                     self.filtro_sprites.remove(sprite)
+                                    sprite.image = self.filtro_imagenes[0]
                             break
                     
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
@@ -449,19 +465,55 @@ class Level1Advanced:
             # Dibujar filtros de aire que le faltan
             self.dibujar_filtros()
 
-            # Mostrar mensaje de que arregle los filtros
+            # Render the text in white color            
             self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 32) # Font_Name_Enterprise.ttf, ka1.ttf
             self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"{self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelMission']}", True, (255, 255, 255))
+            
+            border_offsets = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
+            for offset in border_offsets:
+                border_text = self.fuenteTextoOxigenosReparados.render(f"{self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelMission']}", True, (0, 0, 0))
+                self.mostrarSuperficieNivel.blit(border_text, (10 + offset[0], 500 + offset[1]))
+
             self.mostrarSuperficieNivel.blit(self.textoOxigenosReparados, (10, 500))
 
+            #Boton de pausa
             self.botonPausaRect = self.botonPausa.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 50))
             self.mostrarSuperficieNivel.blit(self.botonPausa, self.botonPausaRect.topleft)
+
+            #Boton de controles
+            self.botonControlesRect = self.botonControles.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 500))
+            self.mostrarSuperficieNivel.blit(self.botonControles, self.botonControlesRect.topleft)
+            
 
             pygame.display.flip()
 
             clock.tick(FPS)
 
-    def toggle_pause(self):
+    def actualizar_animacion_elevador_piso1(self):
+        tiempo_actual = pygame.time.get_ticks()
+        if tiempo_actual - self.tiempo_cambio_animacion_piso1:  # Tiempo entre animaciones
+            self.indice_animacion_elevador_piso1 = (self.indice_animacion_elevador_piso1 + 1) % len(self.elevador_imagenes)
+            # Scale the elevator image to fit within the sprite's dimensions
+            scaled_image = pygame.transform.scale(
+                self.elevador_imagenes[self.indice_animacion_elevador_piso1],
+                (self.elevador_sprite_piso1.rect.width, self.elevador_sprite_piso1.rect.height)
+            )
+            self.elevador_sprite_piso1.image = scaled_image
+            self.tiempo_cambio_animacion_piso1 = tiempo_actual
+
+    def actualizar_animacion_elevador_piso2(self):
+        tiempo_actual = pygame.time.get_ticks()
+        if tiempo_actual - self.tiempo_cambio_animacion_piso2:  # Tiempo entre animaciones
+            self.indice_animacion_elevador_piso2 = (self.indice_animacion_elevador_piso2 + 1) % len(self.elevador_imagenes)
+            # Scale the elevator image to fit within the sprite's dimensions
+            scaled_image = pygame.transform.scale(
+                self.elevador_imagenes[self.indice_animacion_elevador_piso2],
+                (self.elevador_sprite_piso2.rect.width, self.elevador_sprite_piso2.rect.height)
+            )
+            self.elevador_sprite_piso2.image = scaled_image
+            self.tiempo_cambio_animacion_piso2 = tiempo_actual
+
+    def menuPausa(self):
         self.juegoPausado = not self.juegoPausado
         if self.juegoPausado:
             self.capturarPantalla = self.mostrarSuperficieNivel.copy()
@@ -570,6 +622,82 @@ class Level1Advanced:
             self.mostrarSuperficieNivel.blit(config_screen, config_screen_rect.topleft)
 
             pygame.display.flip()
+   
+   # Pantalla de controles
+    def menuControles(self):
+        self.juegoPausadoControles = not self.juegoPausadoControles
+        if self.juegoPausadoControles:
+            self.capturarPantalla = self.mostrarSuperficieNivel.copy()
+            pygame.mixer.music.pause()
+            self.jugador.sonido_pasos.stop()
+        else:
+            pygame.mixer.music.unpause()
+
+    def pantallaControles(self):
+        configuracionWidthPantalla = self.mostrarSuperficieNivel.get_width()
+        configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height()
+        config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla), pygame.SRCALPHA)
+
+        # Imagen de los controles
+        fondoSuperior = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", "ImagenControles.jpeg")).convert_alpha()
+        fondoSuperior = pygame.transform.scale(fondoSuperior, (450, 450))
+        fondoSuperiorRect = fondoSuperior.get_rect(center=(configuracionWidthPantalla // 2, configuracionHeightPantalla // 2 - 40))
+        config_screen.blit(fondoSuperior, fondoSuperiorRect.topleft)
+
+        # Cargar y escalar los botones
+        botonContinuarMenu = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_continuar.png")).convert_alpha()
+        botonContinuarMenu = pygame.transform.scale(botonContinuarMenu, (botonContinuarMenu.get_width() + 5, botonContinuarMenu.get_height() + 5))
+
+       
+        # Calcular las posiciones de los botones para que estén alineados horizontalmente
+        espacio_entre_botones = 20
+        total_ancho_botones = botonContinuarMenu.get_width() + 2 * espacio_entre_botones
+        inicio_x = (configuracionWidthPantalla - total_ancho_botones) // 2
+        centro_y = configuracionHeightPantalla - 80
+
+        # Posicionar y dibujar los botones
+        botonContinuarMenuRect = botonContinuarMenu.get_rect(topleft=(inicio_x, centro_y))
+        config_screen.blit(botonContinuarMenu, botonContinuarMenuRect.topleft)
+
+        banderaEjecutandoNivel1 = True
+        while banderaEjecutandoNivel1:
+            if self.volver_menu:
+                break
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    self.juegoPausadoControles = False
+                    banderaEjecutandoNivel1 = False
+                    pygame.mixer.music.unpause()
+                elif event.type == pygame.MOUSEMOTION:
+                    posicionMouse = event.pos
+                    if (botonContinuarMenuRect.collidepoint(posicionMouse)):
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+                    else:
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    posicionMouse = event.pos
+                    if botonContinuarMenuRect.collidepoint(posicionMouse):
+                        self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
+                        self.juegoPausadoControles = False
+                        banderaEjecutandoNivel1 = False
+                        pygame.mixer.music.unpause()
+
+            if self.capturarPantalla:
+                self.mostrarSuperficieNivel.blit(self.capturarPantalla, (0, 0))
+
+            fondoOscuro = pygame.Surface(self.mostrarSuperficieNivel.get_size(), pygame.SRCALPHA)
+            fondoOscuro.fill((0, 0, 0, 150))
+            self.mostrarSuperficieNivel.blit(fondoOscuro, (0, 0))
+
+            config_screen_rect = config_screen.get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, self.mostrarSuperficieNivel.get_height() // 2))
+            self.mostrarSuperficieNivel.blit(config_screen, config_screen_rect.topleft)
+
+            pygame.display.flip()
+   
     # ! CONFIGURACION INCIALES
     # level1.py
     def reiniciarConfiguraciones(self):
@@ -623,12 +751,13 @@ class Level1Advanced:
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 60, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 120, pos_y))
 
-        # Se dibujan dos filtros a color y uno a blanco y negro
+            # Se dibujan dos filtros a color y uno a blanco y negro
         elif self.contadorOxigenoReparado == 2:
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 60, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 120, pos_y))
-        
+
+            # Se dibujan tres filtros a color
         elif self.contadorOxigenoReparado >= 3:
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 60, pos_y))
