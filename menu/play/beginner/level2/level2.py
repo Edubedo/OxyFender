@@ -253,22 +253,22 @@ class Level2Beginner:
 
                 # Reemplaza esta sección en el método run
                 self.jugador.rect.x += movimientoJugador.x
-                spriteColisionesCapas = pygame.sprite.spritecollide(self.jugador, self.colisiones_sprites, False)
-                for sprite in spriteColisionesCapas:
-                    if movimientoJugador.x > 0:
-                        self.jugador.rect.right = sprite.rect.left
-                        # Ajustar la posición en Y para subir escalones solo si está en contacto con ellos
-                        if 0 < sprite.rect.top - self.jugador.rect.bottom <= 32:
-                            self.jugador.rect.bottom = sprite.rect.top
-                            esta_sobre_el_piso = True
-                            jugador_velocidad_y = 0
-                    elif movimientoJugador.x < 0:
-                        self.jugador.rect.left = sprite.rect.right
-                        # Ajustar la posición en Y para subir escalones solo si está en contacto con ellos
-                        if 0 < sprite.rect.top - self.jugador.rect.bottom <= 32:
-                            self.jugador.rect.bottom = sprite.rect.top
-                            esta_sobre_el_piso = True
-                            jugador_velocidad_y = 0
+            spriteColisionesCapas = pygame.sprite.spritecollide(self.jugador, self.colisiones_sprites, False)
+            for sprite in spriteColisionesCapas:
+                if movimientoJugador.x > 0:
+                    self.jugador.rect.right = sprite.rect.left
+                    # Ajustar la posición en Y para subir escalones solo si está en contacto con ellos
+                    if 0 < sprite.rect.top - self.jugador.rect.bottom <= 32:
+                        self.jugador.rect.bottom = sprite.rect.top
+                        esta_sobre_el_piso = True
+                        jugador_velocidad_y = 0
+                elif movimientoJugador.x < 0:
+                    self.jugador.rect.left = sprite.rect.right
+                    # Ajustar la posición en Y para subir escalones solo si está en contacto con ellos
+                    if 0 < sprite.rect.top - self.jugador.rect.bottom <= 32:
+                        self.jugador.rect.bottom = sprite.rect.top
+                        esta_sobre_el_piso = True
+                        jugador_velocidad_y = 0
 
             # Actualizar los sprites de los filtros
             tiempo_actual = pygame.time.get_ticks()
