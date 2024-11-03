@@ -6,7 +6,7 @@ from pygame.math import Vector2 as vector
 
 TITLE_GAME = 'OxyFender'
 NAME_ENTERPRISE = 'Zip Studio'
-ICON_GAME = join("assets", "img", "icon", "logo.png")
+ICON_GAME = join("assets", "img", "icon", "logo_oxyfender.png")
 
 WIDTH = 1040
 HEIGHT = 550
