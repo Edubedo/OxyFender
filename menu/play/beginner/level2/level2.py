@@ -171,26 +171,14 @@ class Level2Beginner:
                     pair_name = obj.name.replace('arribaFiltro', 'abajoFiltro')
                     self.filtro_pares[obj.name] = pair_name
 
-        # Dibujamos el elevador del piso 1
-        Ascensor1_layer = tmx_mapa_2.get_layer_by_name('Ascensor1')
-        for obj in Ascensor1_layer:
-            self.elevador_sprite_piso1.rect.topleft = (obj.x, obj.y - self.elevador_sprite_piso1.rect.height + TILE_SIZE)
-            break
-            # Agrupar los filtros en pares
-
-        # Dibujamos el elevador del piso 2
-        Ascensor2_layer = tmx_mapa_2.get_layer_by_name('Ascensor2')
-        for obj in Ascensor2_layer:
-            self.elevador_sprite_piso2.rect.topleft = (obj.x, obj.y - self.elevador_sprite_piso2.rect.height + TILE_SIZE)
-            break
 
         # Dibujamos los objetos del mapa
-        for nombreObjeto in ['Objetos']:
-            for obj in tmx_mapa_2.get_layer_by_name(nombreObjeto):
-                sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
+        # for nombreObjeto in ['Objetos']:
+        #     for obj in tmx_mapa_2.get_layer_by_name(nombreObjeto):
+        #         sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
 
         # Dibujamos el jugador
-        self.jugador = Player((800, 420), self.todos_los_sprites)
+        self.jugador = Player((300,550), self.todos_los_sprites)
 
         # Reiniciamos configuraciones antes de inciiar el juego
         self.reiniciarConfiguraciones()
@@ -488,30 +476,6 @@ class Level2Beginner:
 
             clock.tick(FPS)
     
-    def actualizar_animacion_elevador_piso1(self):
-        tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - self.tiempo_cambio_animacion_piso1:  # Tiempo entre animaciones
-            self.indice_animacion_elevador_piso1 = (self.indice_animacion_elevador_piso1 + 1) % len(self.elevador_imagenes)
-            # Scale the elevator image to fit within the sprite's dimensions
-            scaled_image = pygame.transform.scale(
-                self.elevador_imagenes[self.indice_animacion_elevador_piso1],
-                (self.elevador_sprite_piso1.rect.width, self.elevador_sprite_piso1.rect.height)
-            )
-            self.elevador_sprite_piso1.image = scaled_image
-            self.tiempo_cambio_animacion_piso1 = tiempo_actual
-
-    def actualizar_animacion_elevador_piso2(self):
-        tiempo_actual = pygame.time.get_ticks()
-        if tiempo_actual - self.tiempo_cambio_animacion_piso2:  # Tiempo entre animaciones
-            self.indice_animacion_elevador_piso2 = (self.indice_animacion_elevador_piso2 + 1) % len(self.elevador_imagenes)
-            # Scale the elevator image to fit within the sprite's dimensions
-            scaled_image = pygame.transform.scale(
-                self.elevador_imagenes[self.indice_animacion_elevador_piso2],
-                (self.elevador_sprite_piso2.rect.width, self.elevador_sprite_piso2.rect.height)
-            )
-            self.elevador_sprite_piso2.image = scaled_image
-            self.tiempo_cambio_animacion_piso2 = tiempo_actual
-
     def menuPausa(self):
         self.juegoPausado = not self.juegoPausado
         if self.juegoPausado:
@@ -706,7 +670,7 @@ class Level2Beginner:
         self.perdioJuego = False
         self.juegoPausado = False
         self.ultimaVezTeletransportado = 0  # Maneja el tiempo de espera de los teletransportadores
-        self.jugador.rect.topleft = (800, 420)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (300,550)  # Reiniciar la posición del jugador
         self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
         self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.tiempo_ultimo = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
@@ -726,7 +690,7 @@ class Level2Beginner:
         self.elevador_sprite_piso1.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
         self.elevador_sprite_piso2.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
 
-        self.jugador.rect.topleft = (800, 420)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (300,550)  # Reiniciar la posición del jugador
         self.todos_los_sprites.add(self.jugador)  # Asegurarse de que el jugador esté en el grupo de todos los sprites
 
         self.jugador_oculto_hasta = 0
