@@ -8,7 +8,7 @@ import sys
 import json
 
 class Menu:
-    def __init__(self, screen, volumen="on"):
+    def __init__(self, screen, volumen="off"): ## !! REESTABLER MUSICA
         self.screen = screen 
         pygame.display.set_caption(f"Menu - {TITLE_GAME}") # Establecemos tituloPrincipalJuego del Menú
 

@@ -30,8 +30,6 @@ class Level2Beginner:
 
         self.todos_los_sprites = pygame.sprite.Group()
         self.colisiones_sprites = pygame.sprite.Group()
-        self.elevador_piso1_sprites = pygame.sprite.Group()
-        self.elevador_piso2_sprites = pygame.sprite.Group()
         self.filtro_sprites = pygame.sprite.Group()
         self.capa_verificar_gano = pygame.sprite.Group()
 
@@ -39,10 +37,6 @@ class Level2Beginner:
 
         self.camera_offset = pygame.Vector2(0, 0)
         self.jugador = None
-
-        self.ultimoElevador = None
-        self.tiempoEsperadoElevador = 1000
-        self.ultimaVezTeletransportado = 0
 
         self.font = pygame.font.Font(None, 36)
 
@@ -57,9 +51,6 @@ class Level2Beginner:
         self.filtros_arreglados = []  # Lista para almacenar los filtros arreglados
         self.filtro_pares = {}  # Diccionario para almacenar los pares de filtros
 
-        self.jugador_oculto_hasta = 0
-        self.teletransportando = False
-
         tiempo_inicio = pygame.time.get_ticks()
         self.setup(self.tmx_mapa_2, tiempo_inicio)
 
@@ -67,37 +58,6 @@ class Level2Beginner:
         # Cargar sonido de clic
         self.sonidoDeClick = pygame.mixer.Sound(join("assets", "audio", "utilerias", "click_madera.mp3"))
         self.sonidoDeClick.set_volume(1 if self.volumen == "on" else 0)
-
-        # cargar los elevadores
-         # Imagenes del elevador
-        self.elevador_imagenes = [
-            pygame.image.load(join("assets", "sprites", "elevador", "elevador1.png")).convert_alpha(),
-            pygame.image.load(join("assets", "sprites", "elevador", "elevador2.png")).convert_alpha(),
-            pygame.image.load(join("assets", "sprites", "elevador", "elevador3.png")).convert_alpha(),
-            pygame.image.load(join("assets", "sprites", "elevador", "elevador4.png")).convert_alpha(),
-        ]
-
-        # Crear un solo sprite para el elevador del piso 1
-        self.elevador_sprite_piso1 = Sprite((0, 0), self.elevador_imagenes[0], self.todos_los_sprites)
-        self.elevador_sprite_piso1.rect.size = (self.elevador_imagenes[0].get_width(), self.elevador_imagenes[0].get_height())
-        self.elevador_piso1_sprites.add(self.elevador_sprite_piso1)
-
-        self.elevador_sprite_piso2 = Sprite((0, 0), self.elevador_imagenes[0], self.todos_los_sprites)
-        self.elevador_sprite_piso2.rect.size = (self.elevador_imagenes[0].get_width(), self.elevador_imagenes[0].get_height())
-        self.elevador_piso2_sprites.add(self.elevador_sprite_piso2)
-
-        self.indice_animacion_elevador_piso1 = 0
-        self.tiempo_cambio_animacion_piso1 = pygame.time.get_ticks()
-
-        self.indice_animacion_elevador_piso2 = 0
-        self.tiempo_cambio_animacion_piso2 = pygame.time.get_ticks()
-        self.elevador_2_abierto = False  # Estado del elevador
-
-        # Cargar los efectos de sonido
-        self.sonido_abrir_elevador = pygame.mixer.Sound(join("assets", "audio","utilerias", "abrirElevador.mp3"))
-        self.sonido_cerrar_elevador = pygame.mixer.Sound(join("assets", "audio","utilerias", "elevadorsube.mp3"))
-
-        self.elevador_1_abierto = False  # Estado del elevador
 
         # Initialize rectBarraOxigeno
         self.tiempo_inicio = tiempo_inicio
@@ -144,12 +104,8 @@ class Level2Beginner:
         for nombreCapa in ['suelo','base','Pared','techo','escalones','fondo_tierra']:
             for x, y, superficie in tmx_mapa_2.get_layer_by_name(nombreCapa).tiles(): # obtenemos la capa por nombre que se obtiene x, y, la superficie(imagenes)
                 sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), superficie, self.todos_los_sprites) # Creamos un sprite con la posición x, y y la superficie
-                if nombreCapa in ['Pared','techo','escalones', 'fondo_tierra']:
+                if nombreCapa in ['Pared','escalones', 'fondo_tierra']:
                     self.colisiones_sprites.add(sprite)
-                #if nombreCapa == 'AscensorPiso1':
-                    #self.elevador_piso1_sprites.add(sprite)
-               # elif nombreCapa == 'AscensorPiso2':
-                   # self.elevador_piso2_sprites.add(sprite)
                 elif nombreCapa == 'capaVerificarGano':
                     self.capa_verificar_gano.add(sprite)
 
@@ -206,11 +162,6 @@ class Level2Beginner:
                 break
 
             tiempo_actual = pygame.time.get_ticks()
-            if tiempo_actual > self.jugador_oculto_hasta:
-                self.jugador.image.set_alpha(255)  # Hacer al jugador visible nuevamente
-                self.teletransportando = False  # Terminar teletransportación
-            else:
-                self.jugador.image.set_alpha(0)  # Mantener al jugador invisible
 
             if not self.juegoPausado:
                 self.tiempo_actual += 1000 // FPS
@@ -318,82 +269,6 @@ class Level2Beginner:
                         sprite.image = self.filtro_imagenes[0]
                     self.ultimo_cambio_filtro = tiempo_actual
 
-
-            tiempoActualElevadores = pygame.time.get_ticks()
-            colisionesElevadoresPiso1 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso1_sprites, False)
-            colisionesElevadoresPiso2 = pygame.sprite.spritecollide(self.jugador, self.elevador_piso2_sprites, False)
-
-            if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
-                rectTextoColisionElevador = pygame.image.load(join("assets", "img", "BOTONES", "img_click_x.png")).convert_alpha()
-                rectTextoColisionElevador = pygame.transform.scale(rectTextoColisionElevador, (rectTextoColisionElevador.get_width() - 70, rectTextoColisionElevador.get_height() - 70))
-
-                # Verificar si la tecla 'x' está presionada y el jugador no está teletransportándose
-                if keys[pygame.K_x] and not self.teletransportando:
-                    # Verificar si el jugador está colisionando con algún elevador
-                    if colisionesElevadoresPiso1 or colisionesElevadoresPiso2:
-                        # Si colisiona con el elevador del piso 1 y la puerta no está abierta
-                        if colisionesElevadoresPiso1 and not self.elevador_1_abierto:
-                            self.sonido_abrir_elevador.play()
-                            self.elevador_sprite_piso1.image = self.elevador_imagenes[3]  # Imagen de elevador abierto
-                            pygame.display.flip()
-                            pygame.time.delay(500)
-                            self.elevador_1_abierto = True
-                        # Si colisiona con el elevador del piso 2 y la puerta no está abierta
-                        elif colisionesElevadoresPiso2 and not self.elevador_2_abierto:
-                            self.sonido_abrir_elevador.play()
-                            self.elevador_sprite_piso2.image = self.elevador_imagenes[3]  # Imagen de elevador abierto
-                            pygame.display.flip()
-                            pygame.time.delay(500)
-                            self.elevador_2_abierto = True
-                        else:
-                            # Cerrar la puerta del elevador e iniciar la teletransportación
-                            self.sonido_cerrar_elevador.play()
-                            self.teletransportando = True  # Iniciar teletransportación
-
-                            # Manejar teletransportación del piso 1 al piso 2
-                            if colisionesElevadoresPiso1:
-                                self.elevador_sprite_piso1.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
-                                pygame.display.flip()
-                                self.jugador.image.set_alpha(0)  # Hacer al jugador invisible
-                                self.jugador_oculto_hasta = pygame.time.get_ticks() + 3000  # Ocultar por 3000ms
-                                self.elevador_1_abierto = False
-
-                                # Teletransportar jugador al elevador correspondiente en el piso 2
-                                for elevator in self.elevador_piso2_sprites:
-                                    self.jugador.rect.topleft = elevator.rect.topleft
-                                    self.jugador.rect.y += (self.jugador.rect.height / 2) + 1  # Ajustar posición de teletransporte
-                                    self.ultimoElevador = elevator
-                                    self.ultimaVezTeletransportado = tiempoActualElevadores
-                                    break
-
-                                # Abrimos la puerta del segundo piso
-                                pygame.time.delay(500)
-                                self.elevador_sprite_piso2.image = self.elevador_imagenes[3]  # Imagen de elevador abierto
-                                pygame.display.flip()
-                                self.elevador_2_abierto = True
-
-                            # Manejar teletransportación del piso 2 al piso 1
-                            elif colisionesElevadoresPiso2:
-                                self.elevador_sprite_piso2.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
-                                pygame.display.flip()
-                                self.jugador.image.set_alpha(0)  # Hacer al jugador invisible
-                                self.jugador_oculto_hasta = pygame.time.get_ticks() + 3000  # Ocultar por 3000ms
-                                self.elevador_2_abierto = False
-
-                                # Teletransportar jugador al elevador correspondiente en el piso 1
-                                for elevator in self.elevador_piso1_sprites:
-                                    self.jugador.rect.topleft = elevator.rect.topleft
-                                    self.jugador.rect.y += (self.jugador.rect.height / 2) + 1  # Ajustar posición de teletransporte
-                                    self.ultimoElevador = elevator
-                                    self.ultimaVezTeletransportado = tiempoActualElevadores
-                                    break
-
-                                # Abrimos la puerta del piso 1
-                                pygame.time.delay(500)
-                                self.elevador_sprite_piso1.image = self.elevador_imagenes[3]  # Imagen de elevador abierto
-                                pygame.display.flip()
-                                self.elevador_1_abierto = True
-
             colisionesVerificarGano = pygame.sprite.spritecollide(self.jugador, self.capa_verificar_gano, False)
 
             if colisionesVerificarGano:
@@ -440,9 +315,6 @@ class Level2Beginner:
 
             # Dibujar los sprites del filtro al frente
             self.filtro_sprites.draw(self.mostrarSuperficieNivel)
-
-            if (colisionesElevadoresPiso1 or colisionesElevadoresPiso2) and tiempoActualElevadores - self.ultimaVezTeletransportado > self.tiempoEsperadoElevador:
-                self.mostrarSuperficieNivel.blit(rectTextoColisionElevador, (self.mostrarSuperficieNivel.get_width() // 2, (self.mostrarSuperficieNivel.get_height() // 2) + 80))
 
             if colisionesFiltros:
                 self.mostrarSuperficieNivel.blit(rectTextoArreglarFiltro, (self.mostrarSuperficieNivel.get_width() // 2, (self.mostrarSuperficieNivel.get_width() // 2) - 140))
@@ -674,21 +546,8 @@ class Level2Beginner:
         self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
         self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.tiempo_ultimo = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
-        self.indice_animacion_elevador_piso1 = 0
-        self.tiempo_cambio_animacion_piso1 = pygame.time.get_ticks()  
-        self.elevador_1_abierto = False  # Estado del elevador
-        self.indice_animacion_elevador_piso2 = 0
-        self.tiempo_cambio_animacion_piso2 = pygame.time.get_ticks()
-        self.elevador_2_abierto = False  # Estado del elevador
         self.filtros_arreglados = []
-        self.ultimoElevador = None
-
-        self.ultimoElevador = None
-        self.tiempoEsperadoElevador = 1000
-
         # imagenes del piso
-        self.elevador_sprite_piso1.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
-        self.elevador_sprite_piso2.image = self.elevador_imagenes[0]  # Imagen de elevador cerrado
 
         self.jugador.rect.topleft = (300,550)  # Reiniciar la posición del jugador
         self.todos_los_sprites.add(self.jugador)  # Asegurarse de que el jugador esté en el grupo de todos los sprites
