@@ -82,7 +82,8 @@ class Level1Beginner:
         self.elevador_sprite_piso1 = Sprite((0, 0), self.elevador_imagenes[0], self.todos_los_sprites)
         self.elevador_sprite_piso1.rect.size = (self.elevador_imagenes[0].get_width(), self.elevador_imagenes[0].get_height())
         self.elevador_piso1_sprites.add(self.elevador_sprite_piso1)
-
+        
+        # Crear un solo sprite para el elevador del piso 2
         self.elevador_sprite_piso2 = Sprite((0, 0), self.elevador_imagenes[0], self.todos_los_sprites)
         self.elevador_sprite_piso2.rect.size = (self.elevador_imagenes[0].get_width(), self.elevador_imagenes[0].get_height())
         self.elevador_piso2_sprites.add(self.elevador_sprite_piso2)
