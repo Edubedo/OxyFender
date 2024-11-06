@@ -4,7 +4,7 @@
  <tileset firstgid="1303" source="t_p2.tsx"/>
  <tileset firstgid="1321" source="tuberia.tsx"/>
  <tileset firstgid="1363" source="../level1/filtrito.tsx"/>
- <layer id="5" name="suelo" width="63" height="22" visible="0">
+ <layer id="5" name="suelo" width="63" height="22">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -108,7 +108,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="4" name="base" width="63" height="22" visible="0">
+ <layer id="4" name="base" width="63" height="22">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -205,11 +205,10 @@
   <object id="57" gid="1362" x="688.063" y="131.969" width="32" height="32"/>
   <object id="58" gid="1362" x="700" y="131.969" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="8" name="tuberias"/>
  <objectgroup id="9" name="filtooo">
-  <object id="63" name="abajoFiltro1" gid="1370" x="960" y="640" width="32" height="32"/>
-  <object id="64" name="arribaFiltro1" gid="1367" x="960" y="608" width="32" height="32"/>
-  <object id="65" name="arribaFiltro2" gid="1367" x="704" y="288" width="32" height="32"/>
-  <object id="66" name="abajoFiltro2" gid="1370" x="704" y="320" width="32" height="32"/>
+  <object id="63" name="abajoFiltro2" gid="1370" x="992" y="320" width="32" height="32"/>
+  <object id="64" name="arribaFiltro2" gid="1367" x="992" y="288" width="31.3052" height="32.6699"/>
+  <object id="65" name="arribaFiltro1" gid="1367" x="1024" y="608" width="32" height="32"/>
+  <object id="66" name="abajoFiltro1" gid="1370" x="1024" y="640" width="32" height="32"/>
  </objectgroup>
 </map>
