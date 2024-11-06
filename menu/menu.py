@@ -8,7 +8,7 @@ import sys
 import json
 
 class Menu:
-    def __init__(self, screen, volumen="off"): ## !! REESTABLER MUSICA
+    def __init__(self, screen, volumen="on"): ## !! REESTABLER MUSICA
         self.screen = screen 
         pygame.display.set_caption(f"Menu - {TITLE_GAME}") # Establecemos tituloPrincipalJuego del Menú
 
@@ -149,7 +149,7 @@ class Menu:
                             break
                     else:
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-
+ 
                 # Dependiendo de la opción seleccionada, se ejecuta una acción
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     for option, rect in self.rectOpcionesMenuPrincipal: # Recorremos las opciones del menú principal
@@ -159,7 +159,11 @@ class Menu:
                             
                             if option['id'] == "play" or option['id'] == "jugar":
                                 game_menu = MenuPlay(self.screen, self.configLanguage, self.datosLanguage, self.volumen)
-                                game_menu.mostrarMenuDificultad()
+                                game_menu.mostrarMenuNiveles({
+                "name": self.datosLanguage[self.configLanguage]['difficulty']["beginnerName"],
+                "id": self.datosLanguage[self.configLanguage]['difficulty']["beginnerId"],
+                "image": pygame.image.load(join(os.path.join(*self.datosLanguage[self.configLanguage]['difficulty']["beginnerImage"]))).convert_alpha()
+            }, self.configLanguage, self.datosLanguage)
                                 continue
                             
                             if option['id'] == "credits":

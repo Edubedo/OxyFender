@@ -1,0 +1,119 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "basura1.tmx",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "Todos los archivos (*)",
+    "fileStates": {
+        "": {
+            "scaleInEditor": 1
+        },
+        "#basebasura": {
+            "scaleInDock": 0.5
+        },
+        "#basuras_f1": {
+            "scaleInDock": 0.5
+        },
+        "#basuras_f2": {
+            "scaleInDock": 1
+        },
+        "#basuras_f3": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/begginer/laberinto/laberinto1.tmx": {
+            "scale": 1.2975911458333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 383.7880688374894,
+                "y": 271.6572174000301
+            }
+        },
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/begginer/laberinto/laberinto1.tmx#base": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/begginer/laberinto/laberinto1.tmx#figuras": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/begginer/laberinto/laberinto1.tmx#laberinto": {
+            "scaleInDock": 1
+        },
+        "basura1.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 307.33333333333326,
+                "y": 421.99999999999994
+            }
+        },
+        "basura1.tmx#basebasura": {
+            "scaleInDock": 1.5
+        },
+        "basura1.tmx#basuras_f1": {
+            "scaleInDock": 1
+        },
+        "basura2.tmx": {
+            "scale": 1,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 380.5,
+                "y": 271.5
+            }
+        },
+        "basura2.tmx#base_basura": {
+            "scaleInDock": 0.5,
+            "scaleInEditor": 1
+        },
+        "basura2.tmx#basebasura": {
+            "scaleInDock": 0.125,
+            "scaleInEditor": 1
+        },
+        "basura2.tmx#basuras_f1": {
+            "scaleInDock": 0.75
+        },
+        "basura2.tmx#basuras_f2": {
+            "scaleInDock": 1
+        },
+        "basura3.tmx": {
+            "expandedObjectLayers": [
+                2,
+                4,
+                3
+            ],
+            "scale": 1,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 388.5,
+                "y": 271.5
+            }
+        },
+        "basura3.tmx#basebasura": {
+            "scaleInDock": 0.33
+        },
+        "basura3.tmx#basuras_f3": {
+            "scaleInDock": 0.75
+        }
+    },
+    "last.imagePath": "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/desafios_advanced/basuras_advanced",
+    "map.height": 17,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 24,
+    "openFiles": [
+        "basura1.tmx",
+        "basura2.tmx",
+        "basura3.tmx"
+    ],
+    "project": "basuras.tiled-project",
+    "recentFiles": [
+        "basura3.tmx",
+        "basura2.tmx",
+        "basura1.tmx",
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/begginer/laberinto/laberinto1.tmx"
+    ],
+    "tileset.embedInMap": true
+}

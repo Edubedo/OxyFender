@@ -300,7 +300,7 @@ class Level2Beginner:
                     if keys[pygame.K_a]:
                         self.capturarPantalla = self.mostrarSuperficieNivel.copy()
 
-                        pantalla = self.pantallaArreglarAire()
+                        pantalla = self.pantallaLaberinto()
 
                         if pantalla == 1:
                             # Arreglar ambos filtros del par
@@ -590,30 +590,38 @@ class Level2Beginner:
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 60, pos_y))
 
-    def pantallaArreglarAire(self):
-        self.tmx_filtroUnoNivel1 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel1", "tuberia1.tmx"))
+    def pantallaLaberinto(self):
+        self.tmx_filtroUnoNivel2 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel2", "laberinto1.tmx"))
         self.arreglo = False
 
-        map_width = self.tmx_filtroUnoNivel1.width * self.tmx_filtroUnoNivel1.tilewidth
-        map_height = self.tmx_filtroUnoNivel1.height * self.tmx_filtroUnoNivel1.tileheight
+        map_width = self.tmx_filtroUnoNivel2.width * self.tmx_filtroUnoNivel2.tilewidth
+        map_height = self.tmx_filtroUnoNivel2.height * self.tmx_filtroUnoNivel2.tileheight
         offset_x = (self.mostrarSuperficieNivel.get_width() - map_width) // 2
         offset_y = (self.mostrarSuperficieNivel.get_height() - map_height) // 2
 
-        # button_font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 20) # Establecemos la Fuente de texto
-        #  = button_font.render(self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelFilterMessage'], True, (255, 255, 255))
-        # button_rect = .get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, 110))
-
-        banderaEjecutandoNivel1 = True
-        drawing_line = False
-        start_pos = None
-        end_pos = None
-        line_color = None
-        completed_lines = []
-        unique_connections = set()
-
+        banderaEjecutandoNivel2 = True
         tarea_completada = False
 
-        while banderaEjecutandoNivel1:
+        # Crear el reloj para controlar la velocidad de actualización
+        clock = pygame.time.Clock()
+
+        # Inicializar la posición del personaje
+        personaje_pos = None
+
+        # Encontrar la posición inicial del personaje
+        for layer in self.tmx_filtroUnoNivel2.visible_layers:
+            if layer.name == 'capaInicio':
+                for x, y, gid in layer:
+                    tile = self.tmx_filtroUnoNivel2.get_tile_image_by_gid(gid)
+                    if tile:
+                        personaje_pos = pygame.Rect(x * self.tmx_filtroUnoNivel2.tilewidth + offset_x, y * self.tmx_filtroUnoNivel2.tileheight + offset_y, self.tmx_filtroUnoNivel2.tilewidth, self.tmx_filtroUnoNivel2.tileheight)
+                        break
+
+        # Verificar que se haya encontrado la posición inicial del personaje
+        if personaje_pos is None:
+            raise ValueError("No se encontró la posición inicial del personaje en la capa 'capaInicio'")
+
+        while banderaEjecutandoNivel2:
             if self.volver_menu:
                 break
 
@@ -626,89 +634,71 @@ class Level2Beginner:
                     sys.exit()
 
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                    banderaEjecutandoNivel1 = False
+                    banderaEjecutandoNivel2 = False
 
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    for layer in self.tmx_filtroUnoNivel1.visible_layers:
-                        if isinstance(layer, pytmx.TiledTileLayer):
+                elif event.type == pygame.KEYDOWN:
+                    nueva_pos = personaje_pos
+                    if event.key == pygame.K_UP:
+                        nueva_pos = personaje_pos.move(0, -self.tmx_filtroUnoNivel2.tileheight)
+                    elif event.key == pygame.K_DOWN:
+                        nueva_pos = personaje_pos.move(0, self.tmx_filtroUnoNivel2.tileheight)
+                    elif event.key == pygame.K_LEFT:
+                        nueva_pos = personaje_pos.move(-self.tmx_filtroUnoNivel2.tilewidth, 0)
+                    elif event.key == pygame.K_RIGHT:
+                        nueva_pos = personaje_pos.move(self.tmx_filtroUnoNivel2.tilewidth, 0)
+
+                    # Verificar colisiones con la capa "base"
+                    colision = False
+                    for layer in self.tmx_filtroUnoNivel2.visible_layers:
+                        if layer.name == 'base':
                             for x, y, gid in layer:
-                                tile = self.tmx_filtroUnoNivel1.get_tile_image_by_gid(gid)
+                                tile = self.tmx_filtroUnoNivel2.get_tile_image_by_gid(gid)
                                 if tile:
-                                    tile_rect = pygame.Rect(x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y, self.tmx_filtroUnoNivel1.tilewidth, self.tmx_filtroUnoNivel1.tileheight)
-                                    if tile_rect.collidepoint(mouse_pos):
-                                        if layer.name == 'btn1azul':
-                                            drawing_line = True
-                                            start_pos = tile_rect.center
-                                            line_color = (0, 0, 255)
-                                        elif layer.name == 'btn1rojo':
-                                            drawing_line = True
-                                            start_pos = tile_rect.center
-                                            line_color = (255, 0, 0)
-                                        elif layer.name == 'btn1verde':
-                                            drawing_line = True
-                                            start_pos = tile_rect.center
-                                            line_color = (0, 255, 0)
-                                        elif layer.name == 'btn2azul' and line_color == (0, 0, 255):
-                                            end_pos = tile_rect.center
-                                            connection = (start_pos, end_pos, line_color)
-                                            if connection not in unique_connections:
-                                                completed_lines.append(connection)
-                                                unique_connections.add(connection)
-                                            drawing_line = False
-                                        elif layer.name == 'btn2rojo' and line_color == (255, 0, 0):
-                                            end_pos = tile_rect.center
-                                            connection = (start_pos, end_pos, line_color)
-                                            if connection not in unique_connections:
-                                                completed_lines.append(connection)
-                                                unique_connections.add(connection)
-                                            drawing_line = False
-                                        elif layer.name == 'btn2verde' and line_color == (0, 255, 0):
-                                            end_pos = tile_rect.center
-                                            connection = (start_pos, end_pos, line_color)
-                                            if connection not in unique_connections:
-                                                completed_lines.append(connection)
-                                                unique_connections.add(connection)
-                                            drawing_line = False
+                                    tile_rect = pygame.Rect(x * self.tmx_filtroUnoNivel2.tilewidth + offset_x, y * self.tmx_filtroUnoNivel2.tileheight + offset_y, self.tmx_filtroUnoNivel2.tilewidth, self.tmx_filtroUnoNivel2.tileheight)
+                                    if nueva_pos.colliderect(tile_rect):
+                                        colision = True
+                                        break
+                            if colision:
+                                break
 
-            for layer in self.tmx_filtroUnoNivel1.visible_layers:
+                    if not colision:
+                        personaje_pos = nueva_pos
+
+            for layer in self.tmx_filtroUnoNivel2.visible_layers:
                 if isinstance(layer, pytmx.TiledTileLayer):
                     for x, y, gid in layer:
-                        tile = self.tmx_filtroUnoNivel1.get_tile_image_by_gid(gid)
+                        tile = self.tmx_filtroUnoNivel2.get_tile_image_by_gid(gid)
                         if tile:
-                            tile_rect = pygame.Rect(x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y, self.tmx_filtroUnoNivel1.tilewidth, self.tmx_filtroUnoNivel1.tileheight)
-                            if tile_rect.collidepoint(mouse_pos) and layer.name in ['btn1azul', 'btn1rojo', 'btn1verde', 'btn2azul', 'btn2rojo', 'btn2verde']:
+                            tile_rect = pygame.Rect(x * self.tmx_filtroUnoNivel2.tilewidth + offset_x, y * self.tmx_filtroUnoNivel2.tileheight + offset_y, self.tmx_filtroUnoNivel2.tilewidth, self.tmx_filtroUnoNivel2.tileheight)
+                            if tile_rect.collidepoint(mouse_pos) and layer.name in ['capaInicio', 'capaFin', 'laberinto', 'base']:
                                 hand_cursor = True
-                            self.mostrarSuperficieNivel.blit(tile, (x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y))
+                            self.mostrarSuperficieNivel.blit(tile, (x * self.tmx_filtroUnoNivel2.tilewidth + offset_x, y * self.tmx_filtroUnoNivel2.tileheight + offset_y))
 
             if hand_cursor:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
-            # self.mostrarSuperficieNivel.blit(, button_rect.topleft)
-
-            for line in completed_lines:
-                pygame.draw.line(self.mostrarSuperficieNivel, line[2], line[0], line[1], 5)
-
-            if drawing_line:
-                current_pos = pygame.mouse.get_pos()
-                # Check if the current position is within the "basecons" layer
-                basecons_layer = next((layer for layer in self.tmx_filtroUnoNivel1.visible_layers if layer.name == 'basecons'), None)
-                if basecons_layer:
-                    for x, y, gid in basecons_layer:
-                        base_tile_rect = pygame.Rect(x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y, self.tmx_filtroUnoNivel1.tilewidth, self.tmx_filtroUnoNivel1.tileheight)
-                        if base_tile_rect.collidepoint(current_pos):
-                            pygame.draw.line(self.mostrarSuperficieNivel, line_color, start_pos, current_pos, 5)
-                            break
+            # Dibujar el personaje
+            pygame.draw.rect(self.mostrarSuperficieNivel, (255, 0, 0), personaje_pos)
 
             pygame.display.flip()
 
-            if len(completed_lines) == 3 and not tarea_completada:
-                self.arreglo = True
-                self.contadorOxigenoReparado += 1
-                tarea_completada = True
-                banderaEjecutandoNivel1 = False
-                return 1
+            # Verificar si el personaje ha llegado a la capa "capaFin"
+            for layer in self.tmx_filtroUnoNivel2.visible_layers:
+                if layer.name == 'capaFin':
+                    for x, y, gid in layer:
+                        tile = self.tmx_filtroUnoNivel2.get_tile_image_by_gid(gid)
+                        if tile:
+                            tile_rect = pygame.Rect(x * self.tmx_filtroUnoNivel2.tilewidth + offset_x, y * self.tmx_filtroUnoNivel2.tileheight + offset_y, self.tmx_filtroUnoNivel2.tilewidth, self.tmx_filtroUnoNivel2.tileheight)
+                            if personaje_pos.colliderect(tile_rect):
+                                self.arreglo = True
+                                self.contadorOxigenoReparado += 1
+                                tarea_completada = True
+                                banderaEjecutandoNivel2 = False
+                                return 1
+
+            clock.tick(FPS)
 
     def pantallaPerdioNivel(self):
         pygame.mixer.music.stop()  # Detener la música de fondo

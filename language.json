@@ -29,7 +29,7 @@
 		"selectLevel": {
 			"nameLevel": "Nivel",
 			"imagenLevel": "img_nv_nivel",
-			"imgTitleLevelSection": "titulos_seleccionar_nivel.png"
+			"imgTitleLevelSection": "titulo_seleccionar_dificultad.png"
 
 		},
 		"levelsBeginner": {
@@ -78,7 +78,7 @@
 		"selectLevel": {
 			"nameLevel": "Level",
 			"imagenLevel": "img_nv_level",
-			"imgTitleLevelSection": "titulo_select_level.png"
+			"imgTitleLevelSection": "titulo_select_difficulty.png"
 		},
 		"levelsBeginner": {
 			"level1": {

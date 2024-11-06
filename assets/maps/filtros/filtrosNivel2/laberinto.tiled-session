@@ -1,0 +1,122 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/begginer/laberinto/laberinto2.tmx",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "Todos los archivos (*)",
+    "fileStates": {
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/begginer/laberinto/laberinto2.tmx": {
+            "scale": 1.4076822916666665,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 383.9644806215892,
+                "y": 271.72324484321535
+            }
+        },
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/begginer/laberinto/laberinto2.tmx#base_lab": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/begginer/laberinto/laberinto2.tmx#figuras2": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/begginer/laberinto/laberinto2.tmx#laberinto2": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/tuberias/tuberia1.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 437,
+                "y": 268.5
+            }
+        },
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/tuberias/tuberia1.tmx#baseconsola2": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/tuberias/tuberia1.tmx#tub1": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/tuberias/tuberia1.tmx#tub2": {
+            "scaleInDock": 1
+        },
+        "laberinto1.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 386.99999999999994,
+                "y": 300.33333333333337
+            }
+        },
+        "laberinto1.tmx#base": {
+            "scaleInDock": 0.25
+        },
+        "laberinto1.tmx#figuras": {
+            "scaleInDock": 1
+        },
+        "laberinto1.tmx#laberinto": {
+            "scaleInDock": 0.75
+        },
+        "laberinto2.tmx": {
+            "expandedObjectLayers": [
+                4,
+                5,
+                2,
+                3
+            ],
+            "scale": 1.4076822916666665,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 383.9644806215892,
+                "y": 271.72324484321535
+            }
+        },
+        "laberinto2.tmx#base_lab": {
+            "scaleInDock": 1
+        },
+        "laberinto2.tmx#figuras2": {
+            "scaleInDock": 1
+        },
+        "laberinto2.tmx#laberinto2": {
+            "scaleInDock": 1
+        },
+        "laberinto3.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 400.99999999999994,
+                "y": 277.66666666666663
+            }
+        },
+        "laberinto3.tmx#base_lab": {
+            "scaleInDock": 1
+        },
+        "laberinto3.tmx#figuras3": {
+            "scaleInDock": 1
+        },
+        "laberinto3.tmx#laverinto3": {
+            "scaleInDock": 1
+        }
+    },
+    "last.imagePath": "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/laberinto",
+    "map.height": 17,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 24,
+    "openFiles": [
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/begginer/laberinto/laberinto2.tmx"
+    ],
+    "project": "laberinto.tiled-project",
+    "recentFiles": [
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/begginer/laberinto/laberinto2.tmx",
+        "laberinto2.tmx",
+        "laberinto1.tmx",
+        "laberinto3.tmx",
+        "C:/Users/Colibecas/Desktop/pi/OxyFender/desafios/tuberias/tuberia1.tmx"
+    ],
+    "tileset.embedInMap": true
+}
