@@ -609,6 +609,11 @@ class Level2Beginner:
         personaje_pos = None
 
         # Encontrar la posición inicial del personaje
+
+         # for nombreObjeto in ['Objetos']:
+        #     for obj in tmx_mapa_2.get_layer_by_name(nombreObjeto):
+        #         sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
+        
         for layer in self.tmx_filtroUnoNivel2.visible_layers:
             if layer.name == 'capaInicio':
                 for x, y, gid in layer:
@@ -650,6 +655,7 @@ class Level2Beginner:
                     # Verificar colisiones con la capa "base"
                     colision = False
                     for layer in self.tmx_filtroUnoNivel2.visible_layers:
+                        print("layer: ", layer)
                         if layer.name == 'base':
                             for x, y, gid in layer:
                                 tile = self.tmx_filtroUnoNivel2.get_tile_image_by_gid(gid)
@@ -673,7 +679,7 @@ class Level2Beginner:
                             if tile_rect.collidepoint(mouse_pos) and layer.name in ['capaInicio', 'capaFin', 'laberinto', 'base']:
                                 hand_cursor = True
                             self.mostrarSuperficieNivel.blit(tile, (x * self.tmx_filtroUnoNivel2.tilewidth + offset_x, y * self.tmx_filtroUnoNivel2.tileheight + offset_y))
-
+    
             if hand_cursor:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             else:

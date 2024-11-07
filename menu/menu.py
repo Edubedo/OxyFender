@@ -159,11 +159,7 @@ class Menu:
                             
                             if option['id'] == "play" or option['id'] == "jugar":
                                 game_menu = MenuPlay(self.screen, self.configLanguage, self.datosLanguage, self.volumen)
-                                game_menu.mostrarMenuNiveles({
-                "name": self.datosLanguage[self.configLanguage]['difficulty']["beginnerName"],
-                "id": self.datosLanguage[self.configLanguage]['difficulty']["beginnerId"],
-                "image": pygame.image.load(join(os.path.join(*self.datosLanguage[self.configLanguage]['difficulty']["beginnerImage"]))).convert_alpha()
-            }, self.configLanguage, self.datosLanguage)
+                                game_menu.mostrarMenuDificultad()
                                 continue
                             
                             if option['id'] == "credits":

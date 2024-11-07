@@ -5,16 +5,17 @@ from utilerias.configuraciones import *
 from os.path import join
 
 class Creditos:
-    def __init__(self, screen):
+    def __init__(self, screen, configLanguage, datosLanguage):
         self.screen = screen
-
+        self.configLanguage = configLanguage
+        self.datosLanguage = datosLanguage
     def mostrarCreditos(self):
         pygame.time.wait(0)
         self.empezarVideoCreditos()
 
     def empezarVideoCreditos(self):
-        pygame.display.set_caption("Credits - OxyFender")
-        rutaVideo = join("assets", "videos", "creditos", "creditsEnglish.mp4")
+        self.configLanguage == "es" and pygame.display.set_caption("Credits - OxyFender") or pygame.display.set_caption("Créditos - OxyFender")
+        rutaVideo = self.configLanguage == "es" and join("assets", "videos","creditos", "creditsSpanish.mp4") or join("assets", "videos","creditos", "creditsEnglish.mp4")
         cap = cv2.VideoCapture(rutaVideo)
 
         if not cap.isOpened():
