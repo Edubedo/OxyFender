@@ -171,6 +171,12 @@ class Level1Advanced:
             elif 'arribaFiltro' in obj.name:
                 pair_name = obj.name.replace('arribaFiltro', 'abajoFiltro')
                 self.filtro_pares[obj.name] = pair_name
+            if 'abajoFiltro3' in obj.name:
+                sprite = Sprite((obj.x, obj.y - 63), self.filtro_imagenes[0], self.todos_los_sprites)
+                sprite.name = obj.name  # Añadir el nombre al sprite
+                sprite.indice_imagen = 0  # Inicializar el índice de la imagen
+                sprite.ultimo_cambio = 0  # Inicializar el tiempo del último cambio
+                self.filtro_sprites.add(sprite)
 
         # Dibujamos el elevador del piso 1
         Ascensor1_layer = tmx_mapa_1.get_layer_by_name('Ascensor1')
