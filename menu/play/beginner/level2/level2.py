@@ -142,7 +142,6 @@ class Level2Beginner:
         # Empezamos con el juego
         self.run()
 
-   
     def run(self):
         pygame.mixer.music.pause()
         pygame.mixer.music.load(join("assets", "audio", "niveles", "HKCrossroads.mp3"))
@@ -222,10 +221,14 @@ class Level2Beginner:
                     movimientoJugador.x -= PLAYER_VEL - 1
                     estaMoviendose = True
                     direccionPersonaje = "left"
+                    # Validacion por si se mueve por una zona que no es colision, que lo jale al piso
+                    esta_sobre_el_piso = False
+                                   
                 elif keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
                     movimientoJugador.x += PLAYER_VEL
                     estaMoviendose = True
                     direccionPersonaje = "right" 
+
                 if keys[pygame.K_SPACE] and esta_sobre_el_piso:
                     jugador_velocidad_y = PLAYER_FUERZA_SALTO
                     esta_sobre_el_piso = False
@@ -258,16 +261,34 @@ class Level2Beginner:
                 if movimientoJugador.x > 0:
                     self.jugador.rect.right = sprite.rect.left
                     # Ajustar la posición en Y para subir escalones solo si está en contacto con ellos
-                    if 0 < sprite.rect.top - self.jugador.rect.bottom <= 32:
+                    if 0 < sprite.rect.top - self.jugador.rect.bottom <= 31:
                         self.jugador.rect.bottom = sprite.rect.top
                         esta_sobre_el_piso = True
                         jugador_velocidad_y = 0
                 elif movimientoJugador.x < 0:
                     self.jugador.rect.left = sprite.rect.right
                     # Ajustar la posición en Y para subir escalones solo si está en contacto con ellos
-                    if 0 < sprite.rect.top - self.jugador.rect.bottom <= 32:
+                    if 0 < sprite.rect.top - self.jugador.rect.bottom <= 31:
                         self.jugador.rect.bottom = sprite.rect.top
                         esta_sobre_el_piso = True
+                        jugador_velocidad_y = 0
+
+            # Asegúrate de que el jugador caiga si no está sobre una plataforma
+            if not esta_sobre_el_piso:
+                jugador_velocidad_y += gravedad
+                if jugador_velocidad_y > maxima_velocidad_caida:
+                    jugador_velocidad_y = maxima_velocidad_caida
+                self.jugador.rect.y += jugador_velocidad_y
+
+                # Verificar colisiones nuevamente después de aplicar la gravedad
+                spriteColisionesCapas = pygame.sprite.spritecollide(self.jugador, self.colisiones_sprites, False)
+                for sprite in spriteColisionesCapas:
+                    if jugador_velocidad_y > 0:
+                        self.jugador.rect.bottom = sprite.rect.top
+                        esta_sobre_el_piso = True
+                        jugador_velocidad_y = 0
+                    elif jugador_velocidad_y < 0:
+                        self.jugador.rect.top = sprite.rect.bottom
                         jugador_velocidad_y = 0
 
             # Actualizar los sprites de los filtros
@@ -361,7 +382,7 @@ class Level2Beginner:
             pygame.display.flip()
 
             clock.tick(FPS)
-    
+
     def menuPausa(self):
         self.juegoPausado = not self.juegoPausado
         if self.juegoPausado:
