@@ -101,7 +101,7 @@ class Level2Beginner:
         ]
         
        # Dibujamos los elementos generales del mapa
-        for nombreCapa in ['suelo','base','Pared','techo','escalones','fondo_tierra']:
+        for nombreCapa in ['base','Pared','escalones','fondo_tierra']:
             for x, y, superficie in tmx_mapa_2.get_layer_by_name(nombreCapa).tiles(): # obtenemos la capa por nombre que se obtiene x, y, la superficie(imagenes)
                 sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), superficie, self.todos_los_sprites) # Creamos un sprite con la posición x, y y la superficie
                 if nombreCapa in ['Pared','escalones', 'fondo_tierra']:
@@ -114,7 +114,7 @@ class Level2Beginner:
         filtooo_layer = tmx_mapa_2.get_layer_by_name('filtooo')
         for obj in filtooo_layer:
             if obj.name == 'arribaFiltro1' or obj.name == 'arribaFiltro2':
-                sprite = Sprite((obj.x + 40, obj.y - 30), self.filtro_imagenes[0], self.todos_los_sprites)
+                sprite = Sprite((obj.x + 550, obj.y - 30), self.filtro_imagenes[0], self.todos_los_sprites)
                 sprite.name = obj.name  # Añadir el nombre al sprite
                 sprite.indice_imagen = 0  # Inicializar el índice de la imagen
                 sprite.ultimo_cambio = 0  # Inicializar el tiempo del último cambio
@@ -134,7 +134,7 @@ class Level2Beginner:
         #         sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
 
         # Dibujamos el jugador
-        self.jugador = Player((260,550), self.todos_los_sprites)
+        self.jugador = Player((800,700), self.todos_los_sprites)
 
         # Reiniciamos configuraciones antes de inciiar el juego
         self.reiniciarConfiguraciones()
@@ -556,14 +556,14 @@ class Level2Beginner:
         self.perdioJuego = False
         self.juegoPausado = False
         self.ultimaVezTeletransportado = 0  # Maneja el tiempo de espera de los teletransportadores
-        self.jugador.rect.topleft = (260,550)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (800,600)  # Reiniciar la posición del jugador
         self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
         self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.tiempo_ultimo = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.filtros_arreglados = []
         # imagenes del piso
 
-        self.jugador.rect.topleft = (260,550)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (800,600)  # Reiniciar la posición del jugador
         self.todos_los_sprites.add(self.jugador)  # Asegurarse de que el jugador esté en el grupo de todos los sprites
 
         self.jugador_oculto_hasta = 0
@@ -686,7 +686,7 @@ class Level2Beginner:
 
             # Verificar si el personaje ha llegado a la capa "capaFin"
             for layer in self.tmx_filtroUnoNivel2.visible_layers:
-                if layer.name == 'capaFin':
+                if layer.name == 'CapaFin':
                     for x, y, gid in layer:
                         tile = self.tmx_filtroUnoNivel2.get_tile_image_by_gid(gid)
                         if tile:
