@@ -1,4 +1,3 @@
-
 import pygame
 from utilerias.configuraciones import *
 from os.path import join
@@ -99,7 +98,7 @@ class Level2Beginner:
             pygame.image.load(join("assets", "sprites", "filtro", f"FILTRO{i}.png")).convert_alpha()
             for i in range(1, 7)
         ]
-        
+
        # Dibujamos los elementos generales del mapa
         for nombreCapa in ['base','Pared','escalones','fondo_tierra']:
             for x, y, superficie in tmx_mapa_2.get_layer_by_name(nombreCapa).tiles(): # obtenemos la capa por nombre que se obtiene x, y, la superficie(imagenes)
@@ -142,6 +141,7 @@ class Level2Beginner:
         # Empezamos con el juego
         self.run()
 
+   
     def run(self):
         pygame.mixer.music.pause()
         pygame.mixer.music.load(join("assets", "audio", "niveles", "HKCrossroads.mp3"))
@@ -209,27 +209,29 @@ class Level2Beginner:
             if self.juegoPausadoControles:
                 self.pantallaControles()
                 continue
-            
+
             if not self.teletransportando:
                 keys = pygame.key.get_pressed()
                 movimientoJugador = pygame.Vector2(0, 0)
                 estaMoviendose = False
                 estaSaltando = False
                 direccionPersonaje = self.jugador.direction  # Mantener la dirección actual
+                #esta_sobre_el_piso_K = False
 
                 if keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
+                    #esta_sobre_el_piso = False
+                    #esta_sobre_el_piso_K=True
                     movimientoJugador.x -= PLAYER_VEL - 1
                     estaMoviendose = True
                     direccionPersonaje = "left"
-                    # Validacion por si se mueve por una zona que no es colision, que lo jale al piso
-                    esta_sobre_el_piso = False
-                                   
                 elif keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
+                    #esta_sobre_el_piso = False
+                    #esta_sobre_el_piso_K=True
                     movimientoJugador.x += PLAYER_VEL
                     estaMoviendose = True
                     direccionPersonaje = "right" 
-
-                if keys[pygame.K_SPACE] and esta_sobre_el_piso:
+                if keys[pygame.K_SPACE] and (esta_sobre_el_piso) and not estaSaltando:
+                    esta_sobre_el_piso_K=False
                     jugador_velocidad_y = PLAYER_FUERZA_SALTO
                     esta_sobre_el_piso = False
                     estaSaltando = True
@@ -237,6 +239,7 @@ class Level2Beginner:
                     jugador_velocidad_y += gravedad
                     if jugador_velocidad_y > maxima_velocidad_caida:
                         jugador_velocidad_y = maxima_velocidad_caida
+                esta_sobre_el_piso = False
                 movimientoJugador.y += jugador_velocidad_y
 
                 # Reemplaza esta sección en el método run
@@ -261,34 +264,16 @@ class Level2Beginner:
                 if movimientoJugador.x > 0:
                     self.jugador.rect.right = sprite.rect.left
                     # Ajustar la posición en Y para subir escalones solo si está en contacto con ellos
-                    if 0 < sprite.rect.top - self.jugador.rect.bottom <= 31:
+                    if 0 < sprite.rect.top - self.jugador.rect.bottom <= 32:
                         self.jugador.rect.bottom = sprite.rect.top
                         esta_sobre_el_piso = True
                         jugador_velocidad_y = 0
                 elif movimientoJugador.x < 0:
                     self.jugador.rect.left = sprite.rect.right
                     # Ajustar la posición en Y para subir escalones solo si está en contacto con ellos
-                    if 0 < sprite.rect.top - self.jugador.rect.bottom <= 31:
+                    if 0 < sprite.rect.top - self.jugador.rect.bottom <= 32:
                         self.jugador.rect.bottom = sprite.rect.top
                         esta_sobre_el_piso = True
-                        jugador_velocidad_y = 0
-
-            # Asegúrate de que el jugador caiga si no está sobre una plataforma
-            if not esta_sobre_el_piso:
-                jugador_velocidad_y += gravedad
-                if jugador_velocidad_y > maxima_velocidad_caida:
-                    jugador_velocidad_y = maxima_velocidad_caida
-                self.jugador.rect.y += jugador_velocidad_y
-
-                # Verificar colisiones nuevamente después de aplicar la gravedad
-                spriteColisionesCapas = pygame.sprite.spritecollide(self.jugador, self.colisiones_sprites, False)
-                for sprite in spriteColisionesCapas:
-                    if jugador_velocidad_y > 0:
-                        self.jugador.rect.bottom = sprite.rect.top
-                        esta_sobre_el_piso = True
-                        jugador_velocidad_y = 0
-                    elif jugador_velocidad_y < 0:
-                        self.jugador.rect.top = sprite.rect.bottom
                         jugador_velocidad_y = 0
 
             # Actualizar los sprites de los filtros
@@ -377,12 +362,12 @@ class Level2Beginner:
             #Boton de controles
             self.botonControlesRect = self.botonControles.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 500))
             self.mostrarSuperficieNivel.blit(self.botonControles, self.botonControlesRect.topleft)
-            
+
 
             pygame.display.flip()
 
             clock.tick(FPS)
-
+    
     def menuPausa(self):
         self.juegoPausado = not self.juegoPausado
         if self.juegoPausado:
@@ -492,7 +477,7 @@ class Level2Beginner:
             self.mostrarSuperficieNivel.blit(config_screen, config_screen_rect.topleft)
 
             pygame.display.flip()
-    
+
     # Pantalla de controles
     def menuControles(self):
         self.juegoPausadoControles = not self.juegoPausadoControles
@@ -518,7 +503,7 @@ class Level2Beginner:
         botonContinuarMenu = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_continuar.png")).convert_alpha()
         botonContinuarMenu = pygame.transform.scale(botonContinuarMenu, (botonContinuarMenu.get_width() + 5, botonContinuarMenu.get_height() + 5))
 
-       
+
         # Calcular las posiciones de los botones para que estén alineados horizontalmente
         espacio_entre_botones = 20
         total_ancho_botones = botonContinuarMenu.get_width() + 2 * espacio_entre_botones
@@ -567,7 +552,7 @@ class Level2Beginner:
             self.mostrarSuperficieNivel.blit(config_screen, config_screen_rect.topleft)
 
             pygame.display.flip()
-   
+
     # ! CONFIGURACION INCIALES
     # level1.py
     def reiniciarConfiguraciones(self):
@@ -720,7 +705,7 @@ class Level2Beginner:
                                 return 1
 
             clock.tick(FPS)
-                
+
     def pantallaPerdioNivel(self):
         pygame.mixer.music.stop()  # Detener la música de fondo
         pygame.mixer.Sound(join("assets", "audio", "niveles", "defeat.mp3")).play()
