@@ -1,5 +1,5 @@
 {
-    "activeFile": "C:/Users/abisu/OneDrive/Documentos/level2/nivel_bunker_nv.tmx",
+    "activeFile": "nivel_bunker_nv.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -37,6 +37,23 @@
                 "y": 352.1517832710025
             }
         },
+        "C:/Users/abisu/AppData/Local/Temp/77daca0f-43c1-46af-8794-3321eebd6eb4_bunker_nv_(2)[1].zip.eb4/bunker_nv/base.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Temp/77daca0f-43c1-46af-8794-3321eebd6eb4_bunker_nv_(2)[1].zip.eb4/bunker_nv/nivel_bunker_nv.tmx": {
+            "scale": 0.5437996031746031,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1008.6436194472319,
+                "y": 352.1517832710025
+            }
+        },
+        "C:/Users/abisu/AppData/Local/Temp/77daca0f-43c1-46af-8794-3321eebd6eb4_bunker_nv_(2)[1].zip.eb4/bunker_nv/t_p2.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Temp/77daca0f-43c1-46af-8794-3321eebd6eb4_bunker_nv_(2)[1].zip.eb4/bunker_nv/tuberia1.tsx": {
+            "scaleInDock": 1
+        },
         "C:/Users/abisu/AppData/Local/Temp/a9b221e7-b094-45ee-9918-c7ee188b9d38_bunker_nv (3).zip.d38/bunker_nv/nivel_bunker_nv.tmx": {
             "scale": 0.3458829365079365,
             "selectedLayer": 0,
@@ -48,6 +65,40 @@
         "C:/Users/abisu/AppData/Local/Temp/a9b221e7-b094-45ee-9918-c7ee188b9d38_bunker_nv (3).zip.d38/level2/base.tsx": {
             "scaleInDock": 1
         },
+        "C:/Users/abisu/AppData/Local/Temp/cda5b437-bbf4-49c6-9866-4cb59a69e73a_bunker_nv (2).zip.73a/bunker_nv/base.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Temp/cda5b437-bbf4-49c6-9866-4cb59a69e73a_bunker_nv (2).zip.73a/bunker_nv/nivel_bunker_nv.tmx": {
+            "scale": 0.5437996031746031,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1008.6436194472319,
+                "y": 352.1517832710025
+            }
+        },
+        "C:/Users/abisu/AppData/Local/Temp/cda5b437-bbf4-49c6-9866-4cb59a69e73a_bunker_nv (2).zip.73a/bunker_nv/t_p2.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Temp/cda5b437-bbf4-49c6-9866-4cb59a69e73a_bunker_nv (2).zip.73a/bunker_nv/tuberia1.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Temp/df36407b-dfd6-4af6-b9e3-1ba90d1844fb_bunker_nv (2).zip.4fb/bunker_nv/base.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Temp/df36407b-dfd6-4af6-b9e3-1ba90d1844fb_bunker_nv (2).zip.4fb/bunker_nv/nivel_bunker_nv.tmx": {
+            "scale": 0.5437996031746031,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 699.7062847760649,
+                "y": 405.48025175590635
+            }
+        },
+        "C:/Users/abisu/AppData/Local/Temp/df36407b-dfd6-4af6-b9e3-1ba90d1844fb_bunker_nv (2).zip.4fb/bunker_nv/t_p2.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/abisu/AppData/Local/Temp/df36407b-dfd6-4af6-b9e3-1ba90d1844fb_bunker_nv (2).zip.4fb/bunker_nv/tuberia1.tsx": {
+            "scaleInDock": 1
+        },
         "C:/Users/abisu/OneDrive/Documentos/level2/base.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 0.75
@@ -56,16 +107,31 @@
             "expandedObjectLayers": [
                 7
             ],
-            "scale": 1.5,
+            "scale": 0.75,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 1607.6666666666665,
-                "y": 247.66666666666663
+                "x": 1275.3333333333335,
+                "y": 253.99999999999994
             }
+        },
+        "base.tsx": {
+            "scaleInDock": 1
         },
         "bunk_b.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "filtro.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "nivel_bunker_nv.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 39.33333333333337,
+                "y": 285.99999999999994
+            }
         },
         "nv_bunker_pnspa.tmx": {
             "scale": 0.33,
@@ -91,25 +157,23 @@
     "last.externalTilesetPath": "C:/Users/abisu/OneDrive/Documentos/bunker_nv",
     "last.imagePath": "C:/Users/abisu/OneDrive/Documentos/bunker_nv",
     "openFiles": [
-        "C:/Users/abisu/OneDrive/Documentos/level2/nivel_bunker_nv.tmx",
-        "C:/Users/abisu/OneDrive/Documentos/level2/base.tsx",
-        "tuberia1.tsx",
-        "t_p2.tsx",
-        "C:/Users/abisu/AppData/Local/Temp/55b039ea-9a98-4776-8e39-b972f5a1e59c_bunker_nv[1].zip.59c/bunker_nv/nv_bunker_pnspa.tmx"
+        "nivel_bunker_nv.tmx",
+        "filtro.tsx"
     ],
     "project": "nv_bunker_pnspa.tiled-project",
     "recentFiles": [
-        "C:/Users/abisu/AppData/Local/Temp/55b039ea-9a98-4776-8e39-b972f5a1e59c_bunker_nv[1].zip.59c/bunker_nv/nv_bunker_pnspa.tmx",
-        "t_p2.tsx",
-        "tuberia1.tsx",
+        "filtro.tsx",
+        "nivel_bunker_nv.tmx",
         "C:/Users/abisu/OneDrive/Documentos/level2/base.tsx",
+        "tuberia1.tsx",
+        "t_p2.tsx",
+        "C:/Users/abisu/AppData/Local/Temp/77daca0f-43c1-46af-8794-3321eebd6eb4_bunker_nv_(2)[1].zip.eb4/bunker_nv/nivel_bunker_nv.tmx",
+        "C:/Users/abisu/AppData/Local/Temp/cda5b437-bbf4-49c6-9866-4cb59a69e73a_bunker_nv (2).zip.73a/bunker_nv/nivel_bunker_nv.tmx",
         "C:/Users/abisu/OneDrive/Documentos/level2/nivel_bunker_nv.tmx",
+        "C:/Users/abisu/AppData/Local/Temp/df36407b-dfd6-4af6-b9e3-1ba90d1844fb_bunker_nv (2).zip.4fb/bunker_nv/nivel_bunker_nv.tmx",
+        "C:/Users/abisu/AppData/Local/Temp/55b039ea-9a98-4776-8e39-b972f5a1e59c_bunker_nv[1].zip.59c/bunker_nv/nv_bunker_pnspa.tmx",
         "tuberia2.tsx",
-        "nv_bunker_pnspa.tmx",
-        "bunk_b.tsx",
-        "C:/Users/abisu/AppData/Local/Temp/a9b221e7-b094-45ee-9918-c7ee188b9d38_bunker_nv (3).zip.d38/bunker_nv/nivel_bunker_nv.tmx",
-        "C:/Users/abisu/AppData/Local/Temp/46944418-77e1-4b39-a02b-643424b89595_bunker_nv (3).zip.595/bunker_nv/nivel_bunker_nv.tmx",
-        "C:/Users/abisu/AppData/Local/Temp/273ffa68-a6a7-4ff2-ae40-edd5565d81af_bunker_nv (3).zip.1af/bunker_nv/nivel_bunker_nv.tmx"
+        "nv_bunker_pnspa.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

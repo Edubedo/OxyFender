@@ -1,0 +1,53 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "ciudad.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "ciudad.tmx": {
+            "scale": 1,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1679.5,
+                "y": 332.5
+            }
+        },
+        "ciudad.tmx#detalles": {
+            "scaleInDock": 0.75
+        },
+        "ciudad.tmx#edif": {
+            "scaleInDock": 0.125
+        },
+        "ciudad.tmx#edificios": {
+            "scaleInDock": 0.75
+        },
+        "ciudad.tmx#fondo_city": {
+            "scaleInDock": 0.33
+        },
+        "ciudad.tmx#ultimo_edificio": {
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "C:/Users/Colibecas/Desktop/pi/OxyFender/mapas/ciudad",
+    "map.height": 22,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 94,
+    "openFiles": [
+        "ciudad.tmx"
+    ],
+    "project": "mapa_ciudad.tiled-project",
+    "recentFiles": [
+        "ciudad.tmx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.tileSize": {
+        "height": 32,
+        "width": 32
+    }
+}

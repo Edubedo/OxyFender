@@ -1,4 +1,3 @@
-
 import pygame
 from utilerias.configuraciones import *
 from os.path import join
@@ -25,7 +24,7 @@ class Level2Beginner:
 
         self.mostrarSuperficieNivel = pygame.display.get_surface()
 
-        self.imagen_fondo = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundCiudad.png")).convert()
+        self.imagen_fondo = pygame.image.load(join("assets", "img", "Background", "menu", "fffff.png")).convert()
         self.imagen_fondo_escalada = pygame.transform.scale(self.imagen_fondo, (self.mostrarSuperficieNivel.get_width(), self.mostrarSuperficieNivel.get_height() + 300))
 
         self.todos_los_sprites = pygame.sprite.Group()
@@ -99,9 +98,9 @@ class Level2Beginner:
             pygame.image.load(join("assets", "sprites", "filtro", f"FILTRO{i}.png")).convert_alpha()
             for i in range(1, 7)
         ]
-        
+
        # Dibujamos los elementos generales del mapa
-        for nombreCapa in ['suelo','base','Pared','techo','escalones','fondo_tierra']:
+        for nombreCapa in ['base','Pared','escalones','fondo_tierra']:
             for x, y, superficie in tmx_mapa_2.get_layer_by_name(nombreCapa).tiles(): # obtenemos la capa por nombre que se obtiene x, y, la superficie(imagenes)
                 sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), superficie, self.todos_los_sprites) # Creamos un sprite con la posición x, y y la superficie
                 if nombreCapa in ['Pared','escalones', 'fondo_tierra']:
@@ -114,7 +113,7 @@ class Level2Beginner:
         filtooo_layer = tmx_mapa_2.get_layer_by_name('filtooo')
         for obj in filtooo_layer:
             if obj.name == 'arribaFiltro1' or obj.name == 'arribaFiltro2':
-                sprite = Sprite((obj.x + 40, obj.y - 30), self.filtro_imagenes[0], self.todos_los_sprites)
+                sprite = Sprite((obj.x + 550, obj.y - 30), self.filtro_imagenes[0], self.todos_los_sprites)
                 sprite.name = obj.name  # Añadir el nombre al sprite
                 sprite.indice_imagen = 0  # Inicializar el índice de la imagen
                 sprite.ultimo_cambio = 0  # Inicializar el tiempo del último cambio
@@ -134,7 +133,7 @@ class Level2Beginner:
         #         sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
 
         # Dibujamos el jugador
-        self.jugador = Player((260,550), self.todos_los_sprites)
+        self.jugador = Player((800,650), self.todos_los_sprites)
 
         # Reiniciamos configuraciones antes de inciiar el juego
         self.reiniciarConfiguraciones()
@@ -145,7 +144,7 @@ class Level2Beginner:
    
     def run(self):
         pygame.mixer.music.pause()
-        pygame.mixer.music.load(join("assets", "audio", "niveles", "HKCrossroads.mp3"))
+        pygame.mixer.music.load(join("assets", "audio", "niveles", "level2.mp3"))
         pygame.mixer.music.play(1)
         pygame.mixer.music.set_volume(0.5 if self.volumen == "on" else 0)
 
@@ -210,23 +209,29 @@ class Level2Beginner:
             if self.juegoPausadoControles:
                 self.pantallaControles()
                 continue
-            
+
             if not self.teletransportando:
                 keys = pygame.key.get_pressed()
                 movimientoJugador = pygame.Vector2(0, 0)
                 estaMoviendose = False
                 estaSaltando = False
                 direccionPersonaje = self.jugador.direction  # Mantener la dirección actual
+                #esta_sobre_el_piso_K = False
 
                 if keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
+                    #esta_sobre_el_piso = False
+                    #esta_sobre_el_piso_K=True
                     movimientoJugador.x -= PLAYER_VEL - 1
                     estaMoviendose = True
                     direccionPersonaje = "left"
                 elif keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]: # No puede presionar las teclas izquierda y derecha al mismo tiempo
+                    #esta_sobre_el_piso = False
+                    #esta_sobre_el_piso_K=True
                     movimientoJugador.x += PLAYER_VEL
                     estaMoviendose = True
                     direccionPersonaje = "right" 
-                if keys[pygame.K_SPACE] and esta_sobre_el_piso:
+                if keys[pygame.K_SPACE] and (esta_sobre_el_piso) and not estaSaltando:
+                    esta_sobre_el_piso_K=False
                     jugador_velocidad_y = PLAYER_FUERZA_SALTO
                     esta_sobre_el_piso = False
                     estaSaltando = True
@@ -234,6 +239,7 @@ class Level2Beginner:
                     jugador_velocidad_y += gravedad
                     if jugador_velocidad_y > maxima_velocidad_caida:
                         jugador_velocidad_y = maxima_velocidad_caida
+                esta_sobre_el_piso = False
                 movimientoJugador.y += jugador_velocidad_y
 
                 # Reemplaza esta sección en el método run
@@ -356,7 +362,7 @@ class Level2Beginner:
             #Boton de controles
             self.botonControlesRect = self.botonControles.get_rect(center=(self.mostrarSuperficieNivel.get_width() - 50, 500))
             self.mostrarSuperficieNivel.blit(self.botonControles, self.botonControlesRect.topleft)
-            
+
 
             pygame.display.flip()
 
@@ -471,7 +477,7 @@ class Level2Beginner:
             self.mostrarSuperficieNivel.blit(config_screen, config_screen_rect.topleft)
 
             pygame.display.flip()
-    
+
     # Pantalla de controles
     def menuControles(self):
         self.juegoPausadoControles = not self.juegoPausadoControles
@@ -497,7 +503,7 @@ class Level2Beginner:
         botonContinuarMenu = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_continuar.png")).convert_alpha()
         botonContinuarMenu = pygame.transform.scale(botonContinuarMenu, (botonContinuarMenu.get_width() + 5, botonContinuarMenu.get_height() + 5))
 
-       
+
         # Calcular las posiciones de los botones para que estén alineados horizontalmente
         espacio_entre_botones = 20
         total_ancho_botones = botonContinuarMenu.get_width() + 2 * espacio_entre_botones
@@ -546,7 +552,7 @@ class Level2Beginner:
             self.mostrarSuperficieNivel.blit(config_screen, config_screen_rect.topleft)
 
             pygame.display.flip()
-   
+
     # ! CONFIGURACION INCIALES
     # level1.py
     def reiniciarConfiguraciones(self):
@@ -556,14 +562,14 @@ class Level2Beginner:
         self.perdioJuego = False
         self.juegoPausado = False
         self.ultimaVezTeletransportado = 0  # Maneja el tiempo de espera de los teletransportadores
-        self.jugador.rect.topleft = (260,550)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (800,650)  # Reiniciar la posición del jugador
         self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
         self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.tiempo_ultimo = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.filtros_arreglados = []
         # imagenes del piso
 
-        self.jugador.rect.topleft = (260,550)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (800,650)  # Reiniciar la posición del jugador
         self.todos_los_sprites.add(self.jugador)  # Asegurarse de que el jugador esté en el grupo de todos los sprites
 
         self.jugador_oculto_hasta = 0
@@ -609,11 +615,6 @@ class Level2Beginner:
         personaje_pos = None
 
         # Encontrar la posición inicial del personaje
-
-         # for nombreObjeto in ['Objetos']:
-        #     for obj in tmx_mapa_2.get_layer_by_name(nombreObjeto):
-        #         sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
-        
         for layer in self.tmx_filtroUnoNivel2.visible_layers:
             if layer.name == 'capaInicio':
                 for x, y, gid in layer:
@@ -655,8 +656,7 @@ class Level2Beginner:
                     # Verificar colisiones con la capa "base"
                     colision = False
                     for layer in self.tmx_filtroUnoNivel2.visible_layers:
-                        print("layer: ", layer)
-                        if layer.name == 'base':
+                        if layer.name == 'Base':
                             for x, y, gid in layer:
                                 tile = self.tmx_filtroUnoNivel2.get_tile_image_by_gid(gid)
                                 if tile:
@@ -679,7 +679,7 @@ class Level2Beginner:
                             if tile_rect.collidepoint(mouse_pos) and layer.name in ['capaInicio', 'capaFin', 'laberinto', 'base']:
                                 hand_cursor = True
                             self.mostrarSuperficieNivel.blit(tile, (x * self.tmx_filtroUnoNivel2.tilewidth + offset_x, y * self.tmx_filtroUnoNivel2.tileheight + offset_y))
-    
+
             if hand_cursor:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             else:
@@ -692,7 +692,7 @@ class Level2Beginner:
 
             # Verificar si el personaje ha llegado a la capa "capaFin"
             for layer in self.tmx_filtroUnoNivel2.visible_layers:
-                if layer.name == 'capaFin':
+                if layer.name == 'CapaFin':
                     for x, y, gid in layer:
                         tile = self.tmx_filtroUnoNivel2.get_tile_image_by_gid(gid)
                         if tile:
