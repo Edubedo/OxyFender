@@ -163,7 +163,7 @@ class Menu:
                                 continue
                             
                             if option['id'] == "credits":
-                                credits = Creditos(self.screen)
+                                credits = Creditos(self.screen, self.configLanguage, self.datosLanguage,)
                                 credits.run()
                                 self.bucleInicial = True  # Reiniciar el bucle del menú después de mostrar los créditos
                                 # Reproducir la música de fondo nuevamente

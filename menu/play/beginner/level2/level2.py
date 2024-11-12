@@ -24,7 +24,7 @@ class Level2Beginner:
 
         self.mostrarSuperficieNivel = pygame.display.get_surface()
 
-        self.imagen_fondo = pygame.image.load(join("assets", "img", "Background", "menu", "BackgroundCiudad.png")).convert()
+        self.imagen_fondo = pygame.image.load(join("assets", "img", "Background", "menu", "fffff.png")).convert()
         self.imagen_fondo_escalada = pygame.transform.scale(self.imagen_fondo, (self.mostrarSuperficieNivel.get_width(), self.mostrarSuperficieNivel.get_height() + 300))
 
         self.todos_los_sprites = pygame.sprite.Group()
@@ -133,7 +133,7 @@ class Level2Beginner:
         #         sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
 
         # Dibujamos el jugador
-        self.jugador = Player((800,700), self.todos_los_sprites)
+        self.jugador = Player((800,650), self.todos_los_sprites)
 
         # Reiniciamos configuraciones antes de inciiar el juego
         self.reiniciarConfiguraciones()
@@ -144,7 +144,7 @@ class Level2Beginner:
    
     def run(self):
         pygame.mixer.music.pause()
-        pygame.mixer.music.load(join("assets", "audio", "niveles", "HKCrossroads.mp3"))
+        pygame.mixer.music.load(join("assets", "audio", "niveles", "level2.mp3"))
         pygame.mixer.music.play(1)
         pygame.mixer.music.set_volume(0.5 if self.volumen == "on" else 0)
 
@@ -562,14 +562,14 @@ class Level2Beginner:
         self.perdioJuego = False
         self.juegoPausado = False
         self.ultimaVezTeletransportado = 0  # Maneja el tiempo de espera de los teletransportadores
-        self.jugador.rect.topleft = (800,600)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (800,650)  # Reiniciar la posición del jugador
         self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
         self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.tiempo_ultimo = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.filtros_arreglados = []
         # imagenes del piso
 
-        self.jugador.rect.topleft = (800,600)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (800,650)  # Reiniciar la posición del jugador
         self.todos_los_sprites.add(self.jugador)  # Asegurarse de que el jugador esté en el grupo de todos los sprites
 
         self.jugador_oculto_hasta = 0

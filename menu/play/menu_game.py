@@ -230,15 +230,15 @@ class MenuPlay:
                             if level['id'] == "beginner_level_2":
                                 self.current_stage = Level2Beginner(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage, self.volumen)
                             if level['id'] == "beginner_level_3":
-                                Level3Beginner(level['name'], level['dificultadNivel'], level['id'])
+                                Level3Beginner(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage, self.volumen)
                             
                             # Niveles para avanzados 
                             if level['id'] == "advanced_level_1":
                                 self.current_stage = Level1Advanced(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage, self.volumen)
                             if level['id'] == "advanced_level_2":
-                                Level2Advanced(level['name'], level['dificultadNivel'], level['id'])
+                                Level2Advanced(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage, self.volumen)
                             if level['id'] == "advanced_level_3":
-                                Level3Advanced(level['name'], level['dificultadNivel'], level['id'])
+                                Level3Advanced(level['name'], level['dificultadNivel'], level['id'], self.configLanguage, self.datosLanguage, self.volumen)
                     # Si se hace clic en el botón de regreso
                     if back_button_rect.collidepoint(event.pos):
                         self.sonidoDeClick.play() # Cuando hace un click dentro de las opciones del menú
