@@ -24,6 +24,7 @@ class Menu:
 
         self.actualizarOpcionesMenu()
 
+
         # * Música de fondo 
         pygame.mixer.init() # Inicializar el módulo de sonido
         pygame.mixer.music.load(join("assets", "audio", "music", "let_us_adore_you.mp3")) # Cargar la música
@@ -57,7 +58,7 @@ class Menu:
         pygame.display.set_caption(f"Menu - {TITLE_GAME}") # Establecemos tituloPrincipalJuego del Menú
 
         self.fondoPrincipalVideojuego = pygame.image.load(join("assets", "img", "Background", "menu", "fondoinicio.png")).convert_alpha() # Agregar fondoPrincipalVideojuego al menú
-        
+       
         self.fondoPrincipalVideojuego = pygame.transform.scale(self.fondoPrincipalVideojuego, (WIDTH, HEIGHT)) # Escalar imagen del fondoPrincipalVideojuego del menú
 
         self.screen.blit(self.fondoPrincipalVideojuego, [0, 0]) # Acomodamos la imagenes del backgroud en la posición x=0 y=0

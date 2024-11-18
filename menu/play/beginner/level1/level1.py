@@ -977,6 +977,10 @@ class Level1Beginner:
                 # Sí pasa el mouse sobre los botones
                 elif event.type == pygame.MOUSEMOTION:
                     posicionMouse = event.pos  # Rastreamos la posicion del mouse
+                    if botonSeleccionarNivelRect.collidepoint(posicionMouse):
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+                    else:
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
                 # Sí le da click a los botones
                 elif event.type == pygame.MOUSEBUTTONDOWN:

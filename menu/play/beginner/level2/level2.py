@@ -24,7 +24,7 @@ class Level2Beginner:
 
         self.mostrarSuperficieNivel = pygame.display.get_surface()
 
-        self.imagen_fondo = pygame.image.load(join("assets", "img", "Background", "menu", "fffff.png")).convert()
+        self.imagen_fondo = pygame.image.load(join("assets", "img", "Background", "menu", "fondo.png")).convert()
         self.imagen_fondo_escalada = pygame.transform.scale(self.imagen_fondo, (self.mostrarSuperficieNivel.get_width(), self.mostrarSuperficieNivel.get_height() + 300))
 
         self.todos_los_sprites = pygame.sprite.Group()
@@ -100,13 +100,14 @@ class Level2Beginner:
         ]
 
        # Dibujamos los elementos generales del mapa
-        for nombreCapa in ['base','Pared','escalones','fondo_tierra']:
+        for nombreCapa in ['base','capaVerificarGano','CapaNoPasar','Pared','escalones','fondo_tierra']:
             for x, y, superficie in tmx_mapa_2.get_layer_by_name(nombreCapa).tiles(): # obtenemos la capa por nombre que se obtiene x, y, la superficie(imagenes)
                 sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), superficie, self.todos_los_sprites) # Creamos un sprite con la posición x, y y la superficie
-                if nombreCapa in ['Pared','escalones', 'fondo_tierra']:
+                if nombreCapa in ['Pared','escalones', 'fondo_tierra','CapaNoPasar']:
                     self.colisiones_sprites.add(sprite)
                 elif nombreCapa == 'capaVerificarGano':
                     self.capa_verificar_gano.add(sprite)
+                    print("Verificar gano")
 
 
         # Dibujamos los filtros de aire
@@ -133,7 +134,7 @@ class Level2Beginner:
         #         sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
 
         # Dibujamos el jugador
-        self.jugador = Player((800,650), self.todos_los_sprites)
+        self.jugador = Player((830,540), self.todos_los_sprites)
 
         # Reiniciamos configuraciones antes de inciiar el juego
         self.reiniciarConfiguraciones()
@@ -562,14 +563,14 @@ class Level2Beginner:
         self.perdioJuego = False
         self.juegoPausado = False
         self.ultimaVezTeletransportado = 0  # Maneja el tiempo de espera de los teletransportadores
-        self.jugador.rect.topleft = (800,650)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (830,540)  # Reiniciar la posición del jugador
         self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
         self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.tiempo_ultimo = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.filtros_arreglados = []
         # imagenes del piso
 
-        self.jugador.rect.topleft = (800,650)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (830,540)  # Reiniciar la posición del jugador
         self.todos_los_sprites.add(self.jugador)  # Asegurarse de que el jugador esté en el grupo de todos los sprites
 
         self.jugador_oculto_hasta = 0
@@ -597,7 +598,7 @@ class Level2Beginner:
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 60, pos_y))
 
     def pantallaLaberinto(self):
-        self.tmx_filtroUnoNivel2 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel2", "laberinto1.tmx"))
+        self.tmx_filtroUnoNivel2 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel2", "laberinto2.tmx"))
         self.arreglo = False
 
         map_width = self.tmx_filtroUnoNivel2.width * self.tmx_filtroUnoNivel2.tilewidth
@@ -809,7 +810,10 @@ class Level2Beginner:
                 # Sí pasa el mouse sobre los botones
                 elif event.type == pygame.MOUSEMOTION:
                     posicionMouse = event.pos  # Rastreamos la posicion del mouse
-
+                    if botonSeleccionarNivelRect.collidepoint(posicionMouse):
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+                    else:
+                        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 # Sí le da click a los botones
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     posicionMouse = event.pos  # Rastreamos la posicion del mouse
