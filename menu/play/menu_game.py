@@ -179,7 +179,7 @@ class MenuPlay:
         # Dibujamos las opciones de niveles
         margin = 20
         total_width = sum(level['image'].get_width() for level in opcionNiveles) + margin * (len(opcionNiveles) - 1)
-        start_x = (self.screen.get_width() - total_width) // 2
+        start_x = ((self.screen.get_width() - total_width) // 2) - 8
         start_y = self.screen.get_height() // 2 - 60  # Ajustar este valor para mover los botones más arriba
 
         for i, level in enumerate(opcionNiveles):
@@ -253,8 +253,6 @@ class MenuPlay:
                 image_rect = image.get_rect(topleft=(start_x + i * (image.get_width() + margin), start_y))
                 self.screen.blit(image, image_rect)
             
-            # Las ponemos hasta abajo para que esten encima de todo
-
             # Pintar el botón de regreso
             self.screen.blit(back_button, back_button_rect)
             # Pinta el texto de la empresa

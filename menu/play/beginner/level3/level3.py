@@ -101,10 +101,10 @@ class Level3Beginner:
         ]
 
        # Dibujamos los elementos generales del mapa
-        for nombreCapa in ['edificios','detalles','piso']:
+        for nombreCapa in ['edificios','detalles','piso','CapaNoPasar','capaVerificarGano']:
             for x, y, superficie in tmx_mapa_2.get_layer_by_name(nombreCapa).tiles(): # obtenemos la capa por nombre que se obtiene x, y, la superficie(imagenes)
                 sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), superficie, self.todos_los_sprites) # Creamos un sprite con la posición x, y y la superficie
-                if nombreCapa in ['piso']:
+                if nombreCapa in ['piso','CapaNoPasar']:
                     self.colisiones_sprites.add(sprite)
                 elif nombreCapa == 'capaVerificarGano':
                     self.capa_verificar_gano.add(sprite)
@@ -134,7 +134,7 @@ class Level3Beginner:
         #         sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
 
         # Dibujamos el jugador
-        self.jugador = Player((400,600), self.todos_los_sprites)
+        self.jugador = Player((550,410), self.todos_los_sprites)
 
         # Reiniciamos configuraciones antes de inciiar el juego
         self.reiniciarConfiguraciones()
@@ -320,7 +320,7 @@ class Level3Beginner:
                             break
 
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
-            self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 40
+            self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 100
 
             self.todos_los_sprites.update(estaMoviendose, direccionPersonaje, self.juegoPausado)
 
@@ -563,14 +563,14 @@ class Level3Beginner:
         self.perdioJuego = False
         self.juegoPausado = False
         self.ultimaVezTeletransportado = 0  # Maneja el tiempo de espera de los teletransportadores
-        self.jugador.rect.topleft = (400,600)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (550,410)  # Reiniciar la posición del jugador
         self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
         self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.tiempo_ultimo = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.filtros_arreglados = []
         # imagenes del piso
 
-        self.jugador.rect.topleft = (400,600)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (550,410)  # Reiniciar la posición del jugador
         self.todos_los_sprites.add(self.jugador)  # Asegurarse de que el jugador esté en el grupo de todos los sprites
 
         self.jugador_oculto_hasta = 0
@@ -615,6 +615,19 @@ class Level3Beginner:
         # Lista para almacenar las capas de basura
         capas_basura = ['basura1', 'basura2']
 
+        # Diccionario para contar los tiles en cada capa de basura
+        tiles_por_capa = {capa: 0 for capa in capas_basura}
+
+        # Contar los tiles iniciales en cada capa de basura
+        for layer in self.tmx_filtroUnoNivel2.visible_layers:
+            if layer.name in capas_basura:
+                for x, y, gid in layer:
+                    if gid != 0:
+                        tiles_por_capa[layer.name] += 1
+
+        # Imprimir la cantidad inicial de tiles en cada capa
+        print("Tiles iniciales por capa:", tiles_por_capa)
+
         while banderaEjecutandoNivel2:
             if self.volver_menu:
                 break
@@ -638,8 +651,11 @@ class Level3Beginner:
                             tile_rect = pygame.Rect(x * self.tmx_filtroUnoNivel2.tilewidth + offset_x, y * self.tmx_filtroUnoNivel2.tileheight + offset_y, self.tmx_filtroUnoNivel2.tilewidth, self.tmx_filtroUnoNivel2.tileheight)
                             if tile_rect.collidepoint(mouse_pos):
                                 layer.data[y][x] = 0  # Remove the tile
-                                if all(self.tmx_filtroUnoNivel2.get_tile_image_by_gid(gid) is None for x, y, gid in layer):
+                                tiles_por_capa[layer.name] -= 1
+                                print(f"Tile removido de {layer.name}, quedan {tiles_por_capa[layer.name]} tiles")
+                                if tiles_por_capa[layer.name] == 0:
                                     capas_basura.remove(layer.name)
+                                    print(f"Todos los tiles de {layer.name} han sido removidos")
                                 break
 
             for layer in self.tmx_filtroUnoNivel2.visible_layers:
@@ -665,7 +681,6 @@ class Level3Beginner:
                 self.contadorOxigenoReparado += 1
                 tarea_completada = True
                 banderaEjecutandoNivel2 = False
-                self.ganoNivel = True  # Set the win condition
                 return 1
 
             clock.tick(FPS)
