@@ -101,7 +101,7 @@ class Level3Beginner:
         ]
 
        # Dibujamos los elementos generales del mapa
-        for nombreCapa in ['edificios','detalles','piso','CapaNoPasar','capaVerificarGano']:
+        for nombreCapa in ['piso','CapaNoPasar','capaVerificarGano','edificios','detalles',]:
             for x, y, superficie in tmx_mapa_2.get_layer_by_name(nombreCapa).tiles(): # obtenemos la capa por nombre que se obtiene x, y, la superficie(imagenes)
                 sprite = Sprite((((x * TILE_SIZE) - self.posicion_x_personaje, y * TILE_SIZE)), superficie, self.todos_los_sprites) # Creamos un sprite con la posición x, y y la superficie
                 if nombreCapa in ['piso','CapaNoPasar']:
@@ -134,7 +134,7 @@ class Level3Beginner:
         #         sprite = Sprite((obj.x, obj.y), obj.image, self.todos_los_sprites)
 
         # Dibujamos el jugador
-        self.jugador = Player((550,410), self.todos_los_sprites)
+        self.jugador = Player((550,400), self.todos_los_sprites)
 
         # Reiniciamos configuraciones antes de inciiar el juego
         self.reiniciarConfiguraciones()
@@ -563,14 +563,14 @@ class Level3Beginner:
         self.perdioJuego = False
         self.juegoPausado = False
         self.ultimaVezTeletransportado = 0  # Maneja el tiempo de espera de los teletransportadores
-        self.jugador.rect.topleft = (550,410)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (550,400)  # Reiniciar la posición del jugador
         self.camera_offset = pygame.Vector2(0, 0)  # Reiniciar la cámara
         self.tiempo_inicio = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.tiempo_ultimo = pygame.time.get_ticks()  # Reiniciar el tiempo de inicio
         self.filtros_arreglados = []
         # imagenes del piso
 
-        self.jugador.rect.topleft = (550,410)  # Reiniciar la posición del jugador
+        self.jugador.rect.topleft = (550,400)  # Reiniciar la posición del jugador
         self.todos_los_sprites.add(self.jugador)  # Asegurarse de que el jugador esté en el grupo de todos los sprites
 
         self.jugador_oculto_hasta = 0
