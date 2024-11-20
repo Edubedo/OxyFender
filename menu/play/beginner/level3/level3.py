@@ -626,7 +626,6 @@ class Level3Beginner:
                         tiles_por_capa[layer.name] += 1
 
         # Imprimir la cantidad inicial de tiles en cada capa
-        print("Tiles iniciales por capa:", tiles_por_capa)
 
         while banderaEjecutandoNivel2:
             if self.volver_menu:
@@ -652,10 +651,8 @@ class Level3Beginner:
                             if tile_rect.collidepoint(mouse_pos):
                                 layer.data[y][x] = 0  # Remove the tile
                                 tiles_por_capa[layer.name] -= 1
-                                print(f"Tile removido de {layer.name}, quedan {tiles_por_capa[layer.name]} tiles")
                                 if tiles_por_capa[layer.name] == 0:
                                     capas_basura.remove(layer.name)
-                                    print(f"Todos los tiles de {layer.name} han sido removidos")
                                 break
 
             for layer in self.tmx_filtroUnoNivel2.visible_layers:
