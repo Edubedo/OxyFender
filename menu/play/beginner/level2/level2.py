@@ -107,7 +107,6 @@ class Level2Beginner:
                     self.colisiones_sprites.add(sprite)
                 elif nombreCapa == 'capaVerificarGano':
                     self.capa_verificar_gano.add(sprite)
-                    print("Verificar gano")
 
 
         # Dibujamos los filtros de aire
@@ -320,7 +319,7 @@ class Level2Beginner:
                             break
 
             self.camera_offset.x = self.jugador.rect.centerx - self.mostrarSuperficieNivel.get_width() // 2
-            self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 40
+            self.camera_offset.y = self.jugador.rect.centery - self.mostrarSuperficieNivel.get_height() // 2 - 100
 
             self.todos_los_sprites.update(estaMoviendose, direccionPersonaje, self.juegoPausado)
 
