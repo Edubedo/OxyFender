@@ -112,7 +112,7 @@ class Level2Advanced:
         # Dibujamos los filtros de aire
         filtooo_layer = tmx_mapa_2.get_layer_by_name('filtooo')
         for obj in filtooo_layer:
-            if obj.name == 'arribaFiltro1' or obj.name == 'arribaFiltro2':
+            if obj.name == 'arribaFiltro1' or obj.name == 'arribaFiltro2'  or obj.name == 'arribaFiltro3':
                 sprite = Sprite((obj.x + 550, obj.y - 30), self.filtro_imagenes[0], self.todos_los_sprites)
                 sprite.name = obj.name  # Añadir el nombre al sprite
                 sprite.indice_imagen = 0  # Inicializar el índice de la imagen

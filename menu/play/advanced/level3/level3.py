@@ -5,7 +5,7 @@ from pytmx import *
 import sys
 from utilerias.sprites import Sprite
 from utilerias.jugador import Player
-from utilerias.clases.barraOxigeno import BarraOxigeno
+from utilerias.clases.barraOxigenoAdvanced import BarraOxigenoAdvanced
 from utilerias.sprites import FiltroSprite
 from random import randint
 
@@ -62,9 +62,9 @@ class Level3Advanced:
         # Initialize rectBarraOxigeno
         self.tiempo_inicio = tiempo_inicio
 
-        self.rectBarraOxigeno = BarraOxigeno(20, 100, 40, 300, 200) #a
+        self.rectBarraOxigeno = BarraOxigenoAdvanced(10, 100, 40, 300, 200) #a
         self.rectBarraOxigeno.hp = 200
-        self.rectBarraOxigeno.reiniciar()  # Llamar al método reiniciar de BarraOxigeno
+        self.rectBarraOxigeno.reiniciar()  # Llamar al método reiniciar de BarraOxigenoAdvanced
 
         # Botón de pausa
         self.botonPausa = pygame.image.load(join("assets", "img", "BOTONES", "botones_bn", "b_tuerca_bn.png")).convert_alpha()
@@ -83,7 +83,7 @@ class Level3Advanced:
         self.filtro_color = pygame.transform.scale(self.filtro_color, (self.filtro_color.get_width() + 40, self.filtro_color.get_height() + 40)) # Escalar la imagen
 
         self.contadorOxigenoReparado = 0
-        self.metaOxigenoReparado = 2
+        self.metaOxigenoReparado = 3
 
         self.ultimoTiempoCombustible = pygame.time.get_ticks()
         # ! CODIGO 1 MOSTRAR
@@ -113,7 +113,7 @@ class Level3Advanced:
         # Dibujamos los filtros de aire
         filtooo_layer = tmx_mapa_2.get_layer_by_name('filtooo')
         for obj in filtooo_layer:
-            if obj.name == 'arribaFiltro1' or obj.name == 'arribaFiltro2':
+            if obj.name == 'arribaFiltro1' or obj.name == 'arribaFiltro2' or obj.name == 'arribaFiltro3':
                 sprite = Sprite((obj.x + 150, obj.y - 30), self.filtro_imagenes[0], self.todos_los_sprites)
                 sprite.name = obj.name  # Añadir el nombre al sprite
                 sprite.indice_imagen = 0  # Inicializar el índice de la imagen
@@ -126,6 +126,12 @@ class Level3Advanced:
                 elif 'arribaFiltro' in obj.name:
                     pair_name = obj.name.replace('arribaFiltro', 'abajoFiltro')
                     self.filtro_pares[obj.name] = pair_name
+                if 'abajoFiltro3' in obj.name:
+                    sprite = Sprite((obj.x, obj.y), self.filtro_imagenes[0], self.todos_los_sprites)
+                    sprite.name = obj.name  # Añadir el nombre al sprite
+                    sprite.indice_imagen = 0  # Inicializar el índice de la imagen
+                    sprite.ultimo_cambio = 0  # Inicializar el tiempo del último cambio
+                    self.filtro_sprites.add(sprite)
 
 
         # Dibujamos los objetos del mapa
@@ -169,7 +175,7 @@ class Level3Advanced:
                 self.tiempo_actual = self.tiempo_inicio
 
             # Si el juego esta pausado
-            if self.tiempo_actual >= 120000:  # 120000 MILISEGUNDOS ES IGUAL 2 MINUTOS
+            if self.tiempo_actual >= 90000:  # 90000 MILISEGUNDOS ES IGUAL 2 MINUTOS
                 self.perdioJuego = True
 
             self.rectBarraOxigeno.actualizar_tiempo(self.tiempo_actual, self.juegoPausado)
@@ -586,16 +592,26 @@ class Level3Advanced:
             # Se dibujan los filtros en blanco y negro
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 60, pos_y))
+            self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 120, pos_y))
+            
 
         elif self.contadorOxigenoReparado == 1:
             # Se dibuja un filtro a color y un filtro a blanco y negro
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 60, pos_y))
+            self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 120, pos_y))
 
         # Se dibujan los dos filtros a color
-        elif self.contadorOxigenoReparado >= 2:
+        elif self.contadorOxigenoReparado == 2:
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 60, pos_y))
+            self.mostrarSuperficieNivel.blit(self.filtro_bn, (pos_x + 120, pos_y))
+
+           # Se dibujan tres filtros a color
+        elif self.contadorOxigenoReparado >= 3:
+            self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x, pos_y))
+            self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 60, pos_y))
+            self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 120, pos_y))
 
     def pantallaBasuras(self):
         self.tmx_filtroUnoNivel2 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel3", "basura1.tmx"))
