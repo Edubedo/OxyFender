@@ -1,7 +1,7 @@
 {
     "beginner": {
         "nivel1": {
-            "on": false
+            "on": true
         },
         "nivel2": {
             "on": false
@@ -11,8 +11,8 @@
         }
     },
     "advanced": {
-    "nivel1": {
-            "on": false
+        "nivel1": {
+            "on": true
         },
         "nivel2": {
             "on": false
