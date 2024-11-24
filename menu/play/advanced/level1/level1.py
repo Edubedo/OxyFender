@@ -205,7 +205,6 @@ class Level1Advanced:
         # Empezamos con el juego
         self.run()
     
-
     def run(self):
         pygame.mixer.music.pause()
         pygame.mixer.music.load(join("assets", "audio", "niveles", "HKCrossroads.mp3"))
@@ -242,7 +241,7 @@ class Level1Advanced:
 
             self.rectBarraOxigenoAdvanced.actualizar_tiempo(self.tiempo_actual, self.juegoPausado)
 
-            if self.botonPausaRect.collidepoint(pygame.mouse.get_pos()):
+            if self.botonPausaRect.collidepoint(pygame.mouse.get_pos()) or self.botonControlesRect.collidepoint(pygame.mouse.get_pos()):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
@@ -472,7 +471,7 @@ class Level1Advanced:
             self.dibujar_filtros()
 
             # Render the text in white color            
-            self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 32) # Font_Name_Enterprise.ttf, ka1.ttf
+            self.fuenteTextoOxigenosReparados = pygame.font.Font(join("assets", "fonts", "Triforce.ttf"), 50) # Font_Name_Enterprise.ttf, ka1.ttf
             self.textoOxigenosReparados = self.fuenteTextoOxigenosReparados.render(f"{self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelMission']}", True, (255, 255, 255))
             
             border_offsets = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
@@ -644,9 +643,9 @@ class Level1Advanced:
         configuracionHeightPantalla = self.mostrarSuperficieNivel.get_height()
         config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla), pygame.SRCALPHA)
 
-        # Imagen de los controles
-        fondoSuperior = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", "ImagenControles.jpeg")).convert_alpha()
-        fondoSuperior = pygame.transform.scale(fondoSuperior, (450, 450))
+        # Imagen de los controles f"{"
+        fondoSuperior = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['controls'])).convert_alpha()
+        fondoSuperior = pygame.transform.scale(fondoSuperior, (800, 450))
         fondoSuperiorRect = fondoSuperior.get_rect(center=(configuracionWidthPantalla // 2, configuracionHeightPantalla // 2 - 40))
         config_screen.blit(fondoSuperior, fondoSuperiorRect.topleft)
 

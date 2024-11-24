@@ -494,8 +494,8 @@ class Level2Beginner:
         config_screen = pygame.Surface((configuracionWidthPantalla, configuracionHeightPantalla), pygame.SRCALPHA)
 
         # Imagen de los controles
-        fondoSuperior = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", "ImagenControles.jpeg")).convert_alpha()
-        fondoSuperior = pygame.transform.scale(fondoSuperior, (450, 450))
+        fondoSuperior = pygame.image.load(join("assets", "img", "TITULOS_FONDOS", self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['controls'])).convert_alpha()
+        fondoSuperior = pygame.transform.scale(fondoSuperior, (800, 450))
         fondoSuperiorRect = fondoSuperior.get_rect(center=(configuracionWidthPantalla // 2, configuracionHeightPantalla // 2 - 40))
         config_screen.blit(fondoSuperior, fondoSuperiorRect.topleft)
 

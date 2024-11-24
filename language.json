@@ -42,7 +42,8 @@
 					"PantallasFinales",
 					"missionCompleted_es.png"
 				],
-				"imgGameOver": ["assets", "img", "PantallasFinales", "gameOver_es.png"]
+				"imgGameOver": ["assets", "img", "PantallasFinales", "gameOver_es.png"],
+				"controls": "controles.jpg"
 			}
 		},
 		"levelsAdvanced": {
@@ -90,7 +91,9 @@
 					"PantallasFinales",
 					"missionCompleted_en.png"
 				],
-				"imgGameOver": ["assets", "img", "PantallasFinales", "gameOver_en.png"]
+				"imgGameOver": ["assets", "img", "PantallasFinales", "gameOver_en.png"],
+				"controls": "controls.jpg"
+
 			},
 			"level2": {}
 		},
