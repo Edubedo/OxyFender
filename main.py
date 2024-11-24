@@ -1,5 +1,3 @@
-# Código desarrollado por (E. Escobedo, G. Solorzano, R. Lavariga, N. Laureano, A. Suarez, S. Barroso) 2024
-# Este software no puede ser copiado o redistribuido sin permiso del autor.
 import pygame
 import cv2
 from menu.menu import Menu
@@ -17,10 +15,15 @@ class VideoInicio:
     def empezarVideoInicio(self):
         pygame.display.set_caption("Inicio - OxyFender")
         rutaVideo = join("assets", "videos", "Inicio.mp4")
+        rutaAudio = join("assets", "videos", "intro.mp3")
         cap = cv2.VideoCapture(rutaVideo)
 
         if not cap.isOpened():
             return
+
+        # Cargar y reproducir el audio
+        pygame.mixer.music.load(rutaAudio)
+        pygame.mixer.music.play()
 
         clock = pygame.time.Clock()
         activo = True
@@ -53,9 +56,11 @@ class VideoInicio:
             clock.tick(30)
 
         cap.release()
+        pygame.mixer.music.stop()
 
 def main():
     pygame.init()  # Inicializar pygame
+    pygame.mixer.init()  # Inicializar el mezclador de audio
     screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Establecer tamaño de pantalla
     pygame.display.set_caption(TITLE_GAME) # Establecer el titulo del juego
     pygame.display.set_icon(pygame.image.load(ICON_GAME))  # Establecer el icono del juego
