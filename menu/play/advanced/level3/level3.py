@@ -614,7 +614,7 @@ class Level3Advanced:
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 120, pos_y))
 
     def pantallaBasuras(self):
-        self.tmx_filtroUnoNivel2 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel3", "basura1.tmx"))
+        self.tmx_filtroUnoNivel2 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel3", "basura2.tmx"))
         self.arreglo = False
 
         map_width = self.tmx_filtroUnoNivel2.width * self.tmx_filtroUnoNivel2.tilewidth
@@ -629,7 +629,7 @@ class Level3Advanced:
         clock = pygame.time.Clock()
 
         # Lista para almacenar las capas de basura
-        capas_basura = ['basura1', 'basura2']
+        capas_basura = ['basura1', 'basura2', 'basura3']
 
         # Diccionario para contar los tiles en cada capa de basura
         tiles_por_capa = {capa: 0 for capa in capas_basura}
@@ -697,7 +697,7 @@ class Level3Advanced:
                 return 1
 
             clock.tick(FPS)
-
+            
     def pantallaPerdioNivel(self):
         pygame.mixer.music.stop()  # Detener la música de fondo
         pygame.mixer.Sound(join("assets", "audio", "niveles", "defeat.mp3")).play()

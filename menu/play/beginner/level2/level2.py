@@ -597,7 +597,7 @@ class Level2Beginner:
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 60, pos_y))
 
     def pantallaLaberinto(self):
-        self.tmx_filtroUnoNivel2 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel2", "laberinto2.tmx"))
+        self.tmx_filtroUnoNivel2 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel2", "laberinto1.tmx"))
         self.arreglo = False
 
         map_width = self.tmx_filtroUnoNivel2.width * self.tmx_filtroUnoNivel2.tilewidth
