@@ -769,17 +769,13 @@ class Level1Advanced:
             self.mostrarSuperficieNivel.blit(self.filtro_color, (pos_x + 120, pos_y))
 
     def pantallaArreglarAire(self):
-        self.tmx_filtroUnoNivel1 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel1", "tuberia1.tmx"))
+        self.tmx_filtroUnoNivel1 = load_pygame(join("assets", "maps", "filtros", "filtrosNivel1", "tuberia2.tmx"))
         self.arreglo = False
 
         map_width = self.tmx_filtroUnoNivel1.width * self.tmx_filtroUnoNivel1.tilewidth
         map_height = self.tmx_filtroUnoNivel1.height * self.tmx_filtroUnoNivel1.tileheight
         offset_x = (self.mostrarSuperficieNivel.get_width() - map_width) // 2
         offset_y = (self.mostrarSuperficieNivel.get_height() - map_height) // 2
-
-        # button_font = pygame.font.Font(join("assets", "fonts", "Font_Menu_Options.ttf"), 20) # Establecemos la Fuente de texto
-        #  = button_font.render(self.datosLanguage[self.configLanguage]['levelsBeginner']['level1']['levelFilterMessage'], True, (255, 255, 255))
-        # button_rect = .get_rect(center=(self.mostrarSuperficieNivel.get_width() // 2, 110))
 
         banderaEjecutandoNivel1 = True
         drawing_line = False
@@ -826,6 +822,10 @@ class Level1Advanced:
                                             drawing_line = True
                                             start_pos = tile_rect.center
                                             line_color = (0, 255, 0)
+                                        elif layer.name == 'btn1rosa':
+                                            drawing_line = True
+                                            start_pos = tile_rect.center
+                                            line_color = (255, 192, 203)
                                         elif layer.name == 'btn2azul' and line_color == (0, 0, 255):
                                             end_pos = tile_rect.center
                                             connection = (start_pos, end_pos, line_color)
@@ -847,6 +847,13 @@ class Level1Advanced:
                                                 completed_lines.append(connection)
                                                 unique_connections.add(connection)
                                             drawing_line = False
+                                        elif layer.name == 'btn2rosa' and line_color == (255, 192, 203):
+                                            end_pos = tile_rect.center
+                                            connection = (start_pos, end_pos, line_color)
+                                            if connection not in unique_connections:
+                                                completed_lines.append(connection)
+                                                unique_connections.add(connection)
+                                            drawing_line = False
 
             for layer in self.tmx_filtroUnoNivel1.visible_layers:
                 if isinstance(layer, pytmx.TiledTileLayer):
@@ -854,7 +861,7 @@ class Level1Advanced:
                         tile = self.tmx_filtroUnoNivel1.get_tile_image_by_gid(gid)
                         if tile:
                             tile_rect = pygame.Rect(x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y, self.tmx_filtroUnoNivel1.tilewidth, self.tmx_filtroUnoNivel1.tileheight)
-                            if tile_rect.collidepoint(mouse_pos) and layer.name in ['btn1azul', 'btn1rojo', 'btn1verde', 'btn2azul', 'btn2rojo', 'btn2verde']:
+                            if tile_rect.collidepoint(mouse_pos) and layer.name in ['btn1azul', 'btn1rojo', 'btn1verde', 'btn1rosa', 'btn2azul', 'btn2rojo', 'btn2verde', 'btn2rosa']:
                                 hand_cursor = True
                             self.mostrarSuperficieNivel.blit(tile, (x * self.tmx_filtroUnoNivel1.tilewidth + offset_x, y * self.tmx_filtroUnoNivel1.tileheight + offset_y))
 
@@ -863,14 +870,11 @@ class Level1Advanced:
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
-            # self.mostrarSuperficieNivel.blit(, button_rect.topleft)
-
             for line in completed_lines:
                 pygame.draw.line(self.mostrarSuperficieNivel, line[2], line[0], line[1], 5)
 
             if drawing_line:
                 current_pos = pygame.mouse.get_pos()
-                # Check if the current position is within the "basecons" layer
                 basecons_layer = next((layer for layer in self.tmx_filtroUnoNivel1.visible_layers if layer.name == 'basecons'), None)
                 if basecons_layer:
                     for x, y, gid in basecons_layer:
@@ -881,7 +885,7 @@ class Level1Advanced:
 
             pygame.display.flip()
 
-            if len(completed_lines) == 3 and not tarea_completada:
+            if len(completed_lines) == 4 and not tarea_completada:
                 self.arreglo = True
                 self.contadorOxigenoReparado += 1
                 tarea_completada = True
